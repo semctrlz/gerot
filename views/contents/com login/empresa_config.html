@@ -1,0 +1,311 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>
+                        {function="FormataNomeProprio($empresaLogada.desnome, false)"}
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/{$empresaLogada.desnomeurl}">{$empresaLogada.desnome}</a></li>
+                        <li class="breadcrumb-item active">Configura&ccedil;&otilde;es</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>    
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                            
+                            <div class="text-center">                               
+                                
+                                <div class="img-wrapper" id="fotoPerfil">                                    
+                                    <img class="profile-user-img img-fluid img-circle" src="{function="obtemFotoEmpresa($empresa.desicone)"}" alt="&Iacute;cone da empresa" />
+                                    
+                                    <button class="btn btn-default btn-xs" style="display:none; width: 30px;position: absolute;" title="Alterar foto da divisão" data-toggle='modal' data-target='#modalEditaFoto'><i class="fas fa-pencil-alt"></i></button>
+                                                                    
+                                </div>
+                            </div>
+
+                            <h3 class="profile-username text-center">
+                                {function="FormataNomeProprio($empresaLogada.desapelido, false)"}
+                            </h3>
+
+                            <p class="text-muted text-center">
+                                {$empresa.destextodescritivo}
+                            </p>
+
+                            <div class="row"><a href="/{$empresa.desnomeurl}?config=true" class="btn btn-default btn-block">Editar dados da empresa</a></div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+                <!-- /.col -->
+
+                <section class="content col-sm-9">
+
+                    <!-- Default box -->
+                    {if="$erro != ''"}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-ban"></i> Aten&ccedil;&atilde;o!</h5>
+                        {$erro}
+                    </div>
+                    {/if}
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title align-middle">Cargos</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+
+                            <form id="cadastroCargos" method="post">
+                                <div class="card-body row">
+                                    <div class="form-group col-md-4">
+                                        <label for="desnomecargo">Nome cargo</label>
+                                        <input type="text" class="form-control" id="desnomecargo" name="desnomecargo" placeholder="Nome do cargo" maxlength="65" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="desdescricaocargo">Descri&ccedil;&atilde;o</label>
+                                        <input type="text" class="form-control" id="desdescricaocargo" name="desdescricaocargo" placeholder="descri&ccedil;&atilde;o" maxlength="140">
+                                    </div>
+
+                                    <input type="hidden" name="idempresa" value="{$empresa.idempresa}">
+                                    <input type="hidden" name="idusuario" value="{$idusuario}">
+
+                                    <div class="form-group col-md-2">
+                                        <label for="botao">&nbsp;</label>
+                                        <button type="submit" class="btn btn-success save-btn btn-block submitBtn">Adicionar</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <table class="table table-condensed data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%">Cargo</th>
+                                        <th style="width: 70%">Descri&ccedil;&atilde;o</th>
+                                        <th style="width: 15px">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {loop="$cargos"}
+                                    <tr data-name="{$value.desnome}" data-descricao="{$value.obs}" data-idempresa="{$empresa.idempresa}" data-idusuario="{$idusuario}">
+                                        <td>{$value.desnome}</td>
+                                        <td>{$value.obs}</td>
+                                        <td class="btn-group btn-group-sm float-right">     
+                                            <button class="btn btn-info btn-xs btn-edit" title="Editar cargo" data-toggle='modal' data-target='#modalEditCargo' data-nome='{$value.desnome}' data-descricao="{$value.obs}"><i class="fas fa-pencil-alt"></i></button>
+                                            <button class="btn btn-danger btn-xs btn-delete" title="Excluir cargo"><i class="fas fa-trash-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                    {/loop}
+                                </tbody>
+                            </table>
+
+                            <div class="modal fade" id="modalEditCargo" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Editar cargo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" id="modalform" action="/{$empresa.desnomeurl}?config=true">
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Nome cargo:</label>
+                                                    <input type="text" class="form-control" id="modal_cargo_nome" name="nomeN" maxlength="65" required>
+                                                    <input type="hidden" class="form-control" id="modal_hidden_cargo_nome" name="nomeA">
+                                                    <input type="hidden" class="form-control" id="modal_hidden_id_empresa" name="idempresa">
+                                                    <input type="hidden" class="form-control" id="modal_hidden_id_usuario" name="idusuario">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Descri&ccedil;&atilde;o:</label>
+                                                    <textarea class="form-control" id="modal_cargo_obs" name="obs" maxlength="140"></textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" id="submitBtnModal" class="btn btn-primary">Salvar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modalEditaFoto" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Selecionar ícone da empresa</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" id="modalformFoto" enctype="multipart/form-data" action="/{$empresa.desnomeurl}?config=true&alteraIcone=true">
+                                                                                                    
+                                                    <input type="file" id="modal_foto" name="foto">
+                                                    <input type="hidden" class="form-control" id="modal_hidden_id_empresa" name="idempresa" value="{$empresa.idempresa}">
+                                                
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <input type="submit" id="modalEditaFotoSubmit" class="btn btn-primary" value = "Salvar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <script src="\src/plugins/jquery/jquery.min.js"></script>
+                        <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+                        <script type="text/javascript">
+                            $("form").submit(function(e) {
+                                e.preventDefault();
+
+                                var name = $("input[name='desnomecargo']").val();
+                                var descricao = $("input[name='desdescricaocargo']").val();
+                                var idempresa = $("input[name='idempresa']").val();
+                                var idusuario = $("input[name='idusuario']").val();
+
+                                $.ajax({
+                                    url: '\\salvar_cargos.php',
+                                    
+                                    method: 'POST',
+                                    data: {
+                                        idempresa: idempresa,
+                                        idusuario: idusuario,
+                                        desnomecargo: name,
+                                        desdescricaocargo: descricao,
+                                        operacao: "inserir"
+                                    },
+                                    dataType: "json",
+                                    success: function(data) {
+
+                                        if (data.status == 'success') {
+
+                                            $(".data-table tbody").append("<tr data-name='" + name + "' data-descricao='" + descricao + "' data-idempresa='" + idempresa + "' data-idusuario='" + idusuario + "'><td>" + name + "</td><td>" + descricao + "</td><td class='btn-group btn-group-sm float-right'><button class='btn btn-info btn-xs btn-edit' title='Editar cargo' data-nome='" + name + "' data-descricao='" + descricao + "' data-toggle='modal' data-target='#modalEditCargo'><i class='fas fa-pencil-alt'></i></button><button class='btn btn-danger btn-xs btn-delete' title='Excluir cargo'><i class='fas fa-trash-alt'></i></button></td></tr>");                                                                            
+                                            $("input[name='desnomecargo']").val('');
+                                            $("input[name='desdescricaocargo']").val('');
+
+                                        } else {
+                                            alert(data.status);
+                                        }
+                                    }
+                                });
+
+                            });
+
+                            $("body").on("click", ".btn-delete", function() {
+
+                                var name = $(this).parents("tr").attr('data-name');
+                                var idempresa = $(this).parents("tr").attr('data-idempresa');
+
+
+                                var r = confirm("Deseja realmente excluir o cargo " + name + "?");
+                                if (r == true) {
+                                    $(this).parents("tr").remove();
+
+                                    $.ajax({
+                                        url: '\\salvar_cargos.php',
+                                        method: 'POST',
+                                        data: {
+                                            idempresa: idempresa,
+                                            desnomecargo: name,
+                                            operacao: "excluir"
+                                        },
+                                        dataType: "json",
+                                        success: function(data) {
+                                            if (data.status != 'success') {
+                                                alert(data.status);
+                                            }
+                                        }
+                                    });
+
+                                } else {
+
+                                }
+
+                            });
+                                                                            
+                        </script>
+
+                        <script>
+                            $('#modalEditCargo').on('show.bs.modal', function(event) {
+                                var button = $(event.relatedTarget) // Button that triggered the modal
+                                var nome = button.data('nome') // Extract info from data-* attributes
+                                var descricao = button.data('descricao') // Extract info from data-* attributes
+                                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                                var modal = $(this)
+                                    //modal.find('.modal-title').text('New message to ' + recipient)
+
+                                var idempresa = $("input[name='idempresa']").val();
+                                var idusuario = $("input[name='idusuario']").val();
+                                
+                                $("#modalEditCargo").find("#modal_cargo_nome").val(nome);
+                                $("#modalEditCargo").find("#modal_hidden_cargo_nome").val(nome);
+                                $("#modalEditCargo").find("#modal_cargo_obs").val(descricao);
+                                $("#modalEditCargo").find("#modal_hidden_id_empresa").val(idempresa);
+                                $("#modalEditCargo").find("#modal_hidden_id_usuario").val(idusuario);
+
+                            });
+
+                            $('#submitBtnModal').click(function() {
+                                /*
+                                    $('#nomeNovo').text($('#modal_cargo_nome').val());
+                                    $('#nomeAntigo').text($('#modal_hidden_cargo_nome').val());
+                                    $('#obs').text($('#modal_cargo_obs').val());
+                                    $('#idempresa').text($('#modal_hidden_id_empresa').val());
+                                    $('#idusuario').text($('#modal_hidden_id_usuario').val());
+                                */
+                                $('#modalform').submit();
+                            });
+
+                                $('#modalEditaFotoSubmit').click(function(){
+                                    $('#modalformFoto').submit();
+                                });
+
+                                $(document).ready(function (){
+                                    $('.dropdown-toggle').dropdown();
+                                    $('#userlogin').dropdown('toggle');
+                                });
+                        </script>
+
+                    </div>
+
+                    <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+    </section>
+</div>
+  <!-- /.content-wrapper -->
+
+
+
+

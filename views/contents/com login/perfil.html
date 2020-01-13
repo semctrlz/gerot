@@ -1,0 +1,481 @@
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Profile</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">User Profile</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="card card-primary card-outline">
+              <div class="card-body box-profile">
+                <div class="text-center"  id="fotoPerfil">
+                  <img class="profile-user-img img-fluid img-circle"
+                       src="{function="obtemFotoPerfil($desfoto)"}"
+                       alt="User profile picture">
+
+                       <button class="btn btn-default btn-xs" style="display:none; width: 30px;position: absolute;" title="Alterar foto de perfil" data-toggle='modal' data-target='#modalEditaFoto'><i class="fas fa-pencil-alt"></i></button>
+                </div>
+
+                <h3 class="profile-username text-center">{function="FormataNomeProprio($desnome, false)"}</h3>
+
+                <p class="text-muted text-center">{if="$desapelido != ''"}(@{$desapelido}){/if}</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <b>Followers</b> <a class="float-right">1,322</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Following</b> <a class="float-right">543</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Friends</b> <a class="float-right">13,287</a>
+                  </li>
+                </ul>                
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- About Me Box -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Sobre mim</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <strong><i class="fas fa-book mr-1"></i> Educa&ccedil;&atilde;o</strong>
+
+                <p class="text-muted">
+                  {loop="$deseducacao_arr"}
+                  <span class="badge badge-info">{$value}</span>
+                  {/loop}
+                </p>
+
+                <hr>                
+
+                <strong><i class="fas fa-pencil-alt mr-1"></i> Habilidades</strong>                
+                <p class="text-muted">
+                  {loop="$deshabiliadades_arr"}
+                  <span class="badge badge-info">{$value}</span>
+                  <!-- <span class="tag tag-danger">UI Design</span>
+                  <span class="tag tag-success">Coding</span>
+                  <span class="tag tag-info">Javascript</span>
+                  <span class="tag tag-warning">PHP</span>
+                  <span class="tag tag-primary">Node.js</span> -->
+                  {/loop}                
+                </p>
+                <hr>
+
+                <strong><i class="far fa-file-alt mr-1"></i> Bio</strong>
+
+                <p class="text-muted">{$desdescricao}</p>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+
+
+
+          <!-- /.col -->
+          <div class="col-md-9">
+            {if="$alerta != ''"}
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i> Sucesso!</h5>
+              {$alerta}
+            </div>          
+          {/if}
+
+            
+
+
+
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Informa&ccedil;&otilde;es</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="active tab-pane" id="activity">
+                    <!-- Post -->
+                    <div class="post">
+                      <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
+                        <span class="username">
+                          <a href="#">Jonathan Burke Jr.</a>
+                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                        </span>
+                        <span class="description">Shared publicly - 7:30 PM today</span>
+                      </div>
+                      <!-- /.user-block -->
+                      <p>
+                        Lorem ipsum represents a long-held tradition for designers,
+                        typographers and the like. Some people hate it and argue for
+                        its demise, but others ignore the hate as they create awesome
+                        tools to help create filler text for everyone from bacon lovers
+                        to Charlie Sheen fans.
+                      </p>
+
+                      <p>
+                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                        <span class="float-right">
+                          <a href="#" class="link-black text-sm">
+                            <i class="far fa-comments mr-1"></i> Comments (5)
+                          </a>
+                        </span>
+                      </p>
+
+                      <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                    </div>
+                    <!-- /.post -->
+
+                    <!-- Post -->
+                    <div class="post clearfix">
+                      <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
+                        <span class="username">
+                          <a href="#">Sarah Ross</a>
+                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                        </span>
+                        <span class="description">Sent you a message - 3 days ago</span>
+                      </div>
+                      <!-- /.user-block -->
+                      <p>
+                        Lorem ipsum represents a long-held tradition for designers,
+                        typographers and the like. Some people hate it and argue for
+                        its demise, but others ignore the hate as they create awesome
+                        tools to help create filler text for everyone from bacon lovers
+                        to Charlie Sheen fans.
+                      </p>
+
+                      <form class="form-horizontal">
+                        <div class="input-group input-group-sm mb-0">
+                          <input class="form-control form-control-sm" placeholder="Response">
+                          <div class="input-group-append">
+                            <button type="submit" class="btn btn-danger">Send</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /.post -->
+
+                    <!-- Post -->
+                    <div class="post">
+                      <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
+                        <span class="username">
+                          <a href="#">Adam Jones</a>
+                          <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                        </span>
+                        <span class="description">Posted 5 photos - 5 days ago</span>
+                      </div>
+                      <!-- /.user-block -->
+                      <div class="row mb-3">
+                        <div class="col-sm-6">
+                          <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo">
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <img class="img-fluid mb-3" src="../../dist/img/photo2.png" alt="Photo">
+                              <img class="img-fluid" src="../../dist/img/photo3.jpg" alt="Photo">
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-6">
+                              <img class="img-fluid mb-3" src="../../dist/img/photo4.jpg" alt="Photo">
+                              <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo">
+                            </div>
+                            <!-- /.col -->
+                          </div>
+                          <!-- /.row -->
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
+
+                      <p>
+                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                        <span class="float-right">
+                          <a href="#" class="link-black text-sm">
+                            <i class="far fa-comments mr-1"></i> Comments (5)
+                          </a>
+                        </span>
+                      </p>
+
+                      <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                    </div>
+                    <!-- /.post -->
+                  </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="timeline">
+                    <!-- The timeline -->
+                    <div class="timeline timeline-inverse">
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                        <span class="bg-danger">
+                          10 Feb. 2014
+                        </span>
+                      </div>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-envelope bg-primary"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 12:05</span>
+
+                          <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                          <div class="timeline-body">
+                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                            quora plaxo ideeli hulu weebly balihoo...
+                          </div>
+                          <div class="timeline-footer">
+                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-user bg-info"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
+
+                          <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                          </h3>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-comments bg-warning"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
+
+                          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                          <div class="timeline-body">
+                            Take me to your leader!
+                            Switzerland is small and neutral!
+                            We are more like Germany, ambitious and misunderstood!
+                          </div>
+                          <div class="timeline-footer">
+                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <!-- timeline time label -->
+                      <div class="time-label">
+                        <span class="bg-success">
+                          3 Jan. 2014
+                        </span>
+                      </div>
+                      <!-- /.timeline-label -->
+                      <!-- timeline item -->
+                      <div>
+                        <i class="fas fa-camera bg-purple"></i>
+
+                        <div class="timeline-item">
+                          <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
+
+                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                          <div class="timeline-body">
+                            <img src="http://placehold.it/150x100" alt="...">
+                            <img src="http://placehold.it/150x100" alt="...">
+                            <img src="http://placehold.it/150x100" alt="...">
+                            <img src="http://placehold.it/150x100" alt="...">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- END timeline item -->
+                      <div>
+                        <i class="far fa-clock bg-gray"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.tab-pane -->
+
+                  <div class="tab-pane" id="settings">
+                    <form class="form-horizontal">
+                      <div class="form-group row">
+                        <label for="inputNome" class="col-sm-2 col-form-label">Nome</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="inputNome" maxlength="64" value="{function="FormataNomeProprio($desnome, false)"}" placeholder="Nome">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputSobrenome" class="col-sm-2 col-form-label">Sobrenome</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="inputSobrenome" maxlength="64" value= "{function="FormataNomeProprio($dessobrenome, false)"}" placeholder="Sobrenome">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+
+                        <label for="inputApelido" class="col-sm-2 col-form-label">Apelido</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="inputApelido" maxlength="15" onblur="verificarApelido()" value="{$desapelido}" placeholder="Apelido">                          
+                            
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row has-warning">
+                        <label for="inputApelido" class="col-sm-2 col-form-label">Nascimento</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="datemask" class="form-control" value="{function="formataData($dtnascimento)"}" placeholder="dd/mm/aaaa" data-inputmask="'alias': 'date'">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputEducacao" class="col-sm-2 col-form-label">Educa&ccedil;&atilde;o*</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" id="inputEducacao" maxlength="256" placeholder="Educa&ccedil;&atilde;o">{$deseducacao}</textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputHabilidades" class="col-sm-2 col-form-label">Habilidades*</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" id="inputHabilidades" maxlength="256" placeholder="Habilidades">{$deshabiliadades}</textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputBio" class="col-sm-2 col-form-label">Sobre voc&ecirc;</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" id="inputBio" maxlength="140" placeholder="Sobre voc&ecirc;">{$desdescricao}</textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="inputBio" class="col-sm-2 col-form-label">Alterar senha</label>
+                        <div class="col-sm-10">
+                          <a href="#" class="btn btn-info" data-toggle='modal' data-target='#modalAlteraSenha'>Alterar senha</a>
+                        </div>                      
+                      </div>
+                      <div class="form-group row">
+
+                        
+                        <div class="offset-sm-2 col-sm-10">
+                            <input type="hidden" id="inputIdUsuario" value="{$idusuario}">
+                          <button type="submit" class="btn btn-danger" id="perfilSalvar">Salvar</button>
+                        </div>                        
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputBio" class="col-sm-2 col-form-label"> </label>
+                        <div class="col-sm-10">
+                          <a class="text-muted">* Separe um dado do outro utilizando ponto e vírgula (;)</a>
+                        </div>                      
+                      </div>
+                    </form>
+
+
+                    
+
+
+                  </div>
+                  <!-- /.tab-pane -->
+
+                  
+                </div>
+                <!-- /.tab-content -->
+
+                
+
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <div class="modal fade" id="modalEditaFoto" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Selecionar foto de perfil</h5>                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+            </div>
+            <div class="modal-body">
+              OBS: A foto de perfil deve ter pelo menos 160x160 pixels e no m&aacute;ximo 2Mb de tamanho.<br>
+              A imagem ser&aacute; recortada no formato quadrado a partir do canto superior esquerdo.
+              <p>
+                <form method="post" id="modalformFoto" enctype="multipart/form-data" action="\?perfil&EditFoto">
+                                                                        
+                  <input type="file" id="modal_foto" name="foto">
+                  <input type="hidden" class="form-control" id="modal_hidden_id_empresa" name="idusuario" value="{$idusuario}">
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <input type="submit" id="modalEditaFotoSubmit" class="btn btn-primary" value = "Salvar">
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalAlteraSenha" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alterar senha</h5>                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">                
+              <div class="text-muted">Ao clicar no bot&atilde;o "enviar" voc&ecirc; enviar&aacute; para seu e-mail um link de redefini&ccedil;&atilde;o de senha v&aacute;lido por 10 minutos.</div>
+            </div>
+            <div class="modal-footer">
+              <form method="post" id="modalAlterarSenhaForm" action="\recovery">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                <input type="hidden" id="modalEmail" name="email" value="{$desemail}">
+                <input type="hidden" id="modaltipo" name="tipo" value="redefine">
+                <input type="submit" id="modalAlterarSenhaSubmit" class="btn btn-primary" value = "Enviar">
+            </div>
+        </div>
+    </div>
+  </div>
+            
+          
+  <script src="\src/plugins/jquery/jquery.min.js"></script>
+  <script src="\src/plugins/sweetalert2/sweetalert2.min.js"></script>   

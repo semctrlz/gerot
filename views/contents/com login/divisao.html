@@ -1,0 +1,1121 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>{$divisao.nome_empresa}</h1>
+                    <span class="description ml-3">{$divisao.texto_empresa}</span></td>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item active"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active"><a href="/{$divisao.desnomeurl_empresa}">{$divisao.apelido_empresa}</a></li>
+                        <li class="breadcrumb-item active">{$divisao.desapelido}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <table>
+                        <tr>
+                            <td id="fotoPerfil">
+                                <img class="profile-user-img img-fluid img-circle" src="\{function="obtemFotoEmpresa($divisao.desfoto_divisao)"}" alt="user image">
+                                <a href="#" data-toggle='modal' data-target='#modalEditaFoto'>
+                                    <button class="btn btn-default btn-xs" style="display:none; width: 30px;position: absolute;left: 100px;" title="Alterar foto de perfil" data-toggle='modal' data-target='#modalEditaFoto'><i class="fas fa-pencil-alt"></i></button>
+                                </a>
+
+                            </td>
+                            <td>
+                                <span class="username">
+                                    <h3><a href="#" class="ml-3">{$divisao.desapelido}</a></h3>
+                                </span>
+                                <span class="description ml-3">{$divisao.texto_divisao}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                        <div class="row">
+
+                            <div class="col-lg-4 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3>{$divisao.quant_colaboradores}</h3>
+                                        {if="$divisao.quant_colaboradores == 1"}
+                                        <p>Colaborador</p>
+                                        {else}
+                                        <p>Colaboradores</p>
+                                        {/if}
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-id-card"></i>
+                                    </div>
+                                    <a href="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?editcolab=true" class="small-box-footer">
+                    Gerenciar <i class="fas fa-cog"></i>
+                  </a>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3>{$divisao.quant_setores}</h3>
+                                        {if="$divisao.quant_setores == 1"}
+                                        <p>Setor</p>
+                                        {else}
+                                        <p>Setores</p>
+                                        {/if}
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-sitemap"></i>
+                                    </div>
+                                    <a href="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?editsetores=true" class="small-box-footer">
+                    Gerenciar <i class="fas fa-cog"></i>
+                  </a>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3>{$divisao.quant_gestores}</h3>
+                                        {if="$divisao.quant_gestores == 1"}
+                                        <p>Gestor</p>
+                                        {else}
+                                        <p>Gestores</p>
+                                        {/if}
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <a href="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?editgestores=true" class="small-box-footer">
+                      Gerenciar <i class="fas fa-cog"></i>
+                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Ger&ecirc;ncia</h4>
+                                <div class="row">
+
+                                    {if="$divisao.qtd_ger > 0"} {loop="$divisao.gerencia"}
+                                    <div class="col-sm-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="user-block col-md-12" style="vertical-align: top;">
+                                                    <img class="img-circle img-bordered-sm" src="\{function="obtemFotoPerfil($value.foto)"}" alt="">
+                                                    <span class="username">
+                                          <a href="/perfil/{$value.desnomeurl}">{function="FormataNomeProprio($value.nome, false)"}</a>
+                                        </span>
+                                                    <span class="description">{function="FormataNomeProprio($value.cargo, false)"}</span>
+                                                </div>
+                                                <spam class="text-muted text-sm mt-2"><b>Sobre: </b> {$value.sobre}</spam>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    {if="$value.ativo == 1"}
+                                                    <span class="badge float-left badge-success">Ativo</span> {else}
+                                                    <span class="badge float-left badge-danger">Inativo</span> {/if}
+
+                                                    <a href="#" class="btn btn-sm bg-teal">
+                                                        <i class="fas fa-comments"></i>
+                                                    </a>
+                                                    <a href="/perfil/{$value.desnomeurl}" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-user"></i> Perfil
+                                                    </a>
+                                                    <a href="" class="btn btn-sm btn-danger" data-toggle='modal' data-target='#modalDeleteGerente' data-nome="{function="FormataNomeProprio($value.nome, false)"}" data-id="{$value.idgerente}" title="Remover gerente">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/loop} {/if}
+
+                                    <div class="col-sm-4 align-items-stretch mb-5">
+                                        <a href="#" class="btn btn-default" id="addGerente" data-toggle='modal' onclick="LimpaModalGerente()" data-target='#modalAddGerente'><span class="fa fa-plus fa-6x text-muted"></span>
+                                            <p>Adicionar gerente</p>
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                                <section class="content">
+
+                                    <!-- Default box -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Setores</h3>
+
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-striped projects">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 45%">
+                                                            Nome
+                                                        </th>
+                                                        <th style="width: 25%">
+                                                            Supervis&atilde;o
+                                                        </th>
+                                                        <th>
+                                                            Q.L.
+                                                        </th>
+                                                        <th style="width: 10%" class="text-center">
+                                                            Status
+                                                        </th>
+                                                        <th style="width: 20%">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {if="$divisao.quant_setores > 0"} {loop="$divisao.setores"}
+
+                                                    <tr>
+                                                        <td>
+                                                            <h5>
+                                                                {$value.desnome}
+                                                            </h5>
+                                                            <small>
+                                                                {$value.desdescricao}
+                                                            </small>
+                                                        </td>
+                                                        <td>
+                                                            <ul class="list-inline">
+
+                                                                {if="$value.sup > 0"} {loop="$value.supervisao"}
+                                                                <li class="list-inline-item">
+                                                                    <div id="fotoPerfil">
+                                                                        <button class="btn btn-danger btn-xs" style="display: none; width: 20px;position: absolute; margin-left: 30px;" title="Excluir supervisor" data-toggle='modal' data-target='#modalDeleteSupervisor' data-nome="{function="FormataNomeProprio($value.nome, false)"}" data-id ="{$value.idsupervisor}"><i class="fas fa-trash-alt"></i></button>
+                                                                        <a href="/perfil/{$value.desnomeurl}" class="" id="" title="{function="FormataNomeProprio($value.nome, false)"}">
+                                                                            <img alt="Avatar" class="table-avatar img-bordered-sm" src="\{function="obtemFotoPerfil($value.desfoto)"}">                                                                            
+                                                                        </a>
+                                                                    </div>
+                                                                    
+                                                                </li>
+                                                                {/loop} {/if}
+
+                                                                <li class="list-inline-item">                                                                    
+                                                                    <button class="btn btn-default mt-1 mb-1" id="addsupervisor" data-toggle='modal' data-target='#modalAddSupervisor' data-id="{$value.idsetor}" data-nome="{$value.desnome}" style="border-radius: 50%; border: 1x solid grey;">
+                                                                        <span class="fa fa-plus text-muted">
+                                                                        </span>
+                                                                    </button>
+                                                                </li>             
+                                                            </ul>
+                                                        </td>
+                                                        <td>
+                                                            <a href="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?colabset={$value.idsetor}" title="Editar colaboradores do setor {$value.desnome}" class="btn btn-default">{$value.ql}</a>
+                                                        </td>
+                                                        <td class="project-state">
+                                                            {if="$value.ativo == 1"}
+                                                            <span class="badge float-left badge-success">Ativo</span>
+                                                            {else}
+                                                            <span class="badge float-left badge-danger">Inativo</span>
+                                                            {/if}  
+                                                                                            
+                                                        </td>
+                                                        <td class="project-actions text-right">
+                                                            
+                                                            <button class="btn btn-default btn-sm" data-toggle='modal' data-target='#modalAddColaborador' data-id="{$value.idsetor}" data-nome="{$value.desnome}">
+                                                                <i class="fas fa-users"></i>
+                                                                Colaboradores
+                                                            </button>
+                                                            
+                                                        </td>
+                                                    </tr> 
+
+                                            {/loop}
+                                        {/if}
+                                                          
+                        </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                    <!-- /.card -->
+                                
+                                </section>
+                                                    
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-12 col-lg-4 order-1 order-md-3">
+
+                        <div class="card collapsed-card">
+                            <div class="card-header">
+                                <a class="card-title text-small">Configura&ccedil;&otilde;es espec&iacute;ficas da divis&atilde;o</a>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-3">
+                                Em breve...
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <a href="#" class="btn btn-danger float-right" data-toggle='modal' data-target='#modalConfirmDelete' data-nome='{$divisao.desapelido}' data-id="{$divisao.iddivisao}"> <span class="fa fa-trash-alt mr-2"></span>Excluir divis&atilde;o</a>
+            </div>
+
+        </div>
+        <!-- /.card -->
+
+        <div class="modal fade" id="modalEditaFoto" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Selecionar o ícone da divisão</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        OBS: A foto da divisão deve ter pelo menos 160x160 pixels e no m&aacute;ximo 2Mb de tamanho.<br> A imagem ser&aacute; recortada no formato quadrado a partir do canto superior esquerdo.
+                        <p>
+                            <form method="post" id="modalformFoto" enctype="multipart/form-data" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?alteraIcone">
+
+                                <input type="file" id="modal_foto" name="foto">
+                                <input type="hidden" class="form-control" id="modal_hidden_iddivisao" name="iddivisao" value="{$divisao.iddivisao}">
+
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <input type="submit" id="modalEditaFotoSubmit" class="btn btn-primary" value="Salvar">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Comfirmar exclus&atilde;o</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Voc&ecirc; est&aacute; prestes a excluir esta divis&atilde;o. Esta opera&ccedil;&atilde;o n&atilde;o tem como desfazer.</p>
+
+                        <p>Para evitar uma exclus&atilde;o acidental, pedimos que voc&ecirc; escreva abaixo o nome da divis&atilde;o.</p>
+
+                        <form method="post" autocomplete="off" id="modalformExcluir" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?delete=true">
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Nome divis&atilde;o:</label>
+                                <input type="text" class="form-control" id="modal_nomeDivisao" name="nomeDivisao" maxlength="65" required>
+                                <input type="hidden" class="form-control" id="modal_hidden_nomeDivisao" name="nomeDivisaoVerificacao">
+                                <input type="hidden" class="form-control" id="modal_hidden_idDivisao" name="idDivisao">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="modalExcluiDivisaoSubmit" data-dismiss="modal" class="btn btn-danger">Excluir divisão</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalDeleteGerente" tabindex="-1" role="dialog" aria-labelledby="modalDeleteGerente" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Comfirmar exclus&atilde;o</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Você está prestes a remover o cargo de gerente de <span id="spamNomeGerente">Vágner</span>. Esta ação não tem como desfazer.</p>
+
+                        <p>Deseja realmente escluir <span id="spamNomeGerente">Vágner</span> da gerência de {$divisao.desapelido}?</p>
+
+                        <form method="post" autocomplete="off" id="modalformExcluirGerente" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?removeGerente=true">
+                            <input type="hidden" class="form-control" id="modalIdGerente" name="idgerente">
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="modalExcluiGerenteSubmit" data-dismiss="modal" class="btn btn-danger">Excluir gerente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalDeleteSupervisor" tabindex="-1" role="dialog" aria-labelledby="modalDeleteGerente" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Comfirmar exclus&atilde;o</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Você está prestes a remover o cargo de supervisor de <span id="spamNomeSupervisor"></span>. Esta ação não tem como desfazer.</p>
+
+                        <p>Deseja realmente excluir?</p>
+
+                        <form method="post" autocomplete="off" id="modalformExcluirSupervisor" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?removeSupervisor=true">
+                            <input type="hidden" class="form-control" id="modalSupervisor" name="idsupervisor">
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="modalExcluiSupervisorSubmit" data-dismiss="modal" class="btn btn-danger">Excluir supervisor</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAddGerente" tabindex="-1" role="dialog" aria-labelledby="modalAddGerenteLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar gerente</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Digite o e-mail do funcionário que você deseja tornar gerente desta divisão.</p>
+
+
+                        <div class="form-group">
+                            <input type="search" id="busca" onkeyup="myFunction()" onchange="myFunction()" oninput="myFunction()" onclick="myFunction()" onabort="myFunction()" class="form-control" placeholder="Busca...">
+                        </div>
+
+                        <table id="funcionarios" class="table table-striped">
+
+                            <tbody>
+
+                                {loop="$funcionarios"}
+                                <tr>
+                                    <td valign="middle">
+                                        <div class="user-block">
+                                            <img class="img-circle height:20 img-bordered-sm" src="\{function="obtemFotoPerfil($value.avatar)"}" alt="">
+                                        </div>
+                                    </td>
+                                    <td class="text-muted small">
+                                        {function="FormataNomeProprio($value.nome, false)"}<br> {$value.desemail}
+                                        <br> {$value.cargo}
+                                    </td>
+                                    <td>
+                                        {if="$value.status == 'Ativo'"}
+                                        <span class="badge bg-success">Ativo</span> {elseif="$value.status == 'Pendente'"}
+                                        <span class="badge bg-warning">Pendente</span> {elseif="$value.status == 'Recusado'"}
+                                        <span class="badge bg-danger">Recusado</span> {/if}
+
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" id="addEmail" onClick="addEmail('{$value.desemail}')">Add</button>
+                                    </td>
+                                </tr>
+
+                                {/loop}
+                            </tbody>
+                        </table>
+                        <hr>
+                        <form method="post" id="modalformAddGerente" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?addGerente=true">
+                            <div class="form-group" id="emailsAConsiderar">
+
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="idUnidadeModal" value="{$divisao.iddivisao}">
+                        <input type="hidden" id="idusUarioModal" value="{$idusuario}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-info" style="display: none;" id="modalAlterarEmail" onclick="LimpaModalGerente()">Alterar</button>
+                        <button type="button" class="btn btn-success" id="modalSalvar">Salvar</button>
+                        <button type="submit" id="modalIncluir" style="display: none;" data-dismiss="modal" class="btn btn-success">Incluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAddSupervisor" tabindex="-1" role="dialog" aria-labelledby="modalAddGerenteLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar supervisor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Digite o e-mail do funcionário que você deseja tornar supervisor de <spam id="spamNomeSetor"></spam>.</p>
+
+                        <div class="form-group">
+                            <input type="search" id="buscaSup" onkeyup="filtraFuncionariosSup()" onchange="filtraFuncionariosSup()" oninput="filtraFuncionariosSup()" onclick="filtraFuncionariosSup()" onabort="filtraFuncionariosSup()" class="form-control" placeholder="Busca...">
+                        </div>
+
+                        <table id="funcionariosSup" class="table table-striped">
+
+                            <tbody>
+
+                                {loop="$funcionarios"}
+                                <tr>
+                                    <td valign="middle">
+                                        <div class="user-block">
+                                            <img class="img-circle height:20 img-bordered-sm" src="\{function="obtemFotoPerfil($value.avatar)"}" alt="">
+                                        </div>
+                                    </td>
+                                    <td class="text-muted small">
+                                        {function="FormataNomeProprio($value.nome, false)"}<br> {$value.desemail}
+                                        <br> {$value.cargo}
+                                    </td>
+                                    <td>
+                                        {if="$value.status == 'Ativo'"}
+                                        <span class="badge bg-success">Ativo</span> {elseif="$value.status == 'Pendente'"}
+                                        <span class="badge bg-warning">Pendente</span> {elseif="$value.status == 'Recusado'"}
+                                        <span class="badge bg-danger">Recusado</span> {/if}
+
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" id="addEmail" onClick="addSupervisor('{$value.desemail}')">Add</button>
+                                    </td>
+                                </tr>
+
+                                {/loop}
+                            </tbody>
+                        </table>
+                        <hr>
+                        
+                            <div class="form-group" id="emailsAConsiderarSup">
+                            </div>
+                        
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="idSetormodal" value="">
+                        <input type="hidden" id="idDivisaoSup" value="{$divisao.iddivisao}">
+                        <input type="hidden" id="idusUarioModalSup" value="{$idusuario}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-info" style="display: none;" id="modalAlterarEmail" onclick="LimpaModalGerente()">Alterar</button>
+                        <button type="button" class="btn btn-success" id="modalSalvarSup">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAddColaborador" tabindex="-1" role="dialog" aria-labelledby="modalAddGerenteLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar colaborador</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>Digite o e-mail do funcionário que você deseja tornar colaborador do setor <spam id="spamNomeSetorFunc"></spam>.</p>
+
+                        <div class="form-group">
+                            <input type="search" id="buscaFunc" onkeyup="filtraFuncionariosFunc()" onchange="filtraFuncionariosFunc()" oninput="filtraFuncionariosFunc()" onclick="filtraFuncionariosFunc()" onabort="filtraFuncionariosFunc()" class="form-control" placeholder="Busca...">
+                        </div>
+
+                        <table id="funcionariosFunc" class="table table-striped">
+
+                            <tbody>
+
+                                {loop="$funcionarios"}
+                                {if="$value.col == '0'"}
+                                {if="$value.tipo == 'efetivo'"}
+                                <tr>
+                                    <td valign="middle">
+                                        <div class="user-block">
+                                            <img class="img-circle height:20 img-bordered-sm" src="\{function="obtemFotoPerfil($value.avatar)"}" alt="">
+                                        </div>
+                                    </td>
+                                    <td class="text-muted small">
+                                        {function="FormataNomeProprio($value.nome, false)"}<br> {$value.desemail}
+                                        <br> {$value.cargo}
+                                    </td>
+                                    <td>
+                                        {if="$value.status == 'Ativo'"}
+                                        <span class="badge bg-success">Ativo</span> {elseif="$value.status == 'Pendente'"}
+                                        <span class="badge bg-warning">Pendente</span> {elseif="$value.status == 'Recusado'"}
+                                        <span class="badge bg-danger">Recusado</span> {/if}
+
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info" id="addEmail" onClick="addFuncionario('{$value.desemail}')">Add</button>
+                                    </td>
+                                </tr>
+                                {/if}
+                                {/if}
+
+                                {/loop}
+                            </tbody>
+                        </table>
+                        <hr>
+                        
+                            <div class="form-group" id="emailsAConsiderarFunc">
+                            </div>
+                        
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="idSetormodalFunc" value="">
+                        <input type="hidden" id="idDivisaoFunc" value="{$divisao.iddivisao}">
+                        <input type="hidden" id="idusUarioModalFunc" value="{$idusuario}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-info" style="display: none;" id="modalAlterarEmail" onclick="LimpaModalFuncionarios()">Alterar</button>
+                        <button type="button" class="btn btn-success" id="modalSalvarFunc">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="\src/plugins/jquery/jquery.min.js"></script>
+        <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+        <script type="text/javascript">
+            $('#modalConfirmDelete ').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var nome = button.data('nome') // Extract info from data-* attributes
+                var id = button.data('id') // Extract info from data-* attributes
+                    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.                          
+
+                $("#modalformExcluir").find("#modal_hidden_nomeDivisao").val(nome);
+                $("#modalformExcluir").find("#modal_hidden_idDivisao").val(id);
+
+            });
+
+            $('#modalExcluiDivisaoSubmit').click(function() {
+
+                var nomeDigitado = $("#modalformExcluir").find("#modal_nomeDivisao").val();
+                var nomeDivisao = $("#modalformExcluir").find("#modal_hidden_nomeDivisao").val();
+
+                if (nomeDigitado == nomeDivisao && nomeDigitado != "") {
+                    $('#modalformExcluir').submit();
+                } else {
+                    alert("Nome incorreto. Verifique as letras maiúsculas e minúsculas digitadas e tente novamente.");
+                }
+            });
+
+            $('#modalEditaFotoSubmit').click(function() {
+                $('#modalformFoto').submit();
+            });
+
+            $('#modalDeleteGerente ').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var nome = button.data('nome') // Extract info from data-* attributes
+                var id = button.data('id') // Extract info from data-* attributes
+
+                $("#spamNomeGerente").text(nome);
+                $("#modalIdGerente").val(id);
+                
+                
+
+            });
+
+            $('#modalIncluir').click(function() {
+                $('#modalformAddGerente').submit();
+            });            
+
+            function LimpaModalGerente() {
+                $("#modalAlterarEmail").attr('style', 'display: none;');
+                $("#modalIncluir").attr('style', 'display: none;');
+                $("#modalVerificarEmailSubmit").removeAttr("style");
+
+                $("#modalEmail").removeClass('is-invalid');
+                $("#modalEmail").removeClass('is-valid');
+                $("#modalEmail").removeAttr('disabled');
+                $("#modalEmail").val('');
+                LimpaEmails();
+
+                $("#spanUsuario").attr('style', 'display: none;');
+
+            };
+
+            $('#modalExcluiGerenteSubmit').click(function() {
+                $('#modalformExcluirGerente').submit();
+            });
+
+            $("#modalExcluiSupervisorSubmit").click(function(){
+                $('#modalformExcluirSupervisor').submit();
+            })
+
+            $(document).ready(function() {
+                $('.dropdown-toggle').dropdown();
+                $('#userlogin').dropdown('toggle');
+            });
+
+            $('#modalSalvar').click(function(e) {
+                e.preventDefault();
+
+                var emails = "";
+
+                var emailsSelecionados = $("#emailsAConsiderar .badge");
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    emails += emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim() + ";";
+                }
+
+                emails = emails.slice(0, -1);
+                var idDivisao = $("#idUnidadeModal").val();
+                var usuario = $("#idusUarioModal").val();
+
+                if (emails.length > 1) {
+                    $.ajax({
+                        url: '\\classhandler.php',
+                        method: 'POST',
+                        data: {
+                            pemails: emails,
+                            pdivisao: idDivisao,
+                            pusuario: usuario,
+                            poperacao: "addGerente"
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status != "sucesso") {
+                                alert("Erro");
+                            } else {
+                                location.reload();
+                            }
+                        },
+                        error: function(data) {
+                            alert("Erro ao inserir gerente(s).");
+                        }
+                    });
+                } else {
+                    alert("Adicione ao menos um funcionário para adicionar como gerente.");
+                }
+            });
+        
+            //Executa quando abrir o modal de adicionar gerente
+            $('#modalAddGerente ').on('show.bs.modal', function(event) {                
+               
+                LimpaEmails();
+                document.getElementById("busca").value = '';
+                myFunction();                
+
+            });
+
+            $('#modalSalvarSup').click(function(e) {
+                e.preventDefault();
+
+                var emails = "";
+
+                var emailsSelecionados = $("#emailsAConsiderarSup .badge");
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    emails += emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim() + ";";
+                }
+
+                emails = emails.slice(0, -1);
+                var idSetor = $("#idSetormodal").val();
+                var usuario = $("#idusUarioModalSup").val();       
+                var divisao = $("#idDivisaoSup").val();
+                
+                if (emails.length > 1) {
+                    $.ajax({
+                        url: '\\classhandler.php',
+                        method: 'POST',
+                        data: {
+                            pemails: emails,
+                            pidsetor: idSetor,
+                            piddivisao: divisao,
+                            pusuario: usuario,
+                            poperacao: "addSupervisor"
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status != "sucesso") {
+                                alert("Erro");
+                            } else {
+                                location.reload();
+                            }
+                        },
+                        error: function(data) {
+                            alert("Erro ao inserir supervisor(es).");
+                        }
+                    });
+                } else {
+                    alert("Adicione ao menos um funcionário para adicionar como supervisor.");
+                }
+            });
+        
+            //Executa quando o modal de adição de supervisor é aberto
+            $('#modalAddSupervisor ').on('show.bs.modal', function(event) {                
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var nome = button.data('nome') // Extract info from data-* attributes
+                var id = button.data('id') // Extract info from data-* attributes                
+                
+                LimpaEmailsSup();
+                document.getElementById("buscaSup").value = '';
+                filtraFuncionariosSup();
+                $("#spamNomeSetor").text(nome);
+                $("#idSetormodal").val(id);
+
+            });
+
+            $('#modalDeleteSupervisor ').on('show.bs.modal', function(event) {                
+               
+
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var nome = button.data('nome') // Extract info from data-* attributes
+                var id = button.data('id') // Extract info from data-* attributes                
+
+                $("#spamNomeSupervisor").text(nome);
+                $("#modalSupervisor").val(id);          
+
+           });
+
+           //Executa quando o modal de adição de supervisor é aberto
+            $('#modalAddColaborador ').on('show.bs.modal', function(event) {                
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var nome = button.data('nome') // Extract info from data-* attributes
+                var id = button.data('id') // Extract info from data-* attributes                
+                
+                LimpaEmailsSup();
+                document.getElementById("buscaSup").value = '';
+                filtraFuncionariosSup();
+                $("#spamNomeSetorFunc").text(nome);
+                $("#idSetormodalFunc").val(id);
+
+            });
+
+            $('#modalSalvarFunc').click(function(e) {
+                e.preventDefault();
+
+                var emails = "";
+
+                var emailsSelecionados = $("#emailsAConsiderarFunc .badge");
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    emails += emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim() + ";";
+                }
+
+                emails = emails.slice(0, -1);
+                var idSetor = $("#idSetormodalFunc").val();
+                var usuario = $("#idusUarioModalFunc").val();       
+                var divisao = $("#idDivisaoFunc").val();
+                
+
+                if (emails.length > 1) {
+                    $.ajax({
+                        url: '\\classhandler.php',
+                        method: 'POST',
+                        data: {
+                            pemails: emails,
+                            pidsetor: idSetor,
+                            piddivisao: divisao,
+                            pusuario: usuario,
+                            poperacao: "addFuncionario"
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status != "sucesso") {
+                                alert("Erro");
+                            } else {
+                                location.reload();
+                            }
+                        },
+                        error: function(data) {
+                            alert("Erro ao inserir colaborador(es).");
+                        }
+                    });
+                } else {
+                    alert("Adicione ao menos um funcionário para adicionar como colaborador.");
+                }
+            });
+        
+
+
+        </script>
+
+        <script>
+            //Funções de adicionar gerente
+            function myFunction() {
+                // Declare variables
+                var input, filter, table, tr, email, nome, cargo, nome_value, descricao_value, i, txtValue;
+                input = document.getElementById("busca");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("funcionarios");
+                tr = table.getElementsByTagName("tr");
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    nome = tr[i].getElementsByTagName("td")[0];
+                    descricao = tr[i].getElementsByTagName("td")[1];
+
+                    if (nome || descricao) {
+
+                        nome_value = nome.textContent || nome.innerText;
+                        descricao_value = descricao.textContent || descricao.innerText;
+
+                        if (nome_value.toUpperCase().indexOf(filter) > -1 ||
+                            descricao_value.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            function addEmail(email) {
+                var emails = $("#modalEmail");
+                var valorAtual = emails.val();
+
+                var emailsSelecionados = $("#emailsAConsiderar .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    var emailvalor = emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim();
+
+                    if (emailvalor == email.toLocaleLowerCase().trim()) {
+                        existe = true;
+                        break;
+                    }
+                }
+
+                if (!existe) {
+                    $("#emailsAConsiderar").append("<span class='badge bg-info ml-1 mr-1'>" + email + "<button id=" + email + " onclick='ExcluiEmailGer(this.id)' class='btn btn-sm btn-tool'> &times; </button></span>");
+                } else {
+                    alert("O E-mail " + email + " já está na lista para adicionar como gerente.");
+                }
+            }
+
+            function ExcluiEmailGer(e) {
+
+                var emailsSelecionados = $("#emailsAConsiderar .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    var emailvalor = emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim();
+
+                    if (emailvalor == e) {
+                        emailsSelecionados[i].parentElement.removeChild(emailsSelecionados[i]);
+                        break;
+                    }
+                }
+            }
+
+            function LimpaEmails() {
+
+                var emailsSelecionados = $("#emailsAConsiderar .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    emailsSelecionados[i].parentElement.removeChild(emailsSelecionados[i]);
+                }
+            }
+        
+            //Função Add supervisor
+            function addSupervisor(email){
+                var emails = $("#modalEmail");
+                var valorAtual = emails.val();
+
+                var emailsSelecionados = $("#emailsAConsiderarSup .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    var emailvalor = emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim();
+
+                    if (emailvalor == email.toLocaleLowerCase().trim()) {
+                        existe = true;
+                        break;
+                    }
+                }
+
+                if (!existe) {
+                    $("#emailsAConsiderarSup").append("<span class='badge bg-info ml-1 mr-1'>" + email + "<button id=" + email + " onclick='ExcluiEmail(this.id)' class='btn btn-sm btn-tool'> &times; </a></button>");
+                } else {
+                    alert("O E-mail " + email + " já está na lista para adicionar como gerente.");
+                }
+            }
+        
+            function ExcluiEmail(e) {
+
+                var emailsSelecionados = $("#emailsAConsiderarSup .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    var emailvalor = emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim();
+
+                    if (emailvalor == e) {
+                        emailsSelecionados[i].parentElement.removeChild(emailsSelecionados[i]);
+                        break;
+                    }
+                }
+            }
+
+            function LimpaEmailsSup() {
+
+                var emailsSelecionados = $("#emailsAConsiderarSup .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    emailsSelecionados[i].parentElement.removeChild(emailsSelecionados[i]);
+                }
+            }
+
+            function filtraFuncionariosSup() {
+                // Declare variables
+                var input, filter, table, tr, email, nome, cargo, nome_value, descricao_value, i, txtValue;
+                input = document.getElementById("buscaSup");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("funcionariosSup");
+                tr = table.getElementsByTagName("tr");
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    nome = tr[i].getElementsByTagName("td")[0];
+                    descricao = tr[i].getElementsByTagName("td")[1];
+
+                    if (nome || descricao) {
+
+                        nome_value = nome.textContent || nome.innerText;
+                        descricao_value = descricao.textContent || descricao.innerText;
+
+                        if (nome_value.toUpperCase().indexOf(filter) > -1 ||
+                            descricao_value.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            //Função Add funcionário
+            function addFuncionario(email){
+                var emails = $("#modalEmail");
+                var valorAtual = emails.val();
+
+                var emailsSelecionados = $("#emailsAConsiderarFunc .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    var emailvalor = emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim();
+
+                    if (emailvalor == email.toLocaleLowerCase().trim()) {
+                        existe = true;
+                        break;
+                    }
+                }
+
+                if (!existe) {
+                    $("#emailsAConsiderarFunc").append("<span class='badge bg-info ml-1 mr-1'>" + email + "<button id=" + email + " onclick='ExcluiEmailFunc(this.id)' class='btn btn-sm btn-tool'> &times; </a></button>");
+                } else {
+                    alert("O E-mail " + email + " já está na lista para adicionar como gerente.");
+                }
+            }
+        
+            function ExcluiEmailFunc(e) {
+
+                var emailsSelecionados = $("#emailsAConsiderarFunc .badge");
+
+                var existe = false;
+
+                for (i = 0; i < emailsSelecionados.length; i++) {
+                    var emailvalor = emailsSelecionados[i].innerText.replace("×", "").toLocaleLowerCase().trim();
+
+                    if (emailvalor == e) {
+                        emailsSelecionados[i].parentElement.removeChild(emailsSelecionados[i]);
+                        break;
+                    }
+                }
+            }
+            
+            function filtraFuncionariosFunc() {
+                // Declare variables
+                var input, filter, table, tr, email, nome, cargo, nome_value, descricao_value, i, txtValue;
+                input = document.getElementById("buscaFunc");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("funcionariosFunc");
+                tr = table.getElementsByTagName("tr");
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    nome = tr[i].getElementsByTagName("td")[0];
+                    descricao = tr[i].getElementsByTagName("td")[1];
+
+                    if (nome || descricao) {
+
+                        nome_value = nome.textContent || nome.innerText;
+                        descricao_value = descricao.textContent || descricao.innerText;
+
+                        if (nome_value.toUpperCase().indexOf(filter) > -1 ||
+                            descricao_value.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+
+
+        </script>
+
+    </section>
+            <!-- /.content -->
+</div>
+
+        <!-- /.content-wrapper -->

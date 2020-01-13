@@ -1,0 +1,74 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+        <div class="content-header ">
+        </div>
+        <div class="login-box card-body container-fluid">
+
+            {if="$error != ''"}            
+                
+                <div class="callout callout-danger">
+                  <h5>Erro ao redefinir sua senha!</h5>
+
+                  <p>{$error}</p>
+                  <p>Talvez o e-mail de recuperação tenha expirado.</p>
+                  <p>Tente novamente recuperar sua senha clicando neste <a href="/recovery">link</a>. Lembre-se que o link de recuperação é válido por 10 minutos.</p>
+                </div>
+                       
+            {else}
+
+            <!-- /.login-logo -->
+            <div class="card">
+              <div class="card-body login-card-body">
+                <p class="login-box-msg">Olá, {function="FormataNomeProprio($nome, false)"}. Vamos alterar sua senha.</p>
+          
+                <form action="/reset" method="post", action="">
+                  <div class="input-group mb-3">
+                    <input type="password" class="form-control" id="senha" name ="dessenha" placeholder="Senha" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input type="password" class="form-control" id="repetirsenha" placeholder="Repetir senha" name="desrepetirsenha" required oninput="validaSenha(this)">
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">                   
+                    <!-- /.col -->
+                    <div class="col-12">
+                        <input type="hidden" id="idusuario" name="idusuario" value="{$idUsuario}">    
+                      <center><button type="submit" class="btn btn-primary btn-block">Redefinir senha</button></center>
+                    </div>
+                    <!-- /.col -->
+
+                    <script>
+                      function validaSenha (input){ 
+                      if (input.value != document.getElementById('senha').value) {
+                        input.setCustomValidity('As duas senhas digitadas devem ser iguais.');
+                      } else {
+                        input.setCustomValidity('');
+                      }
+                    } 
+
+                    </script>
+
+
+
+                  </div>
+                </form>
+              </div>
+              <!-- /.login-card-body -->
+            </div>
+
+            {/if}
+
+          </div>
+      
+    </div>
+    <!-- /.content-wrapper -->
+  

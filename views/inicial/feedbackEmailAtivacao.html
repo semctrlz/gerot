@@ -1,0 +1,77 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+        <div class="content-header ">
+        </div>
+        <div class="col-sm-6 card-body container-fluid">           
+
+
+          {if="$status == 'ok'"}
+
+          <!-- /.login-logo -->
+          <div class="card card-default">
+            <div class="card-header alert-success">
+              <h3 class="card-title ">
+                  <i class="fas fa-check"></i>&nbsp;&nbsp;E-mail para verifica&ccedil;&atilde;o de e-mail enviado com sucesso!
+              </h3>
+
+            </div>
+            <div class="card-body login-card-body">
+              
+              <p class="login-box-msg">Muito bem, {function="FormataNomeProprio($name, true)"}, foi enviado para {$email} o link para ativa&ccedil;&atilde;o do seu e-mail.</p>
+              <p class="login-box-msg">Caso n&atilde;o esteja em sua caixa de entrada em at&eacute; 5 minutos, verifique se s&atilde;o foi para a caixa de Spam.</p>
+              <p class="login-box-msg">Esperamos que d&ecirc; tudo certo!</p>
+              
+            </div>
+            <!-- /.login-card-body -->
+          </div>
+          {/if}
+          {if="$status == 'recuperado'"}
+
+          <!-- /.login-logo -->
+          <div class="card card-default">
+            <div class="card-header alert-success">
+              <h3 class="card-title ">
+                  <i class="fas fa-check"></i>&nbsp;&nbsp;E-mail confirmado com sucesso!
+              </h3>
+
+            </div>
+            <div class="card-body login-card-body">
+              
+              <p class="login-box-msg">Muito obrigado, {function="FormataNomeProprio($name, true)"}, seu e-mail {$email} foi confirmado com sucesso.</p>
+              <p class="login-box-msg">Agora voc&ecirc; j&aacute; pode logar usando esse e-mail e sua senha.</p>
+              <p class="login-box-msg">Desta vez j&aacute; deixamos logado para voc&ecirc;, s&oacute; acessar atrav&eacute;s deste <a href="/">link</a>.</p>
+              <p class="login-box-msg">Muito obrigado!</p>
+              
+            </div>
+            <!-- /.login-card-body -->
+          </div>
+          {/if}
+
+          {if="$status == 'erro'"}
+
+          <!-- /.login-logo -->
+          <div class="card card-default">
+            <div class="card-header alert-danger">
+              <h3 class="card-title ">
+                  <i class="fas fa-ban"></i>&nbsp;&nbsp;Erro ao verificar e-mail!
+              </h3>
+
+            </div>
+            <div class="card-body login-card-body">
+              
+              {if="$msg != ''"}<p class="login-box-msg">{$msg}.</p>{/if}
+              <p class="login-box-msg">Tente solicitar um novo link de valida&ccedil;&atilde;o fazendo login em com esse <a href="/login">link</a> e clicando no bot&atilde;o Reenviar verifica&ccedil;&atilde;o.</p>
+              <p class="login-box-msg">Lembre de sempre de usar o link do &uacute;ltimo e-mail de verifica&ccedil;&atilde;o enviado.</p>              
+              <p class="login-box-msg">Muito obrigado, esperamos que d&ecirc; tudo certo, qualquer problema entre em contato com nosso <a href="Mailto:contato@zware.com.br">Contato</a>.</p>
+              
+            </div>
+            <!-- /.login-card-body -->
+          </div>
+
+          {/if}
+
+            
+          </div>      
+    </div>
+    <!-- /.content-wrapper -->
+  

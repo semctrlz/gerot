@@ -1,0 +1,162 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+        <div class="content-header ">
+        </div>
+        <div class="login-box col-sm-6 card-body container-fluid">
+            
+            {if="$error != ''"}
+
+            <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h4><i class="icon fa fa-ban"></i> Alerta!</h4>
+              {$error}
+            </div>            
+            {/if}
+
+            <!-- /.login-logo -->
+            <div class="card">
+              <div class="card-body login-card-body">
+                <p class="login-box-msg">Cadastre-se para iniciar sua sessão</p>
+          
+                <form action="/cadastro" method="post">
+                  <div class="input-group mb-3">                    
+                    
+                    {if="$erroEmail == 'EmailExistente'"} 
+                    <input type="email" class="form-control is-invalid" id="email" value="{$valorEmail}" placeholder="Email" name="desemail" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">                                                   
+                        <span class="fas fa-envelope"></span>
+
+                        {else}
+
+                        <input type="email" class="form-control" id="email"  value="{$valorEmail}" placeholder="Email"  name="desemail" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">                                                   
+                        <span class="fas fa-envelope"></span>
+                        {/if}
+                      </div>
+                    </div>
+                  </div>
+
+                  {if="$erroNome == 'NomeInvalido'"} 
+                  <div class="input-group mb-3">
+                      <input type="text" class="form-control is-invalid" id="nome" value="{$valorNome}" placeholder="Nome" name="desnome" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-user"></span>
+                        </div>
+                      </div>
+                    </div>                   
+                    
+                    {else}
+                    
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" id="nome" value="{$valorNome}" placeholder="Nome" name="desnome" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-user"></span>
+                        </div>
+                      </div>
+                    </div>  
+
+                    {/if}
+
+
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="sobrenome" value="{$valorSobrenome}" name="dessobrenome" placeholder="Sobrenome">
+                        <div class="input-group-append">
+                          <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {if="$erroSenha == 'SenhasInvalidas'"} 
+
+                  <div class="input-group mb-3">
+                    <input type="password" class="form-control is-invalid" id="senha" placeholder="Senha" name="dessenha" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                      <input type="password" class="form-control is-invalid" id="repetirSenha" placeholder="Repetir senha" name="desrepetirsenha" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-lock"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {else}
+
+                    <div class="input-group mb-3">
+                      <input type="password" class="form-control" id="senha" placeholder="Senha" name="dessenha" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-lock"></span>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="repetirSenha" placeholder="Repetir senha" name="desrepetirsenha" required>
+                        <div class="input-group-append">
+                          <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                          </div>
+                        </div>
+                      </div>
+
+                    {/if}
+
+                    <div class="card-footer">
+                      <a href="/" class="btn btn-default">Cancelar</a>
+                      <button type="submit" class="btn btn-info float-right">Cadastrar</button>
+                    </div>
+                </form>          
+
+                <!--  Scripts que removem os status de erro dos campos quando Focados  -->
+
+                <script>
+                  var input = document.getElementById("email");
+                  input.addEventListener("focus", function () {
+                    this.classList.remove("is-invalid");  
+                  });
+                </script>
+
+                <script>
+                  var input = document.getElementById("nome");
+                  input.addEventListener("focus", function () {
+                    this.classList.remove("is-invalid");  
+                  });
+                </script>
+
+                <script>
+                  var input = document.getElementById("senha");
+                  input.addEventListener("focus", function () {
+                    this.classList.remove("is-invalid");  
+                  });
+                </script>
+
+                <script>
+                  var input = document.getElementById("repetirSenha");
+                  input.addEventListener("focus", function () {
+                    this.classList.remove("is-invalid");  
+                  });
+                </script>
+
+                
+                <p class="mb-0">
+                  Já é cadastrado? <a href="/login" class="text-center">logar</a>
+                </p>
+              </div>
+              <!-- /.login-card-body -->
+            </div>
+          </div>      
+    </div>
+    <!-- /.content-wrapper -->
+  

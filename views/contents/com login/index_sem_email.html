@@ -1,0 +1,42 @@
+<!-- Main Sidebar Container -->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">    
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+      <div class="content-header"></div>
+    <div class="card col-sm-7 container-fluid">
+        <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-bullhorn"></i>
+              E-mail ainda n&atilde;o verificado.
+            </h3>
+          </div>
+      <div class="card-body">
+        
+        <div class="callout callout-info">
+                  <h5>Ol&aacute;, {function="FormataNomeProprio($desnome, true)"}, seu e-mail ainda n&atilde;o foi verificado.</h5>
+                  <p>Nosso sistema utiliza o e-mail como identifica&ccedil;&atilde;o dos usu&aacute;rios, por isso precisamos que todos tenham seus e-mails validados.</p>
+                  <p>Para realizar esse processo voc&ecirc; deve clicar no bot&atilde;o de verifica&ccedil;&atilde;o no e-mail enviado para voc&ecirc; no momento do seu cadastro.</p>
+                  <p>Caso voc&ecirc; n&atilde;o tenha recebido, por favor, clique no bot&atilde;o abaixo para reenviar. Verifique se nossos e-mails n&atilde;o est&atilde;o caindo na caixa de spam.</p>
+                </div>
+                <form action="/verificacaoEmail", method="POST">
+                <button type="submit" class="btn btn-info float-right">Reenviar verifica&ccedil;&atilde;o de e-mail</button>
+                <input type="hidden" value="{$idusuario}" name="idusuario">
+                <input type="hidden" value="{$desnome}" name="desnome">
+                <input type="hidden" value="{$desemail}" name="desemail">
+                </form>
+      </div>
+
+      
+    </div>
+    
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+

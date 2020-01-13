@@ -1,0 +1,283 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>{$divisao.nome_empresa}</h1>
+          <span class="description ml-3">{$divisao.texto_empresa}</span></td>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active"><a href="/{$divisao.desnomeurl_empresa}">{$divisao.apelido_empresa}</a></li>
+              <li class="breadcrumb-item active"><a href="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}">{$divisao.desapelido}</a></li>
+              <li class="breadcrumb-item active">Quadro de Funcion&aacute;rios</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+          
+        <table>
+          <tr>
+            <td><img class="profile-user-img img-fluid img-circle" src="\{function="obtemFotoEmpresa($divisao.desfoto_divisao)"}" alt="user image"></td>
+            <td><span class="username">
+              <h3><a href="#" class="ml-3">{$divisao.desapelido}</a></h3>
+            </span>
+            <span class="description ml-3">{$divisao.texto_divisao}</span></td>
+          </tr>
+        </table>
+                
+      </div>
+      <div class="card-body">
+        {if="$erro != ''"} 
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa fa-ban"></i> Alerta!</h4>
+          {$erro}
+        </div>
+        {/if}
+        <div class="row">          
+          <div class="col-12 col-md-12 col-lg-12">
+            
+            <form method="post" autocomplete="off" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?addFuncionario=true">
+              <div class="row">
+              <div class="col-12">
+                
+                <h4>Quadro de funcion&aacute;rios</h4>               
+                <div class="row">               
+                  
+
+                      <div class="form-group col-3">
+                        <label for="desemail">E-mail*</label>                      
+                        <input type="email" id="desemail" name="desemail"  class="form-control" placeholder="E-mail" required maxlength="128" required>
+                      </div>
+
+                      <div class="form-group col-2">
+                          <label for="desnome">Nome*</label>                      
+                          <input type="text" id="desnome" class="form-control" name="desnome"  placeholder="Nome" maxlength="64" required>
+                      </div>
+
+                      <div class="form-group col-3">
+                          <label for="sobrenome">Sobrenome</label>                      
+                          <input type="text" id="sobrenome" class="form-control" name="dessobrenome" autocomplete="family-name" placeholder="Sobrenome" maxlength="64">
+                      </div>
+
+                      <div class="form-group col-3">
+                          <label for="cargo">Cargo</label>                      
+                          <select class="form-control" id="cargo" name="cargo">
+                              <option value="0"></option>
+                              {loop="$cargos"}
+                              <option value="{$value.idcargo}">{$value.desnome}</option>
+                              {/loop}                            
+                            </select>
+                      </div>
+
+                      <div class="form-group col-1">
+                          <label for="sobrenome">&nbsp;</label>                      
+                          <input type="hidden" name="iddivisao" value="{$divisao.iddivisao}">
+                          <input type="submit" class="btn form-control btn-block btn-success" value="Inserir">
+                      </div>
+                  </div>                      
+                      
+                    
+              </div>
+
+
+              <div class="col-12 text-muted text-sm">
+                <p>OBS: Os campos com asterisco(*) s&atilde;o de preenchimento obrigat&oacute;rio. Os funcion&aacute;rios com e-mail ainda n&atilde;o cadastrado em nosso sistema ser&atilde;o convidados a participar, e estes, no momento de cadastro, poder&atilde;o alterar os dados de nome e sobrenome.</p>
+              </div>                     
+            </form>  
+          </div>          
+        
+          <label for="busca" class="col-form-label">Busca e-mail/nome/cargo</label>
+          <div class="input-group mb-2">
+            <input type="search" id="busca"  onkeyup="myFunction()" onclick="myFunction()" onabort="myFunction()" class="form-control" placeholder="Busca...">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-search"></span>
+                </div>
+            </div>
+          </div>
+          
+
+          <table id="funcionarios" class="table table-striped">
+            <thead>
+              <tr>                
+                <th style="width: auto">Avatar</th>
+                <th style="width: auto">E-mail</th>
+                <th style="width: auto">Nome</th>
+                <th style="width: auto">Cargo</th>
+                <th style="width: 30px">Status</th>
+                <th style="width: 80px">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              {loop="$funcionarios"}
+                <tr>
+                <td><div class="user-block"><img class="img-circle height:20 img-bordered-sm" src="\{function="obtemFotoPerfil($value.avatar)"}" alt=""></div></td>
+                <td>{$value.desemail}</td>
+                <td>
+                  {function="FormataNomeProprio($value.nome, false)"}
+                </td>
+                <td>{$value.cargo}</td>
+                <td>
+                  {if="$value.status == 'Ativo'"}
+                  <span class="badge bg-success">Ativo</span>
+                  {elseif="$value.status == 'Pendente'"}
+                  <span class="badge bg-warning">Pendente</span>
+                  {elseif="$value.status == 'Recusado'"}
+                  <span class="badge bg-danger">Recusado</span>
+                  {/if}
+                                  
+                
+                </td>
+                <td>  
+                  <div class="btn-group btn-group-xs float-sm-right">
+                  {if="$value.status != 'Ativo'"}              
+                  <a href="#" class="btn btn-default btn-sm" title="Reenviar convite"><i class="fas fa-paper-plane"></i></a>
+                  {/if}
+                  <a href="#" class="btn btn-info btn-sm" title="Editar colaborador"><i class="fas fa-pencil-alt"></i></a>
+                  <a href="#" class="btn btn-danger btn-sm" title="Excluir colaborador" data-toggle="modal" data-target="#modalConfirmDelete" data-email="{$value.desemail}" data-tipo="{$value.tipo}"><i class="fas fa-trash-alt"></i></a>                  
+                </div> 
+                </td>
+            </tr>              
+
+                {/loop}
+            </tbody>
+          </table>
+
+
+
+          <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Comfirmar exclus&atilde;o</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+        
+                      <p>Voc&ecirc; est&aacute; prestes a excluir um funcion&aacute;rio de seu quadro. Esta opera&ccedil;&atilde;o n&atilde;o tem como desfazer.</p>
+        
+                      <p>Para evitar uma exclus&atilde;o acidental, pedimos que voc&ecirc; escreva abaixo o e-mail do funcion&aacute;rio.</p>
+        
+                      <form method="post" autocomplete="off" id="modalformExcluir" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?editcolab=true&excluirColab=true">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">E-mail funcion&aacute;rio:</label>
+                            <input type="text" class="form-control" id="modal_email" name="desemail" maxlength="65" required>
+                            <input type="hidden" class="form-control" id="modal_hidden_divisao" name="divisao" value='{$divisao.iddivisao}'>
+                            <input type="hidden" class="form-control" id="modal_hidden_tipo" name="tipo">                             
+                            <input type="hidden" class="form-control" id="modal_hidden_email" name="email">
+                        </div>                  
+                    </form>
+        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="modalExclui" data-dismiss="modal" class="btn btn-danger">Excluir Colaborador</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <script src="\src/plugins/jquery/jquery.min.js"></script>
+          <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+          <script>
+            document.getElementById("busca").addEventListener("search", function(event) {
+              myFunction();
+            });           
+
+          </script>            
+
+          <script>
+            function myFunction() {
+              // Declare variables
+              var input, filter, table, tr, email, nome, cargo, email_value, cargo_value, nome_value, i, txtValue;
+              input = document.getElementById("busca");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("funcionarios");
+              tr = table.getElementsByTagName("tr");
+            
+              // Loop through all table rows, and hide those who don't match the search query
+              for (i = 0; i < tr.length; i++) {
+                email = tr[i].getElementsByTagName("td")[1];
+                nome = tr[i].getElementsByTagName("td")[2];
+                cargo = tr[i].getElementsByTagName("td")[3];
+
+                if (email || nome || cargo) {                  
+
+                  email_value = email.textContent || email.innerText;
+                  nome_value = nome.textContent || nome.innerText;
+                  cargo_value = cargo.textContent || cargo.innerText;
+
+                  if (email_value.toUpperCase().indexOf(filter) > -1
+                      || nome_value.toUpperCase().indexOf(filter) > -1
+                      || cargo_value.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+              }
+            }
+          </script>
+
+          <script type="text/javascript">            
+            $('#modalConfirmDelete').on('show.bs.modal', function(event) {                               
+              var button = $(event.relatedTarget) // Button that triggered the modal
+              var email = button.data('email') // Extract info from data-* attributes
+              var tipo = button.data('tipo') // Extract info from data-* attributes
+                  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.                          
+              
+              $("#modalformExcluir").find("#modal_hidden_tipo").val(tipo);
+              $("#modalformExcluir").find("#modal_hidden_email").val(email);   
+              $("#modalformExcluir").find("#modal_email").val('');   
+
+            });
+
+            $('#modalExclui').click(function(){
+
+              var emailDigitado = $("#modalformExcluir").find("#modal_email").val();
+              var emailReal = $("#modalformExcluir").find("#modal_hidden_email").val();
+              
+              if(emailDigitado == emailReal)
+              {
+                $('#modalformExcluir').submit();
+              }
+              else
+              {
+                alert("E-mail incorreto. Verifique o valor digitado e tente novamente.");            
+              }
+            });
+
+          $('#modalEditaFotoSubmit').click(function(){
+              $('#modalformFoto').submit();
+          });
+          </script>
+
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+  
+  <!-- /.content -->
+</div>
+</div>
+<!-- /.content-wrapper -->

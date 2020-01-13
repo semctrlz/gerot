@@ -1,0 +1,347 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>{$divisao.nome_empresa}</h1>
+          <span class="description ml-3">{$divisao.texto_empresa}</span></td>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active"><a href="/{$divisao.desnomeurl_empresa}">{$divisao.apelido_empresa}</a></li>
+              <li class="breadcrumb-item active"><a href="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}">{$divisao.desapelido}</a></li>
+              <li class="breadcrumb-item active">Setores</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+          
+        <table>
+          <tr>
+            <td><img class="profile-user-img img-fluid img-circle" src="\{function="obtemFotoEmpresa($divisao.desfoto_divisao)"}" alt="user image"></td>
+            <td><span class="username">
+              <h3><a href="#" class="ml-3">{$divisao.desapelido}</a></h3>
+            </span>
+            <span class="description ml-3">{$divisao.texto_divisao}</span></td>
+          </tr>
+        </table>
+                
+      </div>
+      <div class="card-body">
+        {if="$erro != ''"} 
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa fa-ban"></i> Alerta!</h4>
+          {$erro}
+        </div>
+        {/if}
+        <div class="row">        
+          <label for="busca" class="col-form-label">Busca setor/descri&ccedil;&atilde;o</label>
+          <div class="input-group mb-2">
+            <input type="search" id="busca"  onkeyup="myFunction()" onclick="myFunction()" onabort="myFunction()" class="form-control" placeholder="Busca...">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-search"></span>
+                </div>
+            </div>
+          </div>
+          
+
+          <table id="setores" class="table table-striped">
+            <thead>
+              <tr>                
+                <th style="width: 250px">Nome</th>
+                <th style="width: auto">Descrição</th>
+                <th style="width: 30px">Status</th>
+                <th style="width: 220px">Afastamentos</th>
+                <th style="width: 50px">A&ccedil;&atilde;o</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              {loop="$funcionarios"}
+
+            <tr>              
+              <td>
+                <div class="user-block">                  
+                  <img class="img-circle img-bordered-sm" src="\{function="obtemFotoPerfil($value.avatar)"}" alt="">
+                  <span class="username">
+                    <a href="#">{function="FormataNomeProprio($value.desnome, false)"}</a>
+                    <span class="description ml-0">{$value.cargo}</span>
+                    
+                  </span>
+                </div>            </td>
+              <td>{$value.desemail}</td>
+              <td>
+                {if="$value.ativo == '1'"}
+                  <span class="badge bg-success">Ativo</span>
+                  {else}
+                  <span class="badge bg-warning">Inativo</span>                  
+                  {/if}
+              </td>
+              <td>  
+                <a href class="btn btn-info btn-sm"><i class="fa fa-suitcase-rolling"></i> Férias</a>
+              
+                <a href class="btn btn-info btn-sm"><i class="fa fa-briefcase-medical"></i> Afastamento</a>
+              </td>
+              <td>
+                <div class="btn-group btn-group-xs float-sm-right">                  
+                  <a href="#" class="btn btn-info btn-sm" title="Editar setor" data-toggle="modal" data-target="#modalEditarSetor" data-nome="{$value.desnome}" data-id="{$value.desnome}" data-descricao="{$value.desnome}" data-ativo="{$value.ativo}"><i class="fas fa-pencil-alt"></i></a>
+                  <a href="#" class="btn btn-danger btn-sm" title="Excluir Setor" data-toggle="modal" data-target="#modalConfirmDelete" data-nome="{$value.desnome}" data-id="{$value.desnome}" data-descricao="{$value.desnome}" ><i class="fas fa-trash-alt"></i></a></div>
+              </td>
+            </tr>
+              {/loop}
+
+            </tbody>
+          </table>
+
+          <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Comfirmar exclus&atilde;o</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+        
+                      <p>Voc&ecirc; est&aacute; prestes a excluir o setor <strong id="nomeSetor"></strong>. Esta opera&ccedil;&atilde;o n&atilde;o tem como desfazer.</p>
+        
+                      <form method="post" autocomplete="off" id="modalformExcluir" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?editsetores=true&excluirSetor=true">
+                      <input type="hidden" class="form-control" id="modal_hidden_idsetor" name="setor">                            
+                    </form>
+        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="modalExclui" data-dismiss="modal" class="btn btn-danger">Excluir Setor</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="modalEditarSetor" tabindex="-1" role="dialog" aria-labelledby="modalEditCargoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar setor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <form method="post" autocomplete="off" id="modalformEditar" action="/{$divisao.desnomeurl_empresa}/{$divisao.desnomeurl_divisao}?editsetores=true&editarSetor=true">
+                    
+                        <div class="modal-body">        
+                          <div class="form-group">
+                            <label for="modalEmail" class="col-form-label">Nome setor</label>
+                            <input type="text" class="form-control" id="nomeSetor" name="nomeSetor" maxlength="20" required>                        
+                          </div> 
+                        <div class="form-group">
+                          <label for="message-text" class="col-form-label">Descri&ccedil;&atilde;o:</label>
+                          <textarea class="form-control" id="setorDesc" name="setorDesc" maxlength="140"></textarea>
+                        </div>
+                               
+                        
+
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="SetorAtivo" name="SetorAtivo">
+                          <label class="custom-control-label" for="SetorAtivo">Setor ativo</label>
+                        </div>                        
+          
+                        <input type="hidden" class="form-control" id="modal_hidden_idsetor" name="setor">                            
+                      
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="modalSalvar" data-dismiss="modal" class="btn btn-success">Salvar</button>
+                      </div>
+                  </form>
+                </div>
+            </div>
+          </div>
+
+          <script src="\src/plugins/jquery/jquery.min.js"></script>
+          <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+          <script>
+
+            $("#inserirDivisao").click(function(e){
+              e.preventDefault();
+              var nomeTextbox = $("#desnome");
+              var nome = nomeTextbox.val();
+              var descricao = $("#desdescricao").val();
+              var iddivisao = $("#iddivisao").val();
+              var idusuario = $("#idusuario").val();
+
+              if(nome.trim() != '')
+              {
+                $.ajax({
+                url: '\\classhandler.php',
+                method: 'POST',
+                data: {            
+                    divisao: iddivisao,
+                    desnome: nome,
+                    desdescricao: descricao,
+                    usuario: idusuario,
+                    poperacao: "insereSetor"
+                },        
+                dataType: "json",    
+                  success: function(data) {    
+                    
+                    if(data.status == "sucesso")
+                    {
+                      //Insere registro
+                      var retnome = data.retorno.desnome;
+                      var retdescricao = data.retorno.desdescricao;
+                      var retidsetor = data.retorno.idsetor;
+                      var retativo = data.retorno.ativo;
+                      
+                      $("#setores tbody").append("<tr><td>"+retnome+"</td><td>"+retdescricao+"</td><td><span class='badge bg-success'>Ativo</span></td><td><div class='btn-group btn-group-xs float-sm-right'><a href='#'' class='btn btn-info btn-sm' title='Editar setor' data-toggle='modal' data-target='#modalEditarSetor' data-nome='"+retnome+"' data-id='"+retidsetor+"' data-descricao='"+retdescricao+"' data-ativo='"+retativo+"'><i class='fas fa-pencil-alt'></i></a><a href='#' class='btn btn-danger btn-sm' title='Excluir Setor' data-toggle='modal' data-target='#modalConfirmDelete' data-nome='"+retnome+"' data-id='"+retidsetor+"' data-descricao='"+retdescricao+"' data-ativo='"+retativo+"'><i class='fas fa-trash-alt'></i></a></div></td></tr>");
+                      $("#desnome").val('');
+                      $("#desdescricao").val('');
+                      nomeTextbox.focus();
+                    }else{
+
+                    }                      
+                  },
+                  error: function(data){
+                    alert(data);
+                  }
+                });
+              }
+              else
+              {
+                alert("O campo \"nome\" não pode ficar vazio.");
+                nomeTextbox.focus();
+              }
+
+            });
+
+          </script>
+
+          <script>
+            document.getElementById("busca").addEventListener("search", function(event) {
+              myFunction();
+            });           
+
+          </script>            
+
+          <script>
+            function myFunction() {
+              // Declare variables
+              var input, filter, table, tr, email, nome, cargo, nome_value, descricao_value, i, txtValue;
+              input = document.getElementById("busca");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("setores");
+              tr = table.getElementsByTagName("tr");
+            
+              // Loop through all table rows, and hide those who don't match the search query
+              for (i = 0; i < tr.length; i++) {
+                nome = tr[i].getElementsByTagName("td")[0];
+                descricao = tr[i].getElementsByTagName("td")[1];                
+
+                if (nome || descricao) {                  
+
+                  nome_value = nome.textContent || nome.innerText;
+                  descricao_value = descricao.textContent || descricao.innerText;                  
+
+                  if (nome_value.toUpperCase().indexOf(filter) > -1
+                     || descricao_value.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+              }
+            }
+          </script>
+
+          <script type="text/javascript">  
+          
+            //Abrindo o modal 
+            $('#modalConfirmDelete').on('show.bs.modal', function(event) {                               
+              var button = $(event.relatedTarget) // Button that triggered the modal
+              var nome = button.data('nome') // Extract info from data-* attributes
+              var id = button.data('id') // Extract info from data-* attributes
+                  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.                          
+              
+              $("#nomeSetor").text(nome);
+              $("#modal_hidden_idsetor").val(id);
+
+            });
+
+            //Clincando no botão de confirmar a exclusão
+            $('#modalExclui').click(function(){
+
+              var emailDigitado = $("#modalformExcluir").find("#modal_email").val();
+              var emailReal = $("#modalformExcluir").find("#modal_hidden_email").val();
+              
+              $('#modalformExcluir').submit();
+              
+            });
+
+            //Abrindo o modal 
+            $('#modalEditarSetor').on('show.bs.modal', function(event) {                               
+              var button = $(event.relatedTarget) // Button that triggered the modal
+              var nome = button.data('nome') // Extract info from data-* attributes
+              var id = button.data('id') // Extract info from data-* attributes
+              var descricao = button.data('descricao') // Extract info from data-* attributes
+              var ativo = button.data('ativo') // Extract info from data-* attributes
+                  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.                          
+              
+              
+              $("#modalEditarSetor #nomeSetor").val(nome);
+              $("#modalEditarSetor #setorDesc").val(descricao);
+              $("#modalEditarSetor #modal_hidden_idsetor").val(id);
+              
+              var cbxAtivo = document.getElementById("SetorAtivo");
+
+              if(ativo == "1"){
+              cbxAtivo.checked = true;                
+              }else{
+                cbxAtivo.checked = false;
+              }                          
+
+            });
+
+            $('#modalSalvar').click(function(){           
+
+              $('#modalformEditar').submit();
+
+            });
+
+
+
+            //Corrige conflito entre o Jquery e o Bootstrap Bundle para a abertura do painel de perfil
+            $(document).ready(function (){
+                    $('.dropdown-toggle').dropdown();
+                    $('#userlogin').dropdown('toggle');
+            });
+          </script>
+
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+  
+  <!-- /.content -->
+</div>
+
+<!-- /.content-wrapper -->

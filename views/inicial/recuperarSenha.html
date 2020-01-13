@@ -1,0 +1,54 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+        <div class="content-header ">
+        </div>
+        <div class="login-box col-sm-6 card-body container-fluid">
+            
+          {if="$erro != ''"}
+
+            <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h4><i class="icon fa fa-ban"></i> Alerta!</h4>
+              {$erro}
+            </div>            
+            {/if}
+
+
+            <!-- /.login-logo -->
+            <div class="card">
+              <div class="card-body login-card-body">
+                <p class="login-box-msg">Digite seu e-mail para continuar</p>
+          
+                <form action="/recovery" method="post">
+                  <div class="input-group mb-3">
+                    <input type="email" class="form-control" id="email" name="email" value="{$email}" placeholder="Email" required>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">                    
+                    <!-- /.col -->
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary float-right">Recuperar senha</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form>
+                          
+                <p class="mb-1">
+                  <a href="/cadastro">Cadastro</a>
+                </p>
+                <p class="mb-0">
+                  <a href="/login" class="text-center">Login</a>
+                </p>
+              </div>
+              <!-- /.login-card-body -->
+            </div>
+          </div>
+      
+    </div>
+    <!-- /.content-wrapper -->
+  

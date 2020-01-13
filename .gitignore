@@ -1,0 +1,7 @@
+vendor/zware/php-classes/src/Model/Chaves.php
+
+# exclude everything
+views-cache
+
+# exception to the rule
+!views-cache/.gitkeep

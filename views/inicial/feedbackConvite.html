@@ -1,0 +1,114 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+        <div class="content-header ">
+        </div>
+        <div class="col-sm-6 card-body container-fluid">           
+
+          {if="$tipo == 'outros'"}
+
+          <div class="card card-default">
+
+            <div class="card-header alert-danger">
+              <h3 class="card-title ">
+                  <i class="fas fa-block"></i>Erro ao processar convite.
+              </h3>
+
+            </div>
+            <div class="card-body login-card-body">
+              
+              <p class="login-box-msg">{$erro}</p>
+              
+            </div>
+            <!-- /.login-card-body -->
+          </div>
+
+          {elseif="$tipo == 'confirmacao'"}
+            {if="$erro == ''"}
+              <!-- /.login-logo -->
+              <div class="card card-default">
+
+                <div class="card-header alert-success">
+                  <h3 class="card-title ">
+                      <i class="fas fa-check"></i>Convite aceito com sucesso!
+                  </h3>
+
+                </div>
+                <div class="card-body login-card-body">
+                  
+                  <p class="login-box-msg">Muito bem, {function="FormataNomeProprio($convite.desnome, false)"}, o convite para participar de {$convite.apelido_unidade} foi aceito com sucesso.</p>                  
+                  
+                </div>
+                <!-- /.login-card-body -->
+              </div>
+
+            {else}
+            
+            <!-- /.login-logo -->
+            <div class="card card-default">
+
+              <div class="card-header alert-danger">
+                <h3 class="card-title ">
+                    <i class="fas fa-block"></i>Problema com seu convite!
+                </h3>
+
+              </div>
+              <div class="card-body login-card-body">
+                
+                <p class="login-box-msg">Olá, {function="FormataNomeProprio($convite.desnome, true)"}, houve um problema com seu convite para participar de {$convite.apelido_unidade}.</p>
+                <p class="login-box-msg">Erro: {$erro}</p>
+                
+              </div>
+              <!-- /.login-card-body -->
+            </div>
+
+            {/if}
+
+          {else}
+          {if="$erro == ''"}
+          <!-- /.login-logo -->
+          <div class="card card-default">
+
+            <div class="card-header alert-success">
+              <h3 class="card-title ">
+                  <i class="fas fa-check"></i>Convite rejeitado com sucesso!
+              </h3>
+
+            </div>
+            <div class="card-body login-card-body">
+              
+              <p class="login-box-msg">Muito bem, {function="FormataNomeProprio($convite.desnome, false)"}, o convite para participar de {$convite.apelido_unidade} foi negado.</p>
+              
+            </div>
+            <!-- /.login-card-body -->
+          </div>
+
+        {else}
+        
+        <!-- /.login-logo -->
+        <div class="card card-default">
+
+          <div class="card-header alert-danger">
+            <h3 class="card-title ">
+                <i class="fas fa-block"></i>Problema com seu convite!
+            </h3>
+
+          </div>
+          <div class="card-body login-card-body">
+            
+            <p class="login-box-msg">Olá, {function="FormataNomeProprio($convite.desnome, false)"}, houve um problema com sua solicitação.</p>
+            <p class="login-box-msg">Erro: {$erro}</p>
+            
+          </div>
+          <!-- /.login-card-body -->
+        </div>
+
+        {/if}
+          {/if}
+
+          
+
+            
+          </div>      
+    </div>
+    <!-- /.content-wrapper -->
+  

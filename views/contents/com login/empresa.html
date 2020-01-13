@@ -1,0 +1,180 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>
+            {function="FormataNomeProprio($empresaLogada.desnome, false)"}
+          </h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">{$empresaLogada.desapelido}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">                
+              <div class="text-center">
+                
+                <div class="img-wrapper" id="fotoPerfil">
+                  <img class="profile-user-img img-fluid img-circle"
+                  src="{function="obtemFotoEmpresa($empresa.desicone)"}"
+                  alt="&Iacute;cone da empresa"/>                
+
+                  <button class="btn btn-default btn-xs" style="display:none; width: 30px;position: absolute;" title="Alterar foto de perfil" data-toggle='modal' data-target='#modalEditaFoto'><i class="fas fa-pencil-alt"></i></button>
+
+                </div>
+
+              </div>
+
+              <h3 class="profile-username text-center">
+                {function="FormataNomeProprio($empresaLogada.desapelido, false)"}
+              </h3>
+
+              <p class="text-muted text-center">
+                {$empresa.destextodescritivo}
+              </p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Divis&otilde;es</b> <a class="float-right">{$empresa.quantDivisoes}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Setores</b> <a class="float-right">{$empresa.quantSetores}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Colaboradores</b> <a class="float-right">{$empresa.quantColaboradores}</a>
+                </li>
+              </ul>              
+              <div class="row"><a href="/{$empresa.desnomeurl}?config=true" class="btn btn-default btn-block">Configurações</a></div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+          
+        </div>
+        <!-- /.col -->
+        
+        <section class="content col-sm-9">
+
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title align-middle">Divisões</h3>     
+
+
+                <div class="card-tools">
+                  <a href="{$empresa.desnomeurl}?adddivisao=true" class="btn-sm btn-default" title="Adicionar divisão">
+                    <i class="fas fa-plus"></i></a>                  
+                </div>
+              </div>              
+
+              <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">                                
+                            </th>
+                            <th style="width: 35%">
+                                Divisão
+                            </th>
+                            <th style="width: 35%">
+                                Gerência
+                            </th>
+                            <th>
+                                Colab.
+                            </th>
+                            <th style="width: 10%" class="text-center">
+                                Status
+                            </th>                          
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {loop="$empresa.divisoes"}
+                        <tr>
+                            <td>
+                                <a href="/{$empresa.desnomeurl}/{$value.desnomeurl}" id="" title="{function="FormataNomeProprio($value.desnome, false)"}">
+                                  <img alt="Avatar" class="table-avatar img-circle img-bordered-sm" src="{function="obtemFotoEmpresa($value.desicone)"}"></a>                                  
+                            </td>                            
+                            <td>
+                                <span class="username">
+                                    <a href="/{$empresa.desnomeurl}/{$value.desnomeurl}">{$value.desapelido}</a>
+                                </span>
+                                <br>
+                                <small>
+                                    Criado em {function="FormataData_mmm_AAAA($value.dtcriacao)"}
+                                </small>
+                            </td>
+                            <td>
+                                <ul class="list-inline">
+
+                                  {loop="$value.gerencia"}
+
+                                    <li class="list-inline-item btn-tool">
+                                     
+                                        <a href="/perfil/{$value.desnomeurl}" id="" title="{function="FormataNomeProprio($value.desnome, false)"} {function="FormataNomeProprio($value.dessobrenome, false)"}"}">                                            
+                                              
+                                              <img alt="Avatar" class="table-avatar img-bordered-sm" src="{function="obtemFotoPerfil($value.desfoto)"}">
+                                        </a>
+                                      
+                                    </li>
+                                    {/loop}
+                                </ul>
+                            </td>
+                            <td class="project_progress">
+                                <a>
+                                    {$value.quantColaboradores}
+                                </a>
+                                <br>                                
+                                <small>
+                                    Colab.
+                                </small>
+                            </td>
+                            <td class="project-state">
+
+                                {if="$value.ativo = 'ativo'"}
+                                  <span class="badge badge-success">Ativo</span>                
+                                {else}
+                                  <span class="badge badge-danger">Inativo</span>                                
+                                {/if}
+                            </td>                            
+                        </tr>
+                        {/loop}
+                       
+                    </tbody>
+                </table>
+              </div>
+
+
+
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+      
+          </section>
+
+
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
