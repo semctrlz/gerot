@@ -1,0 +1,359 @@
+
+
+content.ticketSystem .cartao-ticket{
+	-webkit-font-smoothing: antialiased;
+	background-color: #ffffff;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 10px;
+	color: #2e2e2e;
+	margin-bottom: 15px;
+	outline: 0;
+	box-shadow: 0 2px 4px rgba(0,0,0,.2),0 2px 4px rgba(0,0,0,.23)!important;
+}
+content.ticketSystem .cartao-ticket.menu-ativo{
+	border-radius: 10px 10px 10px 0;
+	margin-bottom: 0;
+}
+
+content.ticketSystem .cartao-ticket .center{
+	text-align: center;
+	align-content : center;
+	vertical-align: middle;
+}
+
+content.ticketSystem .cartao-ticket .gray{
+	color: darkgrey;
+	cursor: pointer;
+	transition: color 0.1s;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.4)  ;
+}
+
+content.ticketSystem .cartao-ticket .active{
+	color: #FFD033;
+	cursor: pointer;
+	transition: color 0.1s;
+}
+
+content.ticketSystem .cartao-ticket .gray.active:hover{
+	color: rgb(209, 170, 42);
+}
+
+content.ticketSystem .cartao-ticket .gray:hover{
+	color: #555555;
+}
+
+content.ticketSystem .cartao-ticket .dark-gray{
+	color: #555555;
+	cursor: pointer;
+	transition: color 0.1s;
+	text-shadow: 1px 1px 1px rgba(0,0,0,.4)  ;
+}
+
+content.ticketSystem .cartao-ticket .dark-gray:hover{
+	color: darkgrey;
+}
+
+content.ticketSystem .cartao-ticket.normal{
+	border-color: #00b894;
+}
+
+content.ticketSystem .cartao-ticket.atencao{
+	border-color: #fdcb6e;
+}
+
+content.ticketSystem .cartao-ticket.perigo{
+	border-color: #d63031;
+}
+
+
+
+content.ticketSystem .cartao-ticket .cartao-ticket{
+	display: inline-block;
+}
+
+content.ticketSystem .cartao-ticket .status-ticket{
+	float: left;
+	width: 100px;
+	font-size: 12px;
+	margin-top: 5px;
+	margin-bottom: 2px;
+
+}
+
+content.ticketSystem .cartao-ticket .status-ticket .id-ticket{
+
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+}
+content.ticketSystem .cartao-ticket .status-ticket .status-ticket{
+	display:inline-block;
+	text-align: center;
+	text-transform: uppercase;
+	margin: 0px 5px 5px 0px;
+	padding: 2px;
+	text-align: left;
+	text-align: center;
+	border-radius: 0px 5px 5px 0px;
+}
+
+content.ticketSystem .cartao-ticket .status-ticket .status-ticket.aberto{
+	background-color: #0066CC;
+	color: #FFF;
+}
+
+content.ticketSystem .cartao-ticket .status-ticket .status-ticket.novo{
+	background-color: #FF9900;
+	color: #FFF;
+}
+
+content.ticketSystem .cartao-ticket .status-ticket .status-ticket.concluido{
+	background-color: #98cc02;
+	color: #FFF;
+}
+
+content.ticketSystem .cartao-ticket .desc-ticket{
+	margin: 5px 5px -10px 110px;
+}
+
+content.ticketSystem .cartao-ticket .desc-ticket .titulo-ticket{
+	font-size: 14px;
+	font-weight: bold;
+	display: contents;
+}
+content.ticketSystem .cartao-ticket .desc-ticket .data-ticket{
+	font-size: 12px;
+	color: #555555;
+	display: contents;
+}
+content.ticketSystem .cartao-ticket .ticket-anexo{
+	width: 32px;
+	display: inline-block;
+	float: right;
+}
+
+content.ticketSystem .cartao-ticket .desc-ticket .corpo-ticket{
+	font-size: 12px;
+	color: #555555;
+	display: block;
+}
+
+content.ticketSystem .ticket-card-footer{
+	display: block;
+	background-color: #f0f0f0;
+	border-radius: 0px 0% 10px 10px;
+
+	flex:1;
+	padding: 0;
+	border-top: solid 1px #cccccc;
+}
+content.ticketSystem .cartao-ticket.menu-ativo .ticket-card-footer{
+		border-radius: 0px 0% 10px 0;
+}
+
+content.ticketSystem .ticket-card-footer ul{
+	list-style: none;
+
+	padding: 0px 5px 0px 5px;
+
+	display: table-cell;
+}
+content.ticketSystem .ticket-card-footer li{
+	list-style: none;
+
+	padding: 0px 5px 0px 5px;
+
+	display: table-cell;
+}
+
+content.ticketSystem .ticket-card-footer li {
+	border-right: solid 1px #cccccc;
+}
+
+content.ticketSystem .ticket-card-footer .li-ticket.tam-p{
+
+	vertical-align: middle;
+	text-align: center;
+	width: 32px;
+	max-width: 32px;
+	white-space: nowrap;
+  overflow: hidden;
+}
+
+content.ticketSystem .ticket-card-footer .pull-right{
+	float: inline-end;
+	border-right-style:none;
+	white-space: nowrap;
+  overflow: hidden;
+}
+
+content.ticketSystem .ticket-card-footer .li-ticket.tam-m{
+	width: 5%;
+	min-width: 80px;
+	display:table-cell;
+
+	vertical-align: top;
+
+}
+
+content.ticketSystem .ticket-card-footer .li-ticket.tam-g{
+	width: 20%;
+	min-width: 150px;
+
+	vertical-align: top;
+}
+
+content.ticketSystem .ticket-card-footer .li-ticket.tam-full{
+	width: 100%;
+
+}
+
+content.ticketSystem .ticket-card-footer .li-ticket.tam-auto{
+
+	width: 100%;
+
+	vertical-align: middle;
+}
+
+content.ticketSystem .ticket-card-footer .user-ticket {
+	display: block;
+	overflow-wrap: break-word;
+
+}
+
+content.ticketSystem .ticket-card-footer .user-ticket img{
+	width: 24px;
+	margin-top: 5px;
+	float: left;
+	border: solid 1px #999;
+	border-radius: 50%;
+	vertical-align: middle;
+	margin-right: 5px;
+
+}
+content.ticketSystem .ticket-card-footer .user-ticket .tipo-usuario-ticket{
+	font-size: 11px;
+	width: 100%;
+	text-decoration-line: none;
+	text-size-adjust: 100%;
+	vertical-align: top;
+	margin-left: 4px;
+	color: #888888;
+
+}
+
+content.ticketSystem .ticket-card-footer .user-ticket .nome-usuario-ticket{
+	text-decoration: none;
+	font-size: 12px;
+	display: block;
+	margin-top: -20;
+	margin-left: 4px;
+	white-space: nowrap;
+  overflow: hidden;
+
+}
+
+content.ticketSystem .ticket-card-footer .titulo-subtitulo-ticket i{
+	font-size: 11px;
+	width: 180px;
+	text-decoration: none;
+	text-decoration-line: none;
+	text-size-adjust: 100%;
+	vertical-align: top;
+	margin-left: 4px;
+	color: #888888;
+
+
+}
+content.ticketSystem .ticket-card-footer .titulo-subtitulo-ticket p{
+	line-height: 0px;
+	font-size: 12px;
+	display: block;
+	margin-top: -20;
+	margin-left: 4px;
+	margin-bottom: 10px;
+}
+
+content.ticketSystem .cartao-ticket .priori-baixa{
+	color: #2e2e2e;
+}
+
+content.ticketSystem .cartao-ticket .priori-moderada{
+	color: #e58e26;
+}
+
+content.ticketSystem .cartao-ticket .priori-moderada p{
+	font-weight: bold;
+}
+
+content.ticketSystem .cartao-ticket .priori-alta{
+	color: #e55039;
+}
+
+content.ticketSystem .cartao-ticket .priori-alta p{
+	font-weight: bold;
+}
+
+content.ticketSystem .cartao-ticket .priori-urgente{
+	color: #eee;
+	background-color: #eb2f06;
+	font-weight: normal;
+}
+
+content.ticketSystem .cartao-ticket .priori-urgente i{
+	color: #eee;
+}
+
+content.ticketSystem .cartao-ticket .priori-urgente p{
+	font-weight: bold;
+}
+
+content.ticketSystem .cartao-ticket-menu{
+	background-color: #f0f0f0;
+	position: relative;
+	padding-left: 0;
+	margin-top: -1px;
+	padding: 10px;
+	border-radius: 0 0 10px 10px;
+	display: none;
+	width: 180px;
+	margin-left: 57px;
+	box-shadow:  4px 4px 4px rgba(0,0,0,.23)!important;
+	margin-bottom: 10px;;
+
+}
+
+content.ticketSystem .cartao-ticket-menu ul{
+	list-style: none;
+	margin-left: 0;
+	padding:0;
+
+}
+
+content.ticketSystem .cartao-ticket-menu li{
+	list-style: none;
+
+}
+
+content.ticketSystem .cartao-ticket-menu a.ticket-menu{
+	background-color: #eeeeee;
+	padding: 5px 5px 5px 10px;
+	display: block;
+	margin: 1px 1px;
+	border-radius:5px;
+	text-decoration: none;
+	cursor: pointer;
+	color: #222;
+
+
+
+}
+
+content.ticketSystem .cartao-ticket-menu a.ticket-menu:hover{
+background-color: #dddddd;
+}
+
+content.ticketSystem .cartao-ticket-menu a.ticket-menu span{
+	margin-right: 10px;
+}

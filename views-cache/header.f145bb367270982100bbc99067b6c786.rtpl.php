@@ -8,7 +8,7 @@
   <link rel="icon" href="\src/imagens/ZwFIconex250.png">
   <title>ZWare Flow</title>
   <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 #myInput {
@@ -59,10 +59,13 @@
 
 </head>
 <?php if( $sidebar != 'none' ){ ?>
+
   <body class="hold-transition sidebar-mini">
 <?php }else{ ?>
+
   <body class="hold-transition layout-top-nav"></body>
 <?php } ?>
+
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -71,6 +74,7 @@
     <ul class="navbar-nav">
       <li class="nav-item">
           <?php if( $sidebar != 'none' ){ ?><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a><?php } ?>
+
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="\src/index3.html" class="nav-link">Home</a>
@@ -80,7 +84,7 @@
       </li>
     </ul>
 
-    
+
     <!-- SEARCH FORM -->
     <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
@@ -182,18 +186,20 @@
       </li>
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-          <img src="\<?php echo obtemFotoPerfil($desfoto); ?>" class="user-image img-circle elevation-2" alt="User Image">          
+          <img src="\<?php echo obtemFotoPerfil($desfoto); ?>" class="user-image img-circle elevation-2" alt="User Image">
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User image -->
           <li class="user-header">
             <img src="\<?php echo obtemFotoPerfil($desfoto); ?>" class="img-circle elevation-2" alt="User Image">
-            
+
             <p>
-                
+
               <?php echo FormataNomeProprio($desnome, false); ?> <?php if( $desapelido != '' ){ ?>(@<?php echo htmlspecialchars( $desapelido, ENT_COMPAT, 'UTF-8', FALSE ); ?>)<?php } ?>
+
               <small>Membro desde <?php echo FormataData_mmm_AAAA($dtcadastro_usuario); ?></small>
               <?php $variavelNaoDefinida = ""; ?>
+
             </p>
           </li>
           <!-- Menu Body -->
@@ -213,11 +219,11 @@
           </li>
           <!-- Menu Footer-->
           <li class="user-footer">
-            <a href="\?perfil" class="btn btn-default btn-flat ">Perfil</a>            
+            <a href="\?perfil" class="btn btn-default btn-flat ">Perfil</a>
             <a href="/logout" class="btn btn-default btn-flat float-right">Log out</a>
           </li>
         </ul>
-      </li>      
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -225,6 +231,7 @@
   <!-- Main Sidebar Container -->
 
 <?php if( $sidebar != 'none' ){ ?>
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="\" class="brand-link">
@@ -233,7 +240,7 @@
          class="brand-image img-circle elevation-3"
          style="opacity: .8">
     <span class="brand-text font-weight-light">ZWare Flow</span>
-  </a>  
+  </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -242,62 +249,131 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-                
-          <li class="nav-header">GERENCIAR EMPRESAS <a href="\adicionar_empresa" class="btn-sm btn-secondary float-right fa fa-plus"></a></li>            
+
+					<li class="nav-header">
+						GERENCIAR EMPRESAS <a href="\adicionar_empresa" class="btn-sm btn-secondary float-right fa fa-plus"></a>
+					</li>
 
           <?php if( $temEmpr != '' ){ ?>
+
           <?php $counter1=-1;  if( isset($empresas) && ( is_array($empresas) || $empresas instanceof Traversable ) && sizeof($empresas) ) foreach( $empresas as $key1 => $value1 ){ $counter1++; ?>
 
+
             <?php if( $local != $value1["desnomeurl"] ){ ?>
-            <li class="nav-item menu-close"> 
+
+            <li class="nav-item menu-close">
             <?php }else{ ?>
+
             <li class="nav-item menu-open">
-            <?php } ?>               
+            <?php } ?>
+
 
 
             <?php if( $local != $value1["desnomeurl"] ){ ?>
+
             <a href="\<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link">
             <?php }else{ ?>
+
             <a href="\<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link active">
-            <?php } ?> 
-            
-              
+            <?php } ?>
+
+
+
               <img src="\<?php echo obtemFotoEmpresa($value1["desicone"]); ?>" class="far mg-size-50 img-circle mr-3 nav-icon">
-              
+
               <p><?php echo htmlspecialchars( $value1["desapelido"], ENT_COMPAT, 'UTF-8', FALSE ); ?><i class="right fas fa-angle-left"></i></p>
-            </a>
+            	</a>
               <ul class="nav nav-treeview">
-                  
-                <li class="nav-item ml">                      
+
+                <li class="nav-item ml">
                       <a href="\<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link">
-                        <i class="far fa-edit nav-icon ml-3"></i>                    
+                        <i class="far fa-edit nav-icon ml-3"></i>
                         <p>Editar</p>
                       </a>
-                  </li> 
-                  
-                  <li class="nav-item ml">                      
-                    <a href="\relatorios/<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link">                      
-                      <i class="far fa-chart-bar nav-icon ml-3"></i>                    
+                  </li>
+
+                  <li class="nav-item ml">
+                    <a href="\relatorios/<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link">
+                      <i class="far fa-chart-bar nav-icon ml-3"></i>
                       <p>Relat&oacute;rios</p>
                     </a>
-                </li> 
+                	</li>
 
-              </ul>
+              	</ul>
           </li>
           <?php } ?>
+
           <?php } ?>
-              
-              <li class="nav-header">OUTROS</li>                        <!-- T&Iacute;TULO-->  
-              
-        <li class="nav-item">
-          <a href="\src/widgets.html" class="nav-link">           <!-- EMPRESAS-->
-            <i class="nav-icon fas fa-th"></i>
+
+
+
+
+
+
+				<li class="nav-header">TICKET</li>                        <!-- T&Iacute;TULO-->
+
+        	<li class="nav-item">
+
+
+
+					<?php if( $local != 'Tickets' ){ ?>
+
+					<a href="\tickets" class="nav-link">
+					<?php }else{ ?>
+
+					<a href="\tickets" class="nav-link active">
+					<?php } ?>
+
+						<i class="nav-icon fas fa-clipboard-list"></i>
+            	<p>
+              	Tickets
+              	<span class="right badge badge-danger">New</span>
+            	</p>
+						</a>
+
+
+					</li>
+
+				<li class="nav-item">
+          <?php if( $local != 'Criar ticket' ){ ?>
+
+					<a href="\novo" class="nav-link">
+					<?php }else{ ?>
+
+					<a href="\novo" class="nav-link active">
+					<?php } ?>
+
+            <i class="nav-icon fas fa-plus"></i>
             <p>
-              Widgets
-              <span class="right badge badge-danger">New</span>
+              Criar Ticket
             </p>
-          </a>            
-        </li>        
+          </a>
+				</li>
+
+				<li class="nav-item">
+          <?php if( $local != 'Tickets favoritos' ){ ?>
+
+					<a href="\favoritos" class="nav-link">
+					<?php }else{ ?>
+
+					<a href="\favoritos" class="nav-link active">
+					<?php } ?>
+
+            <i class="nav-icon fas fa-star"></i>
+            <p>
+              Favoritos
+            </p>
+          </a>
+				</li>
+
+				<li class="nav-item">
+          <a href="\arquivo" class="nav-link">           <!-- EMPRESAS-->
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+              Arquivo
+            </p>
+          </a>
+        </li>
 
 
         <li class="nav-item has-treeview">
@@ -781,3 +857,4 @@
   <!-- /.sidebar -->
 </aside>
 <?php } ?>
+

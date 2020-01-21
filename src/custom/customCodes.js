@@ -1,7 +1,7 @@
 
 //Página inicial para gerenciamento da rotina
 
-$(document).on('mouseenter', 'td.text-center', function () {       
+$(document).on('mouseenter', 'td.text-center', function () {
     $(this).find(":button").show();
     $(this).find(".badge").hide();
 }).on('mouseleave', 'td.text-center', function () {
@@ -10,17 +10,17 @@ $(document).on('mouseenter', 'td.text-center', function () {
 });
 
 //Exibir botão editar ao passar o mouse na foto do perfil -> para isso coloque o botão e a foto dentro de um div com o id fotoPerfil
-$(document).on('mouseenter', '#fotoPerfil', function () {        
+$(document).on('mouseenter', '#fotoPerfil', function () {
     $(this).find(":button").fadeIn(200);
-    
+
 }).on('mouseleave', '#fotoPerfil', function () {
     $(this).find(":button").fadeOut(200);
-    
+
 });
 
 $('#addGerente').click(function(){
 
-    
+
 
 });
 
@@ -31,22 +31,22 @@ $('#modalEditaFotoSubmit').click(function(){
 });
 
 //Clicar no botão de alterarSenha
-$('#modalAlterarSenhaSubmit').click(function(e){    
-    $('#modalAlterarSenhaForm').submit();   
+$('#modalAlterarSenhaSubmit').click(function(e){
+    $('#modalAlterarSenhaForm').submit();
     //$('#modalFormAlterarSenha').submit();
 });
 
 //Função que altera o estado de uma tarefa em um dia
 $("td.text-center :button").click(function(){
-    
+
     var tarefa = $(this).data("tarefa");
     var data = $(this).data('data');
     var result = $(this).data('result');
 
     var td = $(this).closest('td');
-    
+
     var bad = td.children('span');
-    
+
     //Caso clique no botão info deve abrir o modal para inserir as observações
     if(result != "info")
     {
@@ -55,15 +55,15 @@ $("td.text-center :button").click(function(){
         bad.removeClass('badge-success');
         bad.removeClass('badge-info');
 
-        if(result == "ok"){        
+        if(result == "ok"){
             bad.addClass('badge-success');
             bad.text('Ok');
         }else if(result == "atrazo"){
-            bad.addClass('badge-warning');        
+            bad.addClass('badge-warning');
             bad.text('Atrazo');
         }
         else if(result == "na"){
-            bad.addClass('badge-info');        
+            bad.addClass('badge-info');
             bad.text('N/A');
         }
         else{
@@ -79,23 +79,23 @@ $("td.text-center :button").click(function(){
                 data: data,
                 resultado: result,
                 operacao: "alterar"
-            },        
-            dataType: "json",    
+            },
+            dataType: "json",
             success: function(data) {
                 var usuario = data.users;
-                
-                
+
+
                 if (data.status != 'success') {
                     //alert(data.status);
                 }
             }
         });
-        
+
     }
-        
+
 });
 
-$("#perfilSalvar").click(function(e){    
+$("#perfilSalvar").click(function(e){
     e.preventDefault();
 
     var nome = $("#inputNome").val();
@@ -109,7 +109,7 @@ $("#perfilSalvar").click(function(e){
     var operacao = "alteraUsuario";
 
     //alert("Nome = "+nome+" Sobrenome = " + sobrenome + " Apelido = " + apelido + " Educação = "+educacao+ " Habilidade = " + habilidades + " Sobre = " + sobre + " idusuario = " +  idusuario + " Operacao = "+operacao);
-   
+
     $.ajax({
         url: 'classhandler.php',
         method: 'POST',
@@ -123,21 +123,21 @@ $("#perfilSalvar").click(function(e){
             psobre: sobre,
             pidusuario: idusuario,
             poperacao: operacao
-        },        
-        dataType: "json",    
-        success: function(data) {  
-                      
-            if (data.status != 'sucesso') 
+        },
+        dataType: "json",
+        success: function(data) {
+
+            if (data.status != 'sucesso')
             {
-                alert(data.retorno);                
+                alert(data.retorno);
             }
             else
             {
                 alert("Dados salvos com sucesso!");
             }
         }
-    });   
-        
+    });
+
 });
 //Corrige conflito do Jquery com o Bootstrap no menu de usuario
 
@@ -154,18 +154,18 @@ function verificarApelido() {
     $.ajax({
         url: 'classhandler.php',
         method: 'POST',
-        data: {            
+        data: {
             idusuario: usuario,
-            apelido: apelidoTratado,            
+            apelido: apelidoTratado,
             poperacao: "verificarAPelido"
-        },        
-        dataType: "json",    
-        success: function(data) {       
+        },
+        dataType: "json",
+        success: function(data) {
 
             input.removeClass('is-invalid');
             input.removeClass('is-valid');
             btSalvar.removeAttr('disabled');
-            
+
             if(data.status == 'livre')
             {
                 input.addClass('is-valid');
@@ -180,3 +180,71 @@ function verificarApelido() {
     });
 }
 
+function MenuTicket(objeto){
+	var ticket = objeto.closest('.ticket');
+
+
+
+	var cartao = null;
+	for (var i = 0; i < ticket.childNodes.length; i++) {
+			if (ticket.childNodes[i].className == "cartao-ticket") {
+				notes = ticket.childNodes[i];
+				break;
+			}
+	}
+
+	// var tabela = objeto.closest('.ticket').next("#cartaoTicket");
+
+	// var menu =  ticket.closest('.cartao-ticket-menu');
+	// tabela.display = 'none';
+
+	// if(tabela.classList.contains('menu-ativo')){
+	// 	menu.display = 'none';
+
+	// alert('tem');
+	// }else{
+	// 	menu.display = 'block';
+	// 	alert('não tem')
+	// }
+}
+
+function ocultaMenu(object){
+
+	var menu = object;
+	var ticket = menu.closest('.ticket');
+	var painel = ticket.childNodes[1];
+
+	menu.style.display = "none";
+	painel.classList.remove('menu-ativo');
+}
+
+function exibeMenu(object){
+	var menu = object;
+	var ticket = menu.closest('.ticket');
+	var painel = ticket.childNodes[1];
+
+	painel.classList.add('menu-ativo');
+	menu.style.display = "block";
+
+}
+
+
+$('.fas.fa-ellipsis-h').click(function(o){
+	o.preventDefault();
+
+	ticket = $(this).closest('.ticket')[0];
+	var painel = $(this).closest('.cartao-ticket')[0]
+	var menu =null;
+
+	for (var i = 0; i < ticket.childNodes.length; i++)
+	{
+			if (ticket.childNodes[i].className == "cartao-ticket-menu")
+			{
+				menu = ticket.childNodes[i];
+				break;
+			}
+	}
+	painel.classList.add('menu-ativo');
+	menu.style.display = "block";
+
+});

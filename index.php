@@ -18,12 +18,12 @@ $app->config('debug', true);
 
 require_once("functions.php");
 
-$app->get('/', function () {	
-	
+$app->get('/', function () {
+
 	$user = new User();
 	$user->loadCookie();
 	$dadosUsuario = User::retornaDadosDaSession();
-	
+
 	$alerta = "";
 	if(isset($_GET['redefinir']))
 	{
@@ -34,7 +34,7 @@ $app->get('/', function () {
 		$dadosUsuario['deshabiliadades_arr'] = Funcoes::separaTexto($dadosUsuario['deshabiliadades']);
 		$dadosUsuario['deseducacao_arr'] = Funcoes::separaTexto($dadosUsuario['deseducacao']);
 		User::verificaAcesso("perfil", $dadosUsuario, "Perfil");
-		exit;	
+		exit;
 	}
 	User::verificaAcesso("index", $dadosUsuario, "Home");
 	exit;
@@ -59,7 +59,7 @@ $app->post('/', function(){
 							echo($e->getMessage());
 							exit;
 						}
-						
+
 						header('Location: ?perfil');
 						exit;
 					}
@@ -73,7 +73,7 @@ $app->post('/', function(){
 });
 
 $app->get('/invitation(/)',function(){
-	
+
 	if(isset($_GET["code"]) && isset($_GET["resposta"])){
 		$codigo = $_GET["code"];
 		$resposta = $_GET["resposta"];
@@ -83,9 +83,9 @@ $app->get('/invitation(/)',function(){
 
 		$idconvite = User::decodeBase64($codigo);
 
-		$dados["convite"] = User::dadosConvite($idconvite);		
-		
-		
+		$dados["convite"] = User::dadosConvite($idconvite);
+
+
 		if(count($dados["convite"])==0)
 		{	$dados["tipo"] = "outro";
 			$dados["erro"] = "Código não encontrado. Por favor, clique no link enviado para o seu e-mail.";
@@ -105,24 +105,24 @@ $app->get('/invitation(/)',function(){
 			{
 				$dados["tipo"] = "confirmacao";
 				//Funcção que autoriza a participação
-				
+
 				if(!User::ConviteAceito($idconvite))
 				{
 					$dados["erro"] = Empresas::getError();
 				}
-			}		
+			}
 		}
 	}
-	
+
 	$page = new PaginaInicial($dados, "convite");
 	$page->setTpl("feedbackConvite");
 	exit;
 });
 
 $app->get('/uploads(/)', function () {
-	
+
 	$user = new User;
-	
+
 	header("Location: /");
 
 	exit;
@@ -227,7 +227,7 @@ $app->get('/recovery(/)', function () {
 $app->post('/recovery(/)', function () {
 
 	$tipo = isset($_POST["tipo"])?$_POST["tipo"]:"";
-	
+
 	if (User::verifyLogin() && $tipo == "") {
 		header("Location: /");
 		exit;
@@ -241,15 +241,15 @@ $app->post('/recovery(/)', function () {
 
 
 		try {
-			
+
 			User::recuperacaoSenha($email);
-			
+
 			if($tipo=="")
 			{
 				$page = new PaginaInicial([], "Recuperar senha");
 				$page->setTpl("feedbackRecuperacaoSenha");
 				exit;
-			}			
+			}
 			header("Location: /?perfil&redefinir=true");
 			exit;
 		} catch (Exception $e) {
@@ -419,14 +419,29 @@ $app->post('/adicionar_empresa', function () {
 	}
 });
 
-$app->get('/:NOME(/)', function ($nomeEmpresa) {	
+//Rotas nomeadas devem vir aqui
+
+$app->get('/tickets(/)', function(){
+	User::verifyLogin("Location: /");
+
+	$user = new User();
+	$user->loadCookie();
+	$dadosUsuario = User::retornaDadosDaSession();
+
+	User::verificaAcesso("tickets", $dadosUsuario, "Tickets");
+	exit;
+});
+
+
+
+$app->get('/:NOME(/)', function ($nomeEmpresa) {
 
 	User::verifyLogin("Location: /");
 	$user = new User();
 	$user->loadCookie();
-	
+
 	User::verificaAdminEmpresa($nomeEmpresa, "");
-	
+
 	$dadosUsuario = User::retornaDadosDaSession();
 
 	$empresas = new Empresas();
@@ -487,7 +502,7 @@ $app->post('/:NOME(/)', function ($nomeEmpresa) {
 					$empresa->salvarFotoEmpresa($foto, $idEmpresa);
 					try{
 
-					}catch(Exception $e){						
+					}catch(Exception $e){
 						header('Location: /$nomeEmpresa?adddivisao=true');
 						exit;
 					}
@@ -503,7 +518,7 @@ $app->post('/:NOME(/)', function ($nomeEmpresa) {
 			Empresas::alteraCargo($idEmpresa, $nomeA, $nomeN, $obs, $idUsuario);
 
 			header("Location: /$nomeEmpresa?config=true");
-			exit;			
+			exit;
 		}
 
 		$empresa = new Empresas();
@@ -517,13 +532,15 @@ $app->post('/:NOME(/)', function ($nomeEmpresa) {
 	}
 });
 
+
+
 $app->get('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao) {
 
 	// $emailsArr = explode(";","vagner.lenon@dadobier.com.br;vagner.lenon@gmail.com");
 
 	// $resposta = array(
 	// 	"status"=>"",
-	// 	"retorno"=>""                
+	// 	"retorno"=>""
 	// );
 
 	// Empresas::DefineGerente($emailsArr, 38);
@@ -536,32 +553,32 @@ $app->get('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao) {
 	$dadosUsuario = User::retornaDadosDaSession();
 
 	//Função que verifica se o usuário tem direitos de administrar a empresa
-	User::verificaAdminEmpresa($nomeEmpresa, "");	
-	
+	User::verificaAdminEmpresa($nomeEmpresa, "");
+
 	//Verificar se existe a divisão na empresa. Se não existir, retornar a empresa
 	Empresas::verificaDivisao($nomeEmpresa, $nomedivisao);
 
 	//Recuperar dados da divisão
-	
+
 	$divisao = Empresas::RecuperarDadosDivisao($nomeEmpresa, $nomedivisao);
 
 	$dadosUsuario['divisao'] = $divisao;
 
-	
+
 	$dadosempresa = Empresas::retornaEmpresa($nomeEmpresa);
 	$dadosUsuario['empresa'] = $dadosempresa;
-	
+
 	$dadosUsuario["erro"] = "";
 	//Caso queira editar o quadro de funcionários
 	$dadosUsuario['funcionarios'] = Empresas::retornaFuncionariosDivisao($dadosUsuario['divisao']["iddivisao"]);
 
-	if (isset($_GET["editcolab"])) {		
+	if (isset($_GET["editcolab"])) {
 		if ($_GET["editcolab"] == "true") {
-						
+
 			$dadosUsuario["erro"] = User::getError();
 
-			
-			$dadosUsuario['cargos'] = Empresas::retornaCargos($dadosUsuario['divisao']["idempresa"]);		
+
+			$dadosUsuario['cargos'] = Empresas::retornaCargos($dadosUsuario['divisao']["idempresa"]);
 
 
 			User::verificaAcesso("quadro_funcionarios", $dadosUsuario, $nomeEmpresa);
@@ -571,19 +588,19 @@ $app->get('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao) {
 
 	else if(isset($_GET["editsetores"])){
 		if ($_GET["editsetores"] == "true") {
-						
+
 			$dadosUsuario["erro"] = User::getError();
 			$dadosUsuario['funcionarios'] = Empresas::retornaFuncionariosDivisao($dadosUsuario['divisao']["iddivisao"]);
-			$dadosUsuario['setores'] = Empresas::retornaSetores($nomedivisao);		
+			$dadosUsuario['setores'] = Empresas::retornaSetores($nomedivisao);
 
 
 			User::verificaAcesso("setores", $dadosUsuario, $nomeEmpresa);
 			exit;
-		}		
+		}
 	}
 
-	else if(isset($_GET['colabset'])){		
-						
+	else if(isset($_GET['colabset'])){
+
 		$setor = $_GET['colabset'];
 		$dadosUsuario["erro"] = User::getError();
 
@@ -592,7 +609,7 @@ $app->get('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao) {
 
 		User::verificaAcesso("funcionarios", $dadosUsuario, $nomeEmpresa);
 		exit;
-		
+
 	}
 
 	User::verificaAcesso("divisao", $dadosUsuario, $nomeEmpresa);
@@ -611,24 +628,24 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 	if (!Empresas::verificaAdminEmpresa($nomeEmpresa, $dadosUsuario["idusuario"])) {
 		header("Location: /");
 		exit;
-	}	
+	}
 
 	if(isset($_POST)){
 
 		if(isset($_GET["alteraIcone"])){
 			$iddivisao = isset($_POST["iddivisao"])?$_POST["iddivisao"]:0;
-			$foto = isset($_FILES["foto"])?$_FILES["foto"]:"";			
+			$foto = isset($_FILES["foto"])?$_FILES["foto"]:"";
 
 			if($iddivisao > 0){
 
 				$empresa = new Empresas();
-				
-				try{						
+
+				try{
 					$empresa->salvarFotoDivisao($foto, $iddivisao);
 					header("Location: /$nomeEmpresa/$nomedivisao");
 					exit;
 
-				}catch(Exception $e){	
+				}catch(Exception $e){
 					var_dump($e->getMessage());
 					exit;
 					Empresas::setErro($e->getMessage());
@@ -640,9 +657,9 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 
 		if(isset($_GET["delete"])){
 			if ($_GET["delete"] == "true") {
-				
+
 				$iddivisao = $_POST["idDivisao"];
-				
+
 				Empresas::DeletaDivisao($iddivisao);
 
 				header("Location: /".$nomeEmpresa);
@@ -651,17 +668,17 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 		}
 
 		if(isset($_GET["addFuncionario"])){
-							
+
 			$email = isset($_POST['desemail'])?$_POST['desemail']:"";
 			$nome = isset($_POST['desnome'])?$_POST['desnome']:"";
 			$sobrenome = isset($_POST['dessobrenome'])?$_POST['dessobrenome']:"";
 			$cargo = isset($_POST['cargo'])?$_POST['cargo']:"";
-			$divisao = isset($_POST['iddivisao'])?$_POST['iddivisao']:"";			
+			$divisao = isset($_POST['iddivisao'])?$_POST['iddivisao']:"";
 
 			User::convidarUsuarioDivisao($email, $nome, $sobrenome, $cargo, $divisao);
 			header("Location: /".$nomeEmpresa."/".$nomedivisao."?editcolab=true");
 			exit;
-			
+
 		}
 
 		if(isset($_GET["editcolab"])){
@@ -673,7 +690,7 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 				User::RemoveColaborador($_POST["email"], $_POST["divisao"], $_POST["tipo"]=="efetivo");
 				header("Location: /".$nomeEmpresa."/".$nomedivisao."?editcolab=true");
 				exit;
-			}	
+			}
 
 
 
@@ -681,7 +698,7 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 		}
 
 		if(isset($_GET["addGerente"])){
-			
+
 			$emails = $_POST["emails"];
 			$emailsArr = explode(";",$emails);
 
@@ -689,7 +706,7 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 			{
 				echo($emailsArr[$i]."<br>");
 			}
-			
+
 			exit;
 
 			$email = $_POST["desemail"];
@@ -705,9 +722,9 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 		}
 
 		if(isset($_GET["removeGerente"])){
-			
+
 			$id = $_POST["idgerente"];
-			
+
 			Empresas::RemoveGerente($id);
 
 			header("Location: /".$nomeEmpresa."/".$nomedivisao);
@@ -717,7 +734,7 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 		if(isset($_GET["removeSupervisor"])){
 
 			$id = $_POST["idsupervisor"];
-			
+
 			Empresas::RemoveSupervisor($id);
 
 			header("Location: /".$nomeEmpresa."/".$nomedivisao);
@@ -725,9 +742,9 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 		}
 
 		if(isset($_GET["excluirSetor"])){
-			
+
 			$id = $_POST["setor"];
-			
+
 			Empresas::DeletaSetor($id);
 
 			header("Location: /".$nomeEmpresa."/".$nomedivisao."?editsetores=true");
@@ -735,24 +752,24 @@ $app->post('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao){
 		}
 
 		if(isset($_GET["editarSetor"])){
-			
+
 			$id = $_POST["setor"];
 			$nome = $_POST["nomeSetor"];
-			$descricao = $_POST["setorDesc"];			
+			$descricao = $_POST["setorDesc"];
 			$ativo = FALSE;
 
-			if (isset($_POST["SetorAtivo"]) && $_POST["SetorAtivo"] != "") 
+			if (isset($_POST["SetorAtivo"]) && $_POST["SetorAtivo"] != "")
 			{
 				$ativo = TRUE;
-			}			
-			
+			}
+
 			Empresas::AlteraSetor($id, $nome, $descricao, $ativo);
 
 			header("Location: /".$nomeEmpresa."/".$nomedivisao."?editsetores=true");
 			exit;
 		}
 
-		
+
 
 
 	}

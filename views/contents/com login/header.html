@@ -8,7 +8,7 @@
   <link rel="icon" href="\src/imagens/ZwFIconex250.png">
   <title>ZWare Flow</title>
   <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 #myInput {
@@ -80,7 +80,7 @@
       </li>
     </ul>
 
-    
+
     <!-- SEARCH FORM -->
     <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
@@ -182,15 +182,15 @@
       </li>
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-          <img src="\{function="obtemFotoPerfil($desfoto)"}" class="user-image img-circle elevation-2" alt="User Image">          
+          <img src="\{function="obtemFotoPerfil($desfoto)"}" class="user-image img-circle elevation-2" alt="User Image">
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <!-- User image -->
           <li class="user-header">
             <img src="\{function="obtemFotoPerfil($desfoto)"}" class="img-circle elevation-2" alt="User Image">
-            
+
             <p>
-                
+
               {function="FormataNomeProprio($desnome, false)"} {if="$desapelido != ''"}(@{$desapelido}){/if}
               <small>Membro desde {function="FormataData_mmm_AAAA($dtcadastro_usuario)"}</small>
               {$variavelNaoDefinida = ""}
@@ -213,11 +213,11 @@
           </li>
           <!-- Menu Footer-->
           <li class="user-footer">
-            <a href="\?perfil" class="btn btn-default btn-flat ">Perfil</a>            
+            <a href="\?perfil" class="btn btn-default btn-flat ">Perfil</a>
             <a href="/logout" class="btn btn-default btn-flat float-right">Log out</a>
           </li>
         </ul>
-      </li>      
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -233,7 +233,7 @@
          class="brand-image img-circle elevation-3"
          style="opacity: .8">
     <span class="brand-text font-weight-light">ZWare Flow</span>
-  </a>  
+  </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
@@ -242,62 +242,112 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-                
-          <li class="nav-header">GERENCIAR EMPRESAS <a href="\adicionar_empresa" class="btn-sm btn-secondary float-right fa fa-plus"></a></li>            
+
+					<li class="nav-header">
+						GERENCIAR EMPRESAS <a href="\adicionar_empresa" class="btn-sm btn-secondary float-right fa fa-plus"></a>
+					</li>
 
           {if="$temEmpr != ''"}
           {loop="$empresas"}
 
             {if="$local != $value.desnomeurl"}
-            <li class="nav-item menu-close"> 
+            <li class="nav-item menu-close">
             {else}
             <li class="nav-item menu-open">
-            {/if}               
+            {/if}
 
 
             {if="$local != $value.desnomeurl"}
             <a href="\{$value.desnomeurl}" class="nav-link">
             {else}
             <a href="\{$value.desnomeurl}" class="nav-link active">
-            {/if} 
-            
-              
+            {/if}
+
+
               <img src="\{function="obtemFotoEmpresa($value.desicone)"}" class="far mg-size-50 img-circle mr-3 nav-icon">
-              
+
               <p>{$value.desapelido}<i class="right fas fa-angle-left"></i></p>
-            </a>
+            	</a>
               <ul class="nav nav-treeview">
-                  
-                <li class="nav-item ml">                      
+
+                <li class="nav-item ml">
                       <a href="\{$value.desnomeurl}" class="nav-link">
-                        <i class="far fa-edit nav-icon ml-3"></i>                    
+                        <i class="far fa-edit nav-icon ml-3"></i>
                         <p>Editar</p>
                       </a>
-                  </li> 
-                  
-                  <li class="nav-item ml">                      
-                    <a href="\relatorios/{$value.desnomeurl}" class="nav-link">                      
-                      <i class="far fa-chart-bar nav-icon ml-3"></i>                    
+                  </li>
+
+                  <li class="nav-item ml">
+                    <a href="\relatorios/{$value.desnomeurl}" class="nav-link">
+                      <i class="far fa-chart-bar nav-icon ml-3"></i>
                       <p>Relat&oacute;rios</p>
                     </a>
-                </li> 
+                	</li>
 
-              </ul>
+              	</ul>
           </li>
           {/loop}
           {/if}
-              
-              <li class="nav-header">OUTROS</li>                        <!-- T&Iacute;TULO-->  
-              
-        <li class="nav-item">
-          <a href="\src/widgets.html" class="nav-link">           <!-- EMPRESAS-->
-            <i class="nav-icon fas fa-th"></i>
+
+
+
+
+
+				<li class="nav-header">TICKET</li>                        <!-- T&Iacute;TULO-->
+
+        	<li class="nav-item">
+
+
+
+					{if="$local != 'Tickets'"}
+					<a href="\tickets" class="nav-link">
+					{else}
+					<a href="\tickets" class="nav-link active">
+					{/if}
+						<i class="nav-icon fas fa-clipboard-list"></i>
+            	<p>
+              	Tickets
+              	<span class="right badge badge-danger">New</span>
+            	</p>
+						</a>
+
+
+					</li>
+
+				<li class="nav-item">
+          {if="$local != 'Criar ticket'"}
+					<a href="\novo" class="nav-link">
+					{else}
+					<a href="\novo" class="nav-link active">
+					{/if}
+            <i class="nav-icon fas fa-plus"></i>
             <p>
-              Widgets
-              <span class="right badge badge-danger">New</span>
+              Criar Ticket
             </p>
-          </a>            
-        </li>        
+          </a>
+				</li>
+
+				<li class="nav-item">
+          {if="$local != 'Tickets favoritos'"}
+					<a href="\favoritos" class="nav-link">
+					{else}
+					<a href="\favoritos" class="nav-link active">
+					{/if}
+            <i class="nav-icon fas fa-star"></i>
+            <p>
+              Favoritos
+            </p>
+          </a>
+				</li>
+
+				<li class="nav-item">
+          <a href="\arquivo" class="nav-link">           <!-- EMPRESAS-->
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+              Arquivo
+            </p>
+          </a>
+        </li>
 
 
         <li class="nav-item has-treeview">
