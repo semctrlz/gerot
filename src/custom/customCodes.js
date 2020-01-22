@@ -215,7 +215,6 @@ function ocultaMenu(object){
 	var painel = ticket.childNodes[1];
 
 	menu.style.display = "none";
-	painel.classList.remove('menu-ativo');
 }
 
 function exibeMenu(object){
@@ -223,7 +222,6 @@ function exibeMenu(object){
 	var ticket = menu.closest('.ticket');
 	var painel = ticket.childNodes[1];
 
-	painel.classList.add('menu-ativo');
 	menu.style.display = "block";
 
 }
@@ -244,7 +242,63 @@ $('.fas.fa-ellipsis-h').click(function(o){
 				break;
 			}
 	}
-	painel.classList.add('menu-ativo');
 	menu.style.display = "block";
 
 });
+
+//Clicar no botão de fav
+$(".botaoFav").click(function(event){
+	event.preventDefault();
+
+	var id = $(this).data("id");
+	var estrela = event.target;
+
+	//Verificar se o favorito está ativo
+
+	var ativo = estrela.classList.contains('active');
+
+	if(ativo){
+		estrela.classList.remove('active');
+	}else{
+		estrela.classList.add('active');
+	}
+
+	FavTicket(id, !ativo)
+
+});
+
+function FavTicket(id, ativa){
+	if(ativa){
+		//define como favorito
+	}else{
+		//remove de favorito
+	}
+}
+
+$(".botaoPin").click(function(event){
+	event.preventDefault();
+
+	var id = $(this).data("id");
+	var pin = event.target;
+
+	//Verificar se o favorito está ativo
+
+	var ativo = pin.classList.contains('active');
+
+	if(ativo){
+		pin.classList.remove('active');
+	}else{
+		pin.classList.add('active');
+	}
+
+	PinTicket(id, !ativo)
+
+});
+
+function PinTicket(id, ativa){
+	if(ativa){
+		//define como fixo
+	}else{
+		//remove de fixo
+	}
+}
