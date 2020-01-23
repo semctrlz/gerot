@@ -21,25 +21,32 @@
   <!-- Main content -->
   <section class="content">
 
+		{if="$tickets.quant > 0"}
+		{loop="$tickets.dados"}
     <!-- Default box -->
 		<div class="ticket">
-			<div class="cartao-ticket perigo">
+			{if="$value.dif_prazo > 3"}
+			<div class="cartao-ticket normal">
+				{elseif="$value.dif_prazo > 0"}
+			<div class="cartao-ticket atencao">
+				{else}
+				<div class="cartao-ticket perigo">
+				{/if}
 				<div class="ticket-card-body">
 					<div class="status-ticket">
-						<div class="id-ticket">#1.015.196</div>
+						<div class="id-ticket">#{$value.idticket}</div>
 						<div class="status-ticket novo"><span>Novo</span></div>
 					</div>
 					<div class="desc-ticket">
 						<span class="ticket-anexo">
-							<i class="fas fa-paperclip gray active"></i>
 						</span>
 						<div class="titulo-ticket">
-							Não consigo acessar o portal do BI
+							{$value.destitulo}
 						</div>
-						<span class="data-ticket"> - 25/12/2019</span>
-						<p class="corpo-ticket">
-							Aliquip incididunt dolor voluptate ullamco irure eu sint anim Lorem incididunt sunt. Dolor cupidatat irure aliquip pariatur in sint ea aliqua nostrud minim eiusmod tempor. Exercitation non ut sint proident ea irure deserunt velit proident cupidatat.
-						</p>
+						<span class="data-ticket"> - {function="formataDataHora($value.dtcriacao)"}</span>
+						<div class="corpo-ticket">
+							{$value.descorpo}
+						</div>
 
 					</div>
 				</div>
@@ -56,55 +63,61 @@
 							<a href="#"><div class="fas fa-ellipsis-h gray"></div></a>
 						</li>
 						<li class="li-ticket tam-g">
-							<a href="#">
+							{if="$value.nome_dest != 'null'"}
+							<a href="/perfil/{$value.url_dest}">
 								<div class="user-ticket">
-									<img src="\views/uploads/upics/noprofilepicP.jpg" alt="Vágner Lenon">
+									<img src="\{function="obtemFotoPerfil($value.foto_dest)"}" title="{function="FormataNomeProprio($value.nome_dest, false)"}">
 									<div class="tipo-usuario-ticket">Destinatário</div>
-									<div class="nome-usuario-ticket">Epaminondas nome grande </div>
+									<div class="nome-usuario-ticket">{function="FormataNomeProprio($value.nome_dest, false)"}</div>
 								</div>
 							</a>
+							{else}
+							<a href="#" class="btn btn-xs btn-success btnAssumir">
+								Assumir
+							</a>
+							{/if}
 						</li>
 						<li class="li-ticket tam-g">
-							<a href="#">
+							<a href="/perfil/{$value.url_rem}">
 								<div class="user-ticket">
-									<img src="\views/uploads/upics/noprofilepicP.jpg" alt="Vágner Lenon">
+									<img src="\{function="obtemFotoPerfil($value.foto_rem)"}" alt="{function="FormataNomeProprio($value.nome_rem, false)"}">
 									<div class="tipo-usuario-ticket">Emitente</div>
-									<div class="nome-usuario-ticket">Vágner Lenon</div>
+									<div class="nome-usuario-ticket">{function="FormataNomeProprio($value.nome_rem, false)"}</div>
 								</div>
 							</a>
 						</li>
 						</li>
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket priori-baixa">
+						<li class="li-ticket tam-m {$value.prioridade_classe}">
+							<div class="titulo-subtitulo-ticket  ">
 								<i>Prioridade</i>
-								<p class="priori-modarada">Baixa</p>
+								<p class="priori-modarada">{$value.prioridade}</p>
 							</div>
 						</li>
 
 						<li class="li-ticket tam-m">
 							<div class="titulo-subtitulo-ticket">
 								<i>Tipo</i>
-								<p>Resposta</p>
+								<p>{$value.tipo}</p>
 							</div>
 						</li>
 
 						<li class="li-ticket tam-m">
 							<div class="titulo-subtitulo-ticket">
 								<i>Enviado</i>
-								<p>01/01/2020</p>
+								<p>{function="formataData($value.dtcriacao)"}</p>
 							</div>
 						</li>
 
 						<li class="li-ticket tam-m">
 							<div class="titulo-subtitulo-ticket">
 								<i>prazo</i>
-								<p>01/01/2020</p>
+								<p>{function="formataData($value.dtprazo)"}</p>
 							</div>
 						</li>
 						<li class="li-ticket pull-right tam-g">
 							<div class="titulo-subtitulo-ticket">
 								<i>Categoria</i>
-								<p><a href="#">Compras</a> / <a href="#">Problemas</a> / <a href="#">Recebimento</a></p>
+								<p><strong>{$value.nome_setor}</strong> / <strong>{$value.categoria}</strong> / <strong>{$value.subcategoria}</strong></p>
 							</div>
 						</li>
 
@@ -136,123 +149,9 @@
 				</ul>
 			</div>
 		</div>
+		{/loop}
+		{/if}
 
-		<div class="ticket">
-			<div class="cartao-ticket perigo">
-				<div class="ticket-card-body">
-					<div class="status-ticket">
-						<div class="id-ticket">#1.015.196</div>
-						<div class="status-ticket novo"><span>Novo</span></div>
-					</div>
-					<div class="desc-ticket">
-						<span class="ticket-anexo">
-							<i class="fas fa-paperclip gray active"></i>
-						</span>
-						<div class="titulo-ticket">
-							Não consigo acessar o portal do BI
-							<span class="data-ticket"> - 25/12/2019</span>
-						</div>
-						<p class="corpo-ticket">
-							Aliquip incididunt dolor voluptate ullamco irure eu sint anim Lorem incididunt sunt. Dolor cupidatat irure aliquip pariatur in sint ea aliqua nostrud minim eiusmod tempor. Exercitation non ut sint proident ea irure deserunt velit proident cupidatat.
-						</p>
-
-					</div>
-				</div>
-				<div class="ticket-card-footer">
-					<ul>
-						<li class="li-ticket tam-p">
-							<a href="#"><span class="fas fa-thumbtack gray active"></span></a>
-						</li>
-
-						<li class="li-ticket tam-p">
-							<a href="#"><span class="far fa-star gray active"></span></a>
-						</li>
-						<li class="li-ticket tam-p">
-							<a href="#"><div class="fas fa-ellipsis-h gray"></div></a>
-						</li>
-						<li class="li-ticket tam-g">
-							<a href="#">
-								<div class="user-ticket">
-									<img src="\views/uploads/upics/noprofilepicP.jpg" alt="Vágner Lenon">
-									<div class="tipo-usuario-ticket">Destinatário</div>
-									<div class="nome-usuario-ticket">Epaminondas nome grande </div>
-								</div>
-							</a>
-						</li>
-						<li class="li-ticket tam-g">
-							<a href="#">
-								<div class="user-ticket">
-									<img src="\views/uploads/upics/noprofilepicP.jpg" alt="Vágner Lenon">
-									<div class="tipo-usuario-ticket">Emitente</div>
-									<div class="nome-usuario-ticket">Vágner Lenon</div>
-								</div>
-							</a>
-						</li>
-						</li>
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket priori-baixa">
-								<i>Prioridade</i>
-								<p class="priori-modarada">Baixa</p>
-							</div>
-						</li>
-
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket">
-								<i>Tipo</i>
-								<p>Resposta</p>
-							</div>
-						</li>
-
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket">
-								<i>Enviado</i>
-								<p>01/01/2020</p>
-							</div>
-						</li>
-
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket">
-								<i>prazo</i>
-								<p>01/01/2020</p>
-							</div>
-						</li>
-						<li class="li-ticket pull-right tam-g">
-							<div class="titulo-subtitulo-ticket">
-								<i>Categoria</i>
-								<p><a href="#">Compras</a> / <a href="#">Problemas</a> / <a href="#">Recebimento</a></p>
-							</div>
-						</li>
-
-					</ul>
-				</div>
-			</div>
-
-
-			<div class="cartao-ticket-menu" onmouseout="ocultaMenu(this)" onmouseover="exibeMenu(this)">
-				<ul>
-					<li>
-						<a href="#" class="ticket-menu" onmouseover="exibeMenu(this)">
-							<span class="fas fa-reply"></span>Responder
-						</a>
-					</li>
-					<li>
-						<a href="#" class="ticket-menu">
-							<span class="fas fa-forward"></span>Encaminhar
-						</a>
-					</li>
-					<li>
-						<a href="#" class="ticket-menu">
-							Menu 3
-						</a>
-					</li>
-					<li>
-						<a href="#" class="ticket-menu">
-							Menu 4
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
 		<!-- /.card-body -->
 
 

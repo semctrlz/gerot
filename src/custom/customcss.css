@@ -115,6 +115,7 @@ content.ticketSystem .cartao-ticket .status-ticket .status-ticket.concluido{
 
 content.ticketSystem .cartao-ticket .desc-ticket{
 	margin: 5px 5px -10px 110px;
+	display:block;
 }
 
 content.ticketSystem .cartao-ticket .desc-ticket .titulo-ticket{
@@ -130,14 +131,14 @@ content.ticketSystem .cartao-ticket .desc-ticket .data-ticket{
 }
 content.ticketSystem .cartao-ticket .ticket-anexo{
 	width: 32px;
-	display: inline-block;
+	position: relative;
 	float: right;
 }
 
 content.ticketSystem .cartao-ticket .desc-ticket .corpo-ticket{
 	font-size: 12px;
 	color: #555555;
-	display: inline-block;
+	display: block;
 }
 
 content.ticketSystem .ticket-card-footer{
@@ -153,7 +154,10 @@ content.ticketSystem .cartao-ticket.menu-ativo .ticket-card-footer{
 		border-radius: 0px 0% 10px 0;
 }
 
-
+content.ticketSystem .ticket-card-footer .btnAssumir{
+	display: block;
+	margin: 5px;
+}
 
 content.ticketSystem .ticket-card-footer ul{
 	list-style: none;
@@ -303,6 +307,7 @@ content.ticketSystem .cartao-ticket .priori-urgente{
 	color: #eee;
 	background-color: #eb2f06;
 	font-weight: normal;
+	display: inline;
 }
 
 content.ticketSystem .cartao-ticket .priori-urgente i{

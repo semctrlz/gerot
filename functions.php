@@ -24,7 +24,7 @@ function FormataNomeProprio($nome, $encodado = true)
 }
 
 function FormataData_mmm_AAAA($data){
-    
+
     $d = date_parse_from_format("Y-m-d", $data);
     $ano = $d["year"];
     $mes = "";
@@ -72,7 +72,7 @@ function FormataData_mmm_AAAA($data){
     }else{
         return "";
     }
-    
+
 }
 
 function formataData($data){
@@ -84,15 +84,24 @@ function formataData($data){
     return date('d/m/Y',$st);
 }
 
-function obtemFotoPerfil($imagem){ 
-    $img = isset($imagem)?$imagem:"";   
+function formataDataHora($data){
+	if($data == ""){
+			return "";
+	}
+	$st = strtotime(str_replace("/","-",$data));
+	$d = date_parse_from_format("Y-m-d", $data);
+	return date('d/m/Y - H:i',$st);
+}
+
+function obtemFotoPerfil($imagem){
+    $img = isset($imagem)?$imagem:"";
     return $img!=""?$img:"views/uploads/upics/noprofilepicP.jpg";
-   
+
 }
 
 function obtemFotoEmpresa($imagem){
     $img = isset($imagem)?$imagem:"";
-    return $img!=""?$img:"views/uploads/upics/noempresapicP.jpg";    
+    return $img!=""?$img:"views/uploads/upics/noempresapicP.jpg";
 }
 
 function imagem($imagem){

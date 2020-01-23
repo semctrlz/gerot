@@ -20,13 +20,15 @@ class User extends Model
     const ERROR = "ErroNoSistemaUsuario";
 
     const ERROR_REGISTER = "UserErrorRegister";
-    
+
     public static function login($email, $senha, $conexaoAutomatica = false)
     {
-        $sql = new MySql();
+				$sql = new MySql();
+
+
 
         $results = $sql->select("select p.desemail, u.idusuario, u.dessenha from tb_usuarios u
-        left join tb_pessoas p on p.idpessoa = u.idpessoa        
+        left join tb_pessoas p on p.idpessoa = u.idpessoa
         where boolcadastroativo = true and p.desemail = :EMAIL", array(":EMAIL" => $email));
 
         if (count($results) === 0) {
@@ -58,7 +60,7 @@ class User extends Model
 
         $results = $sql->select("select idusuario from tb_usuarios where lower(desapelido) = :APELIDO;", array(
             ":APELIDO"=>Funcoes::removeNonAlfaNumeric($apelido)
-        ));        
+        ));
 
         if(count($results)==0)
         {
@@ -82,27 +84,27 @@ class User extends Model
     }
 
     public static function AlteraDados($desnome, $dessobrenome, $desapelido, $educacao, $habilidades, $bio, $usuario, $nascimento = null){
-        
+
         if(User::verificaApelido($usuario, $desapelido) == "ocupado"){
             return "O apelido $desapelido já existe para outro usuário. Por favor, escolha outro.";
         }
-        
+
         $sql = new MySql();
 
         $apelidoTratado = Funcoes::removeNonAlfaNumeric($desapelido);
         $nomeTratado = Funcoes::prepararParaBanco($desnome, true, true);
-        $sobrenomeTratado = Funcoes::prepararParaBanco($dessobrenome, true, true);        
+        $sobrenomeTratado = Funcoes::prepararParaBanco($dessobrenome, true, true);
         $educacaotratada = Funcoes::prepararParaBanco($educacao, true, false);
         $habilidadetratada = Funcoes::prepararParaBanco($habilidades, true);
-        $biotratada = Funcoes::prepararParaBanco($bio, true);        
+        $biotratada = Funcoes::prepararParaBanco($bio, true);
 
-        
+
         $sql->query("CALL sp_alteraDadosUsuario(:USUARIO, :NOME, :SOBRENOME, :APELIDO, :NASC, :EDUCACAO, :HABILIDADE, :BIO)",array(
             ":USUARIO"=>$usuario,
             ":NOME"=>$nomeTratado,
             ":SOBRENOME"=>$sobrenomeTratado,
             ":NASC"=>$nascimento,
-            ":APELIDO"=>$apelidoTratado,                
+            ":APELIDO"=>$apelidoTratado,
             ":EDUCACAO"=>$educacaotratada,
             ":HABILIDADE"=>$habilidadetratada,
             ":BIO"=>$biotratada
@@ -123,25 +125,25 @@ class User extends Model
     public static function getDadosDoId($id)
     {
         $sql = new MySql();
-        $results = $sql->select("select 
-        p.idpessoa, 
-        p.desnome, 
-        p.dessobrenome, 
-        p.desemail, 
-        ifnull(p.dtnascimento,'') as dtnascimento, 
+        $results = $sql->select("select
+        p.idpessoa,
+        p.desnome,
+        p.dessobrenome,
+        p.desemail,
+        ifnull(p.dtnascimento,'') as dtnascimento,
         ifnull(p.desdescricao,'') as desdescricao,
         ifnull(p.deseducacao,'') as deseducacao,
         ifnull(p.deshabiliadades,'') as deshabiliadades,
         p.dtcadastro as dtcadastro_pessoa,
-        u.idusuario, 
-        u.desapelido, 
-        u.dessenha, 
-        u.dtcadastro as dtcadastro_usuario, 
-        u.boolcadastroativo, 
+        u.idusuario,
+        u.desapelido,
+        u.dessenha,
+        u.dtcadastro as dtcadastro_usuario,
+        u.boolcadastroativo,
         u.boolemailverificado,
         ifnull(u.desfotoperfil, '') as desfoto
         from tb_usuarios u
-        left join tb_pessoas p on p.idpessoa = u.idpessoa                
+        left join tb_pessoas p on p.idpessoa = u.idpessoa
         where u.idusuario = :ID", array(":ID" => $id));
 
         $user = new User();
@@ -152,8 +154,8 @@ class User extends Model
 
         $data = $results[0];
 
-        //Atualiza suas empresas        
-        $empr = Empresas::CarregaEmpresasAdmins($id);        
+        //Atualiza suas empresas
+        $empr = Empresas::CarregaEmpresasAdmins($id);
         $data["empresas"] = $empr;
         $data["temEmpr"] = count($empr)>0?"sim":"";
         $user->setData($data);
@@ -179,7 +181,7 @@ class User extends Model
             ":CHAVE" => $chave,
             ":USUARIO" => $id_usuario,
             ":IP" => $ip
-        ));        
+        ));
     }
 
     public static function DefineSessionCookie(bool $lido, bool $existe)
@@ -215,7 +217,7 @@ class User extends Model
             if($_SESSION["ZWareCookie"]["lido"]){
                 return;
             }
-        }        
+        }
 
         if (isset($_COOKIE[$cookie_name])) {
 
@@ -236,13 +238,13 @@ class User extends Model
 
     public static function verificaAdminEmpresa($empresa, $localRedirect){
 
-        $dadosUsuario = User::retornaDadosDaSession();	
+        $dadosUsuario = User::retornaDadosDaSession();
 
         if(isset($dadosUsuario["empresas"])){
 
-            
+
             $empresas = array_column($dadosUsuario["empresas"],'desnomeurl');
-            
+
             if(!in_array($empresa, $empresas)){
                 header("Location: ".$localRedirect);
                 exit;
@@ -250,7 +252,7 @@ class User extends Model
         }else{
             $dadosUsuario["empresas"]['desnome']= '';
         }
-        
+
     }
 
     public static function retornaDadosDaSession()
@@ -276,9 +278,9 @@ class User extends Model
             ||
             !($_SESSION[Chaves::SESSION])
             ||
-            !(int) $_SESSION[Chaves::SESSION]["idusuario"] > 0            
+            !(int) $_SESSION[Chaves::SESSION]["idusuario"] > 0
         ) {
-            
+
             if ($redirect != "") {
                 header("Location: ".$redirect);
                 exit;
@@ -299,13 +301,13 @@ class User extends Model
     }
 
     public static function atualizaSession(){
-        
+
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
         if(isset($_SESSION[Chaves::SESSION])){
             $user = new User();
-            
+
             $user = User::getDadosDoId(User::obtemIdUsuarioSession());
             $_SESSION[Chaves::SESSION] = $user->getData();
         }
@@ -333,7 +335,7 @@ class User extends Model
                 $pagina->setTpl("index_sem_email");
                 exit;
             } else {
-                //Com login e email verificado vai para onde tem que ir                 
+                //Com login e email verificado vai para onde tem que ir
                 $pagina = new Pagina($dados, $pagina, $opts);
                 $pagina->setTpl($template);
                 exit;
@@ -423,13 +425,13 @@ class User extends Model
             }
         }
     }
-   
+
 
     public static function  verificarRecuperacao($codigo)
     {
         $idRecuperacao = User::decodeBase64($codigo);
 
-        //Verificar se o Id em questão 
+        //Verificar se o Id em questão
 
         $sql = new MySql();
         $results = $sql->select("SELECT * FROM tb_recuperacao_senha a
@@ -559,8 +561,8 @@ class User extends Model
                     ":FOTO" => $caminho_foto,
                     ":USUARIO" => $data->getidusuario()
                 )
-            );        
-    
+            );
+
             try {
                 unlink($foto_antiga);
             } catch (\Exception $e) { }
@@ -795,7 +797,7 @@ class User extends Model
     public static function gerarNomeUrlUsuario($apelido, $email)
     {
 
-        //Os nomes de URL das divisões devem ser únicos dentro da mesma empresa        
+        //Os nomes de URL das divisões devem ser únicos dentro da mesma empresa
         $sql = new MySql();
 
         $texto = $apelido;
@@ -850,10 +852,10 @@ class User extends Model
             User::setErro("O usuário com o e-mail $email_tratado já consta em seu quadro de funcionários. Por favor, verifique.");
             return false;
         }
-        
+
         //Verificar se o e-mail já possui cadastro
         $dados = $sql->select("select * from tb_usuarios u
-        left join tb_pessoas p using(idpessoa)        
+        left join tb_pessoas p using(idpessoa)
         where lower(p.desemail) = :EMAIL", array(
             ":EMAIL" => $email_tratado
         ));
@@ -870,7 +872,7 @@ class User extends Model
             $dadosEmail = $user->getData();
 
             //Retornar dado da divisão/empresa
-            $dados = $sql->select("select 
+            $dados = $sql->select("select
             e.idempresa,
             e.desnome as nome_empresa,
             e.desapelido as apelido_empresa,
@@ -882,10 +884,10 @@ class User extends Model
             d.desnomeurl as url_divisao,
             d.desdescricao as texto_divisao,
             d.desicone as icone_divisao
-            
+
              from tb_empresa e
             left join tb_divisao d using(idempresa)
-            
+
             where d.iddivisao = :DIVISAO", array(
                 ":DIVISAO" => $divisao
             ));
@@ -896,20 +898,20 @@ class User extends Model
             $nomeDivisao = $dadosEmail['empresa']['apelido_divisao'];
 
             $retorno = $sql->select("CALL sp_convidarUsuario (:DIVISAO, :EMAIL, :NOME, :SOBRENOME, :IDUSUARIO, :CARGO)", array(
-                ":DIVISAO"=>$divisao, 
+                ":DIVISAO"=>$divisao,
                 ":EMAIL"=> $email,
-                ":NOME"=>$nome, 
-                ":SOBRENOME"=>$sobrenome, 
+                ":NOME"=>$nome,
+                ":SOBRENOME"=>$sobrenome,
                 ":IDUSUARIO"=>$dadosEmail["idusuario"],
                 ":CARGO"=>$cargo
             ));
 
             $dataRecovery = $retorno[0];
-            
+
             $code = User::encodeBase64($dataRecovery["ideconvite"]);
 
-            $link = $link = Chaves::SITEROOT . "invitation?code=$code";           
-            
+            $link = $link = Chaves::SITEROOT . "invitation?code=$code";
+
             $mailer = new Mailer($dadosEmail["desemail"], "Convite para fazer parte de $nomeDivisao da empresa $nomeEmpresa", "conviteIntegrar", array(
                 "name" =>  $dadosEmail["desnome"],
                 "divisao" => $dadosEmail["empresa"]["apelido_divisao"],
@@ -920,14 +922,14 @@ class User extends Model
             ));
 
             $mailer->send();
-            
+
         } else {
             //Usuário não existente
 
             $dadosEmail = array();
 
             //Enviar e-mail convidando o usuário para se cadastrar no sistema.
-            $dados = $sql->select("select 
+            $dados = $sql->select("select
             e.idempresa,
             e.desnome as nome_empresa,
             e.desapelido as apelido_empresa,
@@ -939,10 +941,10 @@ class User extends Model
             d.desnomeurl as url_divisao,
             d.desdescricao as texto_divisao,
             d.desicone as icone_divisao
-            
+
              from tb_empresa e
             left join tb_divisao d using(idempresa)
-            
+
             where d.iddivisao = :DIVISAO", array(
                 ":DIVISAO" => $divisao
             ));
@@ -953,16 +955,16 @@ class User extends Model
             $nomeDivisao = $dadosEmail['empresa']['apelido_divisao'];
 
             $retorno = $sql->select("CALL sp_convidarUsuario (:DIVISAO, :EMAIL, :NOME, :SOBRENOME, :IDUSUARIO, :CARGO)", array(
-                ":DIVISAO"=>$divisao, 
+                ":DIVISAO"=>$divisao,
                 ":EMAIL"=> $email_tratado,
-                ":NOME"=>$nome, 
-                ":SOBRENOME"=>$sobrenome, 
+                ":NOME"=>$nome,
+                ":SOBRENOME"=>$sobrenome,
                 ":IDUSUARIO"=>User::retornaDadosDaSession()["idusuario"],
                 ":CARGO"=>$cargo
             ));
 
             $dataRecovery = $retorno[0];
-            
+
             $code = User::encodeBase64($dataRecovery["ideconvite"]);
 
             $link = $link = Chaves::SITEROOT."cadastro";
@@ -979,7 +981,7 @@ class User extends Model
 
             $mailer->send();
 
-            //OBS: o cadastro do convite ficará ativo e toda a vez que a pessoa logar 
+            //OBS: o cadastro do convite ficará ativo e toda a vez que a pessoa logar
             //será lembrada de que foi convidada a participar da divisão.
             //Esse lembrete sempre será exibido até que o usuário aceite ou recuse o convite.
 
@@ -992,18 +994,18 @@ class User extends Model
     public static function dadosConvite(int $idconvite){
         $dados = array();
         $sql = new MySql();
-        $retorno = $sql->select("select p.desnome, 
-        p.desemail, 
+        $retorno = $sql->select("select p.desnome,
+        p.desemail,
         cc.iddivisao,
-        d.desnome as nome_divisao, 
-        d.desapelido as apelido_unidade, 
-        d.desicone as icone_divisao, 
+        d.desnome as nome_divisao,
+        d.desapelido as apelido_unidade,
+        d.desicone as icone_divisao,
         c.desnome as cargo,
         cc.usuariocriacao,
         u.idusuario,
         ifnull(cc.idcargo, 0) as cargo
         from tb_convite_cadastro cc
-        
+
         left join tb_pessoas p using(desemail)
         left join tb_usuarios u using(idpessoa)
         left join tb_divisao d using(iddivisao)
@@ -1020,7 +1022,7 @@ class User extends Model
 
     public static function ConviteNegado(string $idConvite){
         //Apenas fazer um update da tabela de convite e setar o convite_recusado para 1 e o ativo para 0
-                
+
         //Verifica validade do convite. No caso de convite inativo, retorna uma mensagem
         $sql = new MySql();
         $retorno = $sql->select("select * from tb_convite_cadastro where convite_ativo = 1 and idconvite = :CONVITE;",array(
@@ -1031,7 +1033,7 @@ class User extends Model
             Empresas::setErro("Este convite não é válido. Por favor, localize o convite mais recente ou entre em contato com quem lhe enviou o convite.");
             return false;
         }
-        
+
         //No caso de convite válido, ele é marcado como recusado.
         $sql->query("update tb_convite_cadastro set convite_ativo = 1, convite_recusado = 1 where idconvite = :CONVITE;",array(
             ":CONVITE"=>$idConvite
@@ -1042,7 +1044,7 @@ class User extends Model
     }
 
     public static function ConviteAceito(int $idConvite){
-        
+
         $dados = User::dadosConvite($idConvite);
         $sql = new MySql();
 
@@ -1051,9 +1053,9 @@ class User extends Model
             ":DIVISAO"=>$dados["iddivisao"]
         ));
 
-               
+
         if(count($retorno)==0)
-        { 
+        {
             $sql->query("CALL sp_aceita_convite(:EMAIL, :DIVISAO, :USUARIO, :CONVIDADOR, :CARGO);",array(
                 ":EMAIL"=>$dados["desemail"],
                 ":DIVISAO"=>$dados["iddivisao"],
@@ -1068,11 +1070,11 @@ class User extends Model
         ));
 
         if(count($retorno)>0)
-        {            
+        {
             return true;
         }
         else
-        {        
+        {
             //Erro
             Empresas::setErro("Houve um erro em processar a sua solicitação.");
             return false;

@@ -59,13 +59,10 @@
 
 </head>
 <?php if( $sidebar != 'none' ){ ?>
-
   <body class="hold-transition sidebar-mini">
 <?php }else{ ?>
-
   <body class="hold-transition layout-top-nav"></body>
 <?php } ?>
-
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
@@ -74,7 +71,6 @@
     <ul class="navbar-nav">
       <li class="nav-item">
           <?php if( $sidebar != 'none' ){ ?><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a><?php } ?>
-
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="\src/index3.html" class="nav-link">Home</a>
@@ -196,10 +192,8 @@
             <p>
 
               <?php echo FormataNomeProprio($desnome, false); ?> <?php if( $desapelido != '' ){ ?>(@<?php echo htmlspecialchars( $desapelido, ENT_COMPAT, 'UTF-8', FALSE ); ?>)<?php } ?>
-
               <small>Membro desde <?php echo FormataData_mmm_AAAA($dtcadastro_usuario); ?></small>
               <?php $variavelNaoDefinida = ""; ?>
-
             </p>
           </li>
           <!-- Menu Body -->
@@ -231,7 +225,6 @@
   <!-- Main Sidebar Container -->
 
 <?php if( $sidebar != 'none' ){ ?>
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="\" class="brand-link">
@@ -255,28 +248,20 @@
 					</li>
 
           <?php if( $temEmpr != '' ){ ?>
-
           <?php $counter1=-1;  if( isset($empresas) && ( is_array($empresas) || $empresas instanceof Traversable ) && sizeof($empresas) ) foreach( $empresas as $key1 => $value1 ){ $counter1++; ?>
 
-
             <?php if( $local != $value1["desnomeurl"] ){ ?>
-
             <li class="nav-item menu-close">
             <?php }else{ ?>
-
             <li class="nav-item menu-open">
             <?php } ?>
 
 
-
             <?php if( $local != $value1["desnomeurl"] ){ ?>
-
             <a href="\<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link">
             <?php }else{ ?>
-
             <a href="\<?php echo htmlspecialchars( $value1["desnomeurl"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="nav-link active">
             <?php } ?>
-
 
 
               <img src="\<?php echo obtemFotoEmpresa($value1["desicone"]); ?>" class="far mg-size-50 img-circle mr-3 nav-icon">
@@ -302,9 +287,7 @@
               	</ul>
           </li>
           <?php } ?>
-
           <?php } ?>
-
 
 
 
@@ -317,13 +300,10 @@
 
 
 					<?php if( $local != 'Tickets' ){ ?>
-
 					<a href="\tickets" class="nav-link">
 					<?php }else{ ?>
-
 					<a href="\tickets" class="nav-link active">
 					<?php } ?>
-
 						<i class="nav-icon fas fa-clipboard-list"></i>
             	<p>
               	Tickets
@@ -336,13 +316,10 @@
 
 				<li class="nav-item">
           <?php if( $local != 'Criar ticket' ){ ?>
-
 					<a href="\novo" class="nav-link">
 					<?php }else{ ?>
-
 					<a href="\novo" class="nav-link active">
 					<?php } ?>
-
             <i class="nav-icon fas fa-plus"></i>
             <p>
               Criar Ticket
@@ -352,13 +329,10 @@
 
 				<li class="nav-item">
           <?php if( $local != 'Tickets favoritos' ){ ?>
-
 					<a href="\favoritos" class="nav-link">
 					<?php }else{ ?>
-
 					<a href="\favoritos" class="nav-link active">
 					<?php } ?>
-
             <i class="nav-icon fas fa-star"></i>
             <p>
               Favoritos
@@ -857,4 +831,3 @@
   <!-- /.sidebar -->
 </aside>
 <?php } ?>
-

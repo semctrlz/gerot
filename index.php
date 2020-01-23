@@ -8,6 +8,7 @@ use Zware\Model\Empresas;
 use \Zware\Pagina;
 use \Zware\PaginaInicial;
 use \Zware\Model\User;
+use \Zware\Model\Tickets;
 use \Zware\Model\Rotinas;
 use \Zware\Model\Files;
 use \Zware\Model\Funcoes;
@@ -427,6 +428,9 @@ $app->get('/tickets(/)', function(){
 	$user = new User();
 	$user->loadCookie();
 	$dadosUsuario = User::retornaDadosDaSession();
+	$tickets = Tickets::GeraTickets($dadosUsuario['idusuario']);
+
+	$dadosUsuario['tickets'] = $tickets;
 
 	User::verificaAcesso("tickets", $dadosUsuario, "Tickets");
 	exit;
