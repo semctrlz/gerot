@@ -1,10 +1,12 @@
 <!-- Content Wrapper. Contains page content -->
-<content class="ticketSystem">
+<content >
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
+
     <div class="container-fluid">
       <div class="row mb-2">
+
         <div class="col-sm-6">
           <h1>Tickets</h1>
         </div>
@@ -14,152 +16,86 @@
 						<li class="breadcrumb-item active">Tickets</li>
           </ol>
         </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
-  <!-- Main content -->
-  <section class="content">
-
-		{if="$tickets.quant > 0"}
-		{loop="$tickets.dados"}
-    <!-- Default box -->
-		<div class="ticket">
-			{if="$value.dif_prazo > 3"}
-			<div class="cartao-ticket normal">
-				{elseif="$value.dif_prazo > 0"}
-			<div class="cartao-ticket atencao">
-				{else}
-				<div class="cartao-ticket perigo">
-				{/if}
-				<div class="ticket-card-body">
-					<div class="status-ticket">
-						<div class="id-ticket">#{$value.idticket}</div>
-						<div class="status-ticket novo"><span>Novo</span></div>
-					</div>
-					<div class="desc-ticket">
-						<span class="ticket-anexo">
-						</span>
-						<div class="titulo-ticket">
-							{$value.destitulo}
-						</div>
-						<span class="data-ticket"> - {function="formataDataHora($value.dtcriacao)"}</span>
-						<div class="corpo-ticket">
-							{$value.descorpo}
-						</div>
-
-					</div>
-				</div>
-				<div class="ticket-card-footer">
-					<ul>
-						<li class="li-ticket tam-p">
-							<a href="#" data-id="1015196" class="botaoPin"><span class="fas fa-thumbtack gray active"></span></a>
-						</li>
-
-						<li class="li-ticket tam-p">
-							<a href="#" data-id="1015196" class="botaoFav"><span class="far fa-star gray"></span></a>
-						</li>
-						<li class="li-ticket tam-p">
-							<a href="#"><div class="fas fa-ellipsis-h gray"></div></a>
-						</li>
-						<li class="li-ticket tam-g">
-							{if="$value.nome_dest != 'null'"}
-							<a href="/perfil/{$value.url_dest}">
-								<div class="user-ticket">
-									<img src="\{function="obtemFotoPerfil($value.foto_dest)"}" title="{function="FormataNomeProprio($value.nome_dest, false)"}">
-									<div class="tipo-usuario-ticket">Destinatário</div>
-									<div class="nome-usuario-ticket">{function="FormataNomeProprio($value.nome_dest, false)"}</div>
-								</div>
-							</a>
-							{else}
-							<a href="#" class="btn btn-xs btn-success btnAssumir">
-								Assumir
-							</a>
-							{/if}
-						</li>
-						<li class="li-ticket tam-g">
-							<a href="/perfil/{$value.url_rem}">
-								<div class="user-ticket">
-									<img src="\{function="obtemFotoPerfil($value.foto_rem)"}" alt="{function="FormataNomeProprio($value.nome_rem, false)"}">
-									<div class="tipo-usuario-ticket">Emitente</div>
-									<div class="nome-usuario-ticket">{function="FormataNomeProprio($value.nome_rem, false)"}</div>
-								</div>
-							</a>
-						</li>
-						</li>
-						<li class="li-ticket tam-m {$value.prioridade_classe}">
-							<div class="titulo-subtitulo-ticket  ">
-								<i>Prioridade</i>
-								<p class="priori-modarada">{$value.prioridade}</p>
-							</div>
-						</li>
-
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket">
-								<i>Tipo</i>
-								<p>{$value.tipo}</p>
-							</div>
-						</li>
-
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket">
-								<i>Enviado</i>
-								<p>{function="formataData($value.dtcriacao)"}</p>
-							</div>
-						</li>
-
-						<li class="li-ticket tam-m">
-							<div class="titulo-subtitulo-ticket">
-								<i>prazo</i>
-								<p>{function="formataData($value.dtprazo)"}</p>
-							</div>
-						</li>
-						<li class="li-ticket pull-right tam-g">
-							<div class="titulo-subtitulo-ticket">
-								<i>Categoria</i>
-								<p><strong>{$value.nome_setor}</strong> / <strong>{$value.categoria}</strong> / <strong>{$value.subcategoria}</strong></p>
-							</div>
-						</li>
-
-					</ul>
-				</div>
 			</div>
-			<div class="cartao-ticket-menu" onmouseout="ocultaMenu(this)" onmouseover="exibeMenu(this)">
-				<ul>
-					<li>
-						<a href="#" class="ticket-menu" onmouseover="exibeMenu(this)">
-							<span class="fas fa-reply"></span>Responder
-						</a>
-					</li>
-					<li>
-						<a href="#" class="ticket-menu">
-							<span class="fas fa-forward"></span>Encaminhar
-						</a>
-					</li>
-					<li>
-						<a href="#" class="ticket-menu">
-							Menu 3
-						</a>
-					</li>
-					<li>
-						<a href="#" class="ticket-menu">
-							Menu 4
-						</a>
-					</li>
-				</ul>
-			</div>
+		</section>
+    <section class="content">
+		<div class="card"><!-- /.container-fluid -->
+				<div class="card-body p-0">
+					<table class="table table-striped projects" width="100%">
+							<thead>
+									<tr>
+										<th style="width: 5%">
+												#
+										</th>
+										<th style="width: 5%">
+											Prioridade
+										</th>
+										<th style="width: 20%">
+												Título
+										</th>
+										<th style="width: 10%" class="hide_p">
+											Categoria / Assunto
+										</th>
+										<th style="width: 30%" class="hide_mobile hide_p">
+												Solicitante(s)
+										</th>
+										<th style="width: 8%" class="text-center hide_mobile hide_p">
+												Status
+										</th>
+										<th style="width: 5%" class="hide_mobile hide_p">
+
+										</th>
+									</tr>
+							</thead>
+							<tbody>
+
+								{if="$tickets.quant > 0"}
+								{loop="$tickets.dados"}
+									<tr>
+											<td>
+												{$value.idticket}
+											</td>
+											<td class="project-state">
+												<span class="badge {$value.prioridade_classe}">{$value.prioridade}</span>
+											</td>
+											<td>
+												<a>
+													<a href="\tickets/{$value.idticket}">{$value.destitulo}</a>
+												</a>
+												<br/>
+												<small>
+														Criado em {function="formataDataHora($value.dtcriacao)"} -
+														Prazo solicitado {function="formataData($value.dtprazo)"}
+												</small>
+											</td>
+											<td class="hide_p">
+												{function="FormataNomeProprio($value.categoria, false)"} / {function="FormataNomeProprio($value.subcategoria, false)"}
+											</td>
+											<td class="hide_mobile hide_p">
+												<ul class="list-inline">
+														<li class="list-inline-item">
+																<img alt="Avatar" class="table-avatar" src="\{function="obtemFotoPerfil($value.foto_rem)"}" title="{function="FormataNomeProprio($value.nome_rem, false)"} - {$value.cargo_rem}">
+														</li>
+												</ul>
+											</td>
+											<td class="project-state hide_mobile hide_p">
+													<span class="badge badge-success">Success</span>
+											</td>
+											<td class="hide_mobile hide_p">
+												<div class="btn-group btn-group-sm float-right">
+												<button class="btn btn-info btn-xs btn-edit" title="Editar cargo"><i class="fas fa-pencil-alt"></i></button>
+												<button class="btn btn-info btn-xs btn-edit" title="Editar cargo"><i class="fas fa-pencil-alt"></i></button>
+												<button class="btn btn-danger btn-xs btn-delete" title="Excluir cargo"><i class="fas fa-trash-alt"></i></button>
+											</div>
+											</td>
+									</tr>
+								{/loop}
+								{/if}
+							</tbody>
+					</table>
+				</div>
 		</div>
-		{/loop}
-		{/if}
-
-		<!-- /.card-body -->
-
-
-
-    <!-- /.card -->
-
-  </section>
-  <!-- /.content -->
+</section>
 </div>
 </content>
 <!-- /.content-wrapper -->

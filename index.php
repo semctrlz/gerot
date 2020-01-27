@@ -12,6 +12,9 @@ use \Zware\Model\Tickets;
 use \Zware\Model\Rotinas;
 use \Zware\Model\Files;
 use \Zware\Model\Funcoes;
+use \Zware\DB\MySql;
+use \Zware\Model\ConfigHandler;
+
 
 $app = new Slim();
 
@@ -424,7 +427,6 @@ $app->post('/adicionar_empresa', function () {
 
 $app->get('/tickets(/)', function(){
 	User::verifyLogin("Location: /");
-
 	$user = new User();
 	$user->loadCookie();
 	$dadosUsuario = User::retornaDadosDaSession();
@@ -433,6 +435,23 @@ $app->get('/tickets(/)', function(){
 	$dadosUsuario['tickets'] = $tickets;
 
 	User::verificaAcesso("tickets", $dadosUsuario, "Tickets");
+	exit;
+});
+
+$app->get('/novo_ticket(/)', function(){
+	User::verifyLogin("Location: /");
+	$user = new User();
+	$user->loadCookie();
+	$dadosUsuario = User::retornaDadosDaSession();
+	$tickets = Tickets::GeraTickets($dadosUsuario['idusuario']);
+
+	$json = Tickets::GeraArvoreEmpresas($dadosUsuario['idusuario']);
+	echo($json);
+	exit;
+
+	$dadosUsuario['tickets'] = $tickets;
+
+	User::verificaAcesso("criar_ticket", $dadosUsuario, "Criar ticket");
 	exit;
 });
 

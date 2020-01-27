@@ -366,3 +366,22 @@ background-color: #dddddd;
 content.ticketSystem .cartao-ticket-menu a.ticket-menu span{
 	margin-right: 10px;
 }
+
+@media all and (min-width: 601px) and (max-width: 767px) {
+	.hide_mobile{
+			display:none;
+			width:0;
+			height:0;
+			opacity:0;
+			visibility: collapse;
+	}
+}
+@media all and (min-width: 0px) and (max-width: 600px) {
+	.hide_p{
+			display:none;
+			width:0;
+			height:0;
+			opacity:0;
+			visibility: collapse;
+	}
+}
