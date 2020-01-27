@@ -598,11 +598,11 @@ $app->get('/:EMPRESA/:DIVISAO(/)', function ($nomeEmpresa, $nomedivisao) {
 	if (isset($_GET["editcolab"])) {
 		if ($_GET["editcolab"] == "true") {
 
+			$dadosUsuario["divisoes"] = Empresas::RetornaDivisoes($nomeEmpresa);
+
 			$dadosUsuario["erro"] = User::getError();
 
-
 			$dadosUsuario['cargos'] = Empresas::retornaCargos($dadosUsuario['divisao']["idempresa"]);
-
 
 			User::verificaAcesso("quadro_funcionarios", $dadosUsuario, $nomeEmpresa);
 			exit;

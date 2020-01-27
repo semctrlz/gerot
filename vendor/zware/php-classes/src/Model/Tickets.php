@@ -5,6 +5,8 @@ use \Zware\DB\MySql;
 use \Zware\Mailer;
 use \Zware\Model;
 
+//Nivel abertura Ticket
+
 class Tickets extends Model
 {
 	public static function GeraTickets(int $idUsuario){
@@ -110,33 +112,7 @@ class Tickets extends Model
 
 		$dados = array();
 
-		$ultimaEmpresa = 0;
-		$tempEmpresa = [];
-		if(count($retorno)>0){
-			$empresa_repeat = -1;
-			$divisao_repeat = -1;
-			for($i = 0; $i<count($retorno);$i++)
-			{
-				if($retorno[$i]['idempresa'] != $ultimaEmpresa){
-					$empresa_repeat += 1;
-					$ultimaEmpresa = $retorno[$i]['idempresa'];
-				}
 
-				$dados[$empresa_repeat]["nomeEmp"] = $retorno[$i]['nome_empresa'];
-				$dados[$empresa_repeat]["idEmp"] = $retorno[$i]['idempresa'];
-
-
-
-				$dados[$empresa_repeat]['divisao'] =
-
-
-
-
-
-			}
-		}
-
-		return json_encode($dados);
 
 	}
 

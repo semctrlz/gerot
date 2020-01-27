@@ -316,9 +316,9 @@
 
 				<li class="nav-item">
           <?php if( $local != 'Criar ticket' ){ ?>
-					<a href="\novo" class="nav-link">
+					<a href="\novo_ticket" class="nav-link">
 					<?php }else{ ?>
-					<a href="\novo" class="nav-link active">
+					<a href="\novo_ticket" class="nav-link active">
 					<?php } ?>
             <i class="nav-icon fas fa-plus"></i>
             <p>
