@@ -84,17 +84,17 @@
 
 											<div class="form-group col-8">
 												<label for="perfil_criacao">Pode criar e visualizar tickets das unidades:</label><br>
-												<div class="form-group row">
+												<div class="form-group row" id="checkBoxes">
+
 													{if="$divisoes.quant > 0"}
 														{loop="$divisoes.dados"}
-
-														<div class="form-check ml-2">
-															<input class="form-check-input" type="checkbox" id="cb_{$value.desapelido}">
-															<label class="form-check-label mr-2" for="cb_{$value.desapelido}">{$value.desapelido}</label>
+														<div class="form-check col-3">
+															<input class="form-group checkbox" type="checkbox" id="cb_{$value.iddivisao}">
+															<label class="form-check-label mr-2" for="cb_{$value.iddivisao}">{$value.desapelido}</label>
 														</div>
+															{/loop}
+															{/if}
 
-														{/loop}
-													{/if}
 												</div>
 											</div>
 
@@ -113,7 +113,7 @@
 											<div class="form-group col-1 unidades">
 												<label for="sobrenome">&nbsp;</label>
 												<input type="hidden" name="iddivisao" value="{$divisao.iddivisao}">
-												<input type="submit" class="btn form-control btn-block btn-success" value="Inserir">
+												<input type="submit" class="btn form-control btn-block btn-success" value="Inserir" id="criarFuncionario">
 										</div>
                   </div>
 
@@ -298,10 +298,6 @@
             </div>
 					</div>
 
-
-
-
-
           <script src="\src/plugins/jquery/jquery.min.js"></script>
           <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -378,24 +374,43 @@
               $('#modalformFoto').submit();
           });
 
+						$("#criarFuncionario").click(function(e)
+						{
+							e.preventDefault();
+							var btn = e.relatedTarget;
+
+							//Obtem os dados relativos ao funcionário
+							var idUsuarioCriacao = "{$idusuario}";
+							var email = $("#desemail").val();
+							var nome = $("#desnome").val();
+							var sobrenome = $("#dessobrenome").val();
+							var cargo = $("#cargo").val();
+							var fechamento = $("#perfil_fechamento").val();
+
+							var checks = $("#checkBoxes :checked");
+							var ids = Array(checks.length);
+							for (var i = 0; i < checks.length; i++)
+							{
+								ids[i] = parseInt(checks[i].id.replace('cb_',''), 0);
+							}
+
+							console.log(cargo);
+
+						});
+
 						$('#modalEditaColaborador').on('show.bs.modal', function(event) {
-							var button = $(event.relatedTarget)
+							var button = $(event.relatedTarget);
 
 							//Obtem o id do usuario
-							var func = button.data('usuario');
-							alert(func);
+							var func = document.getElementById("checkBoxes");
+							var checks = $("#checkBoxes :checked");
+							var ids = Array(checks.length);
+							for (var i = 0; i < checks.length; i++)
+							{
+								ids[i] = parseInt(checks[i].id.replace('cb_',''), 0);
+							}
 
-							//busca informações do Usuário selecionado
-
-              var button = $(event.relatedTarget) // Button that triggered the modal
-              var email = button.data('email') // Extract info from data-* attributes
-              var tipo = button.data('tipo') // Extract info from data-* attributes
-                  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-
-              $("#modalformExcluir").find("#modal_hidden_tipo").val(tipo);
-              $("#modalformExcluir").find("#modal_hidden_email").val(email);
-              $("#modalformExcluir").find("#modal_email").val('');
+							console.log(ids);
 
             });
 
