@@ -59,17 +59,17 @@
 
                       <div class="form-group col-3">
                         <label for="desemail">E-mail*</label>
-                        <input type="email" id="desemail" name="desemail"  class="form-control" placeholder="E-mail" required maxlength="128" required>
+                        <input type="email" id="desemail" name="desemail"  class="form-control required" placeholder="E-mail" required maxlength="128" required>
                       </div>
 
                       <div class="form-group col-3">
                           <label for="desnome">Nome*</label>
-                          <input type="text" id="desnome" class="form-control" name="desnome"  placeholder="Nome" maxlength="64" required>
+                          <input type="text" id="desnome" class="form-control required" name="desnome" laceholder="Nome" maxlength="64" required>
                       </div>
 
                       <div class="form-group col-3">
-                          <label for="sobrenome">Sobrenome</label>
-                          <input type="text" id="sobrenome" class="form-control" name="dessobrenome" autocomplete="family-name" placeholder="Sobrenome" maxlength="64">
+                          <label for="dessobrenome">Sobrenome</label>
+                          <input type="text" id="dessobrenome" class="form-control" name="dessobrenome" autocomplete="family-name" placeholder="Sobrenome" maxlength="64">
                       </div>
 
                       <div class="form-group col-3">
@@ -147,7 +147,7 @@
                 <th style="width: 80px">Ação</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="colaboradores">
 
               {loop="$funcionarios"}
 							<tr>
@@ -172,11 +172,10 @@
                   {if="$value.status != 'Ativo'"}
                   <button class="btn btn-default btn-sm" title="Reenviar convite"><i class="fas fa-paper-plane"></i></button>
 									{/if}
-									{if="$value.id_quadro_funcionario = 0"}
-
-                  	<button class="btn btn-info btn-sm" title="Editar colaborador" aria-disabled="true" disabled=''><i class="fas fa-pencil-alt"></i></button>
+									{if="$value.tipo == 'convidado'"}
+										<button class="btn btn-info btn-sm" title="Editar colaborador" data-toggle="modal" data-target="#modalEditaColaborador" data-usuario="{$value.id_convite}" data-tipo="{$value.tipo}"><i class="fas fa-pencil-alt"></i></button>
 									{else}
-										<button class="btn btn-info btn-sm" title="Editar colaborador" data-toggle="modal" data-target="#modalEditaColaborador" data-usuario={$value.id_quadro_funcionario}><i class="fas fa-pencil-alt"></i></button>
+										<button class="btn btn-info btn-sm" title="Editar colaborador" data-toggle="modal" data-target="#modalEditaColaborador" data-usuario="{$value.id_quadro_funcionario}" data-tipo="{$value.tipo}"><i class="fas fa-pencil-alt"></i></button>
 									{/if}
 
                   <button class="btn btn-danger btn-sm" title="Excluir colaborador" data-toggle="modal" data-target="#modalConfirmDelete" data-email="{$value.desemail}" data-tipo="{$value.tipo}"><i class="fas fa-trash-alt"></i></button>
@@ -270,14 +269,16 @@
 											<br>
 											<div class="col-12 row mt-3">
 											<label for="perfil_fechamento" class="col-12">Gestão dos tickets</label>
-											{if="$divisoes.quant > 0"}
-												{loop="$divisoes.dados"}
-														<div class="form-check ml-2">
+											<div class="form-group row ml-2">
+												{if="$divisoes.quant > 0"}
+													{loop="$divisoes.dados"}
+														<div class="form-check col-6">
 															<input class="form-check-input" type="checkbox" id="cb2_{$value.desapelido}">
 															<label class="form-check-label mr-2" for="cb_{$value.desapelido}">{$value.desapelido}</label>
+														</div>
+															{/loop}
+													{/if}
 													</div>
-												{/loop}
-											{/if}
 											</div>
 											<div class="col-12 mt-3">
 											<label for="perfil_fechamento">Status colaborador</label>
@@ -341,7 +342,13 @@
             }
           </script>
 
-          <script type="text/javascript">
+					<script src="\src/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+					<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+
+
+
+					<script type="text/javascript">
+
             $('#modalConfirmDelete').on('show.bs.modal', function(event) {
               var button = $(event.relatedTarget) // Button that triggered the modal
               var email = button.data('email') // Extract info from data-* attributes
@@ -377,7 +384,24 @@
 						$("#criarFuncionario").click(function(e)
 						{
 							e.preventDefault();
-							var btn = e.relatedTarget;
+
+							const Toast = Swal.mixin({
+								toast: true,
+								position: 'top-end',
+								showConfirmButton: false,
+								timer: 3000
+							});
+
+							if($('.required').val() == '')
+							{
+								Toast.fire({
+											type: 'error',
+											title: 'Preencha todos os campos com asterisco para continuar'
+										})
+								return;
+
+							}
+
 
 							//Obtem os dados relativos ao funcionário
 							var idUsuarioCriacao = "{$idusuario}";
@@ -386,33 +410,112 @@
 							var sobrenome = $("#dessobrenome").val();
 							var cargo = $("#cargo").val();
 							var fechamento = $("#perfil_fechamento").val();
-
 							var checks = $("#checkBoxes :checked");
 							var ids = Array(checks.length);
 							for (var i = 0; i < checks.length; i++)
 							{
-								ids[i] = parseInt(checks[i].id.replace('cb_',''), 0);
+								ids[i] = checks[i].id.replace('cb_','');
 							}
 
-							console.log(cargo);
+              var unidadesChamados = ids.join();
+							var liberado = true;
+
+							$.ajax({
+								url: '\\classhandler.php',
+								method: 'POST',
+								data: {
+										pusuarioCriacao: idUsuarioCriacao,
+										pemail: email,
+										pnome: nome,
+										psobrenome: sobrenome,
+										pcargo: cargo,
+										pfechamento: fechamento,
+										punidadesChamados: unidadesChamados,
+										pdivisao: "{$divisao.iddivisao}",
+										poperacao: "AddColaborador"
+								},
+								dataType: "json",
+								success: function(data) {
+									if(data.status == "success"){
+
+										var dadosRet = JSON.parse(data.retorno);
+
+										var r_avatar = dadosRet['avatar'];
+										var r_email = dadosRet['email'];
+										var r_nome = dadosRet['nome'];
+										var r_sobrenome = dadosRet['sobrenome'];
+										var r_cargo = dadosRet['cargo'];
+										var r_status = dadosRet['status'];
+										var r_quadro = dadosRet['idquadroFuncionarios'];
+										var r_tipo = dadosRet['tipo'];
+
+										if(r_avatar == ""){
+											r_avatar = "views/uploads/upics/noprofilepicP.jpg";
+										}
+
+										$("#colaboradores").append("<tr><td><div class='user-block'><img class='img-circle height:20 img-bordered-sm' src='\\"+r_avatar+"' alt=''></div></td><td>"+r_email+"</td><td>"+r_nome+"</td><td>"+r_cargo+"</td><td><span class='badge bg-warning'>Pendente</span></td><td><div class='btn-group btn-group-xs float-sm-right'><button class='btn btn-default btn-sm' title='Reenviar convite'><i class='fas fa-paper-plane'></i></button><button class='btn btn-info btn-sm' title='Editar colaborador' aria-disabled='true' disabled=''><i class='fas fa-pencil-alt'></i></button><button class='btn btn-danger btn-sm' title='Excluir colaborador' data-toggle='modal' data-target='#modalConfirmDelete' data-email='"+r_email+"' data-tipo='"+r_tipo+"'><i class='fas fa-trash-alt'></i></button></div></td></tr>");
+
+										$("input[name='desnome']").val('');
+										$("input[name='dessobrenome']").val('');
+										$("input[name='desemail']").val('');
+										$("#checkBoxes :checked").each(function() {
+											this.checked = false;
+										});
+										$("select[name='cargo']").val(0);
+										$("select[name='perfil_fechamento']").val(0);
+
+
+										Toast.fire({
+											type: 'success',
+											title: `Convite enviado com sucesso para ${r_email}`
+										})
+
+									}
+								},
+								error: function(data) {
+									console.log(data);
+								}
 
 						});
 
-						$('#modalEditaColaborador').on('show.bs.modal', function(event) {
-							var button = $(event.relatedTarget);
 
-							//Obtem o id do usuario
-							var func = document.getElementById("checkBoxes");
-							var checks = $("#checkBoxes :checked");
-							var ids = Array(checks.length);
-							for (var i = 0; i < checks.length; i++)
-							{
-								ids[i] = parseInt(checks[i].id.replace('cb_',''), 0);
-							}
+						});
 
-							console.log(ids);
+						// $('#modalEditaColaborador').on('show.bs.modal', function(event) {
+						// 	var button = $(event.relatedTarget);
+						// 	var tipo = button.data('tipo');
+						// 	var idUsuario = button.data('usuario');
+						// 	return;
+						// 	$.ajax({
+						// 		url: '\\classhandler.php',
+						// 		method: 'POST',
+						// 		data: {
+						// 				pusuario: idUsuario,
+						// 				ptipo: tipo,
+						// 				poperacao: "consultaColaborador"
+						// 		},
+						// 		dataType: "json",
+						// 		success: function(data) {
+						// 			if(data.status == "success"){
+						// 				var dadosRet = JSON.parse(data.retorno);
 
-            });
+						// 				// var r_cargo = dadosRet['cargo'];
+						// 				// var r_fechamentos_tickets = dadosRet['fechamento'];
+						// 				// var r_status_colaborador = dadosRet['status'];
+						// 				// var r_abertura = dadosRet['abertura'];
+						// 				// var r_nome = dadosRet['nome'];
+						// 				// var r_email = dadosRet['email'];
+						// 				// alert(r_nome);
+						// 				// $("#modalEditaColaborador span.username a").text(r_nome);
+
+						// 			}
+						// 		},
+						// 		error: function(data) {
+						// 			console.log(data);
+						// 		}
+
+						// });
+            // });
 
 					</script>
 

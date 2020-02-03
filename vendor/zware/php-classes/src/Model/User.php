@@ -386,6 +386,50 @@ class User extends Model
         unset($_COOKIE[Chaves::COOKIENAME]);
     }
 
+		public static function Notificacoes(){
+			$sql = new MySql();
+			$dados = $sql->select("select
+			tipo,
+			count(idnotificacao) as quant,
+
+			case
+			when TIMESTAMPDIFF(DAY, max(dtcriacao),current_timestamp()) / 365 between 1 and 2 then concat('mais de ', 1, ' ano')
+			when TIMESTAMPDIFF(DAY, max(dtcriacao),current_timestamp()) / 365 >= 2 then concat('mais de ', TIMESTAMPDIFF(YEAR ,max(dtcriacao), NOW()), ' anos')
+
+			when TIMESTAMPDIFF(DAY, max(dtcriacao),current_timestamp()) / 30 = 1 then concat('mais de ', 1, ' mês')
+			when TIMESTAMPDIFF(DAY, max(dtcriacao),current_timestamp()) / 30 > 1 then concat('mais de ', TIMESTAMPDIFF(MONTH ,max(dtcriacao), NOW()), ' meses')
+
+			when TIMESTAMPDIFF(DAY ,max(dtcriacao),current_timestamp()) between 1 and 2 then concat('mais de ', 1, ' dia')
+			when TIMESTAMPDIFF(DAY ,max(dtcriacao),current_timestamp()) > 1 then concat(TIMESTAMPDIFF(DAY ,max(dtcriacao), now()), ' dias')
+
+			when TIMESTAMPDIFF(HOUR ,max(dtcriacao),current_timestamp()) = 1 then concat(1, ' hora')
+			when TIMESTAMPDIFF(HOUR ,max(dtcriacao),current_timestamp()) > 1 then concat(TIMESTAMPDIFF(HOUR ,max(dtcriacao), now()), ' horas')
+
+			when TIMESTAMPDIFF(MINUTE ,max(dtcriacao),current_timestamp()) = 1 then concat(1, ' min')
+			when TIMESTAMPDIFF(MINUTE ,max(dtcriacao),current_timestamp()) > 1 then concat(TIMESTAMPDIFF(MINUTE ,max(dtcriacao),now()), ' mins')
+
+					ELSE 'segundos atrás'
+				end as 'dif'
+				from tb_notificacoes where usuario_dest = :USUARIO and lida = 0
+				group by tipo;", array(
+				":USUARIO"=> User::obtemIdUsuarioSession()
+			));
+
+			$totalNot = 0;
+
+			if(count($dados)>0)
+
+			for($i = 0; $i<count($dados); $i++)
+			{
+				$totalNot += $dados[$i]['quant'];
+			}
+
+			$retorno['dados'] = $dados;
+			$retorno['quantTotal'] = $totalNot;
+
+			return $retorno;
+		}
+
     public static function recuperacaoSenha($email)
     {
         $sql = new MySql();
@@ -426,7 +470,6 @@ class User extends Model
         }
     }
 
-
     public static function  verificarRecuperacao($codigo)
     {
         $idRecuperacao = User::decodeBase64($codigo);
@@ -441,7 +484,7 @@ class User extends Model
         AND a.dtrecuperacao is NULL
         AND date_add(a.dtcadastro, interval 10 minute) >= NOW()", array(
             ":IDRECOVERY" => $idRecuperacao
-        ));
+						));
 
         if (count($results) === 0) {
             throw new \Exception("Não foi possí­vel recuperar a senha.");
@@ -588,7 +631,6 @@ class User extends Model
 
             $existeErros = false;
             $erros = "";
-
             //obter os campos inseridos
             $email = trim($valores["desemail"] ? $valores["desemail"] : "");
             $nome = $valores["desnome"] ? $valores["desnome"] : "";
@@ -831,11 +873,14 @@ class User extends Model
         return $ret;
     }
 
-    public static function convidarUsuarioDivisao($email, $nome, $sobrenome, $cargo, $divisao)
+    public static function convidarUsuarioDivisao($email, $nome, $sobrenome, $cargo, $divisao, $unidades, $fechamento, $usuarioCriacao)
     {
-        $email_tratado = strtolower(Funcoes::prepararParaBanco($email, true));
-        $nome_tratado = Funcoes::prepararParaBanco($nome, true, true);
-        $sobrenome_tratado = Funcoes::prepararParaBanco($sobrenome, true, true);
+
+			$email_tratado = strtolower(Funcoes::prepararParaBanco($email, true));
+			$nome_tratado = Funcoes::prepararParaBanco($nome, true, true);
+			$sobrenome_tratado = Funcoes::prepararParaBanco($sobrenome, true, true);
+
+			$retornoCadastro = 0;
 
         //Verificar se o usuário já se encontra na divisão
         $sql = new MySql();
@@ -861,6 +906,8 @@ class User extends Model
         ));
 
         if (count($dados) > 0) {
+
+					$retornoCadastro["PosuiCadastro"] = true;
             //Usuário já existente
 
             //Enviar e-mail convidando-o a participar da divisão em questão
@@ -897,16 +944,19 @@ class User extends Model
             $nomeEmpresa = $dadosEmail['empresa']['apelido_empresa'];
             $nomeDivisao = $dadosEmail['empresa']['apelido_divisao'];
 
-            $retorno = $sql->select("CALL sp_convidarUsuario (:DIVISAO, :EMAIL, :NOME, :SOBRENOME, :IDUSUARIO, :CARGO)", array(
+            $retorno = $sql->select("CALL sp_convidarUsuario (:DIVISAO, :EMAIL, :NOME, :SOBRENOME, :IDUSUARIO, :CARGO, :UNIDADES, :FECHAMENTO)", array(
                 ":DIVISAO"=>$divisao,
                 ":EMAIL"=> $email,
                 ":NOME"=>$nome,
                 ":SOBRENOME"=>$sobrenome,
                 ":IDUSUARIO"=>$dadosEmail["idusuario"],
-                ":CARGO"=>$cargo
+								":CARGO"=>$cargo,
+								":UNIDADES"=>$unidades,
+								":FECHAMENTO"=>$fechamento
             ));
 
-            $dataRecovery = $retorno[0];
+						$dataRecovery = $retorno[0];
+						$retornoCadastro = $dataRecovery["ideconvite"];
 
             $code = User::encodeBase64($dataRecovery["ideconvite"]);
 
@@ -921,11 +971,11 @@ class User extends Model
                 "link" => $link
             ));
 
-            $mailer->send();
+						$mailer->send();
 
         } else {
-            //Usuário não existente
 
+            //Usuário não existente
             $dadosEmail = array();
 
             //Enviar e-mail convidando o usuário para se cadastrar no sistema.
@@ -954,24 +1004,26 @@ class User extends Model
             $nomeEmpresa = $dadosEmail['empresa']['apelido_empresa'];
             $nomeDivisao = $dadosEmail['empresa']['apelido_divisao'];
 
-            $retorno = $sql->select("CALL sp_convidarUsuario (:DIVISAO, :EMAIL, :NOME, :SOBRENOME, :IDUSUARIO, :CARGO)", array(
+            $retorno = $sql->select("CALL sp_convidarUsuario (:DIVISAO, :EMAIL, :NOME, :SOBRENOME, :IDUSUARIO, :CARGO, :UNIDADES, :FECHAMENTO)", array(
                 ":DIVISAO"=>$divisao,
                 ":EMAIL"=> $email_tratado,
                 ":NOME"=>$nome,
                 ":SOBRENOME"=>$sobrenome,
-                ":IDUSUARIO"=>User::retornaDadosDaSession()["idusuario"],
-                ":CARGO"=>$cargo
+                ":IDUSUARIO"=>$usuarioCriacao,
+                ":CARGO"=>$cargo,
+								":UNIDADES"=>$unidades,
+								":FECHAMENTO"=>$fechamento
             ));
 
             $dataRecovery = $retorno[0];
-
+						$retornoCadastro = $dataRecovery["ideconvite"];
             $code = User::encodeBase64($dataRecovery["ideconvite"]);
 
-            $link = $link = Chaves::SITEROOT."cadastro";
+            $link = $link = Chaves::SITEROOT."cadastro?convite=".$code;
 
 
             $mailer = new Mailer($email_tratado, "Convite para fazer parte de $nomeDivisao da empresa $nomeEmpresa", "conviteCadastro", array(
-                "name" =>  $nome_tratado,
+                "name" =>  User::FormataNomeProprio($nome_tratado, false),
                 "divisao" => $dadosEmail["empresa"]["apelido_divisao"],
                 "descricaoDivisao"=>$dadosEmail["empresa"]["texto_divisao"],
                 "fotoDivisao"=>Chaves::SITEROOT . $dadosEmail["empresa"]["icone_divisao"],
@@ -984,12 +1036,111 @@ class User extends Model
             //OBS: o cadastro do convite ficará ativo e toda a vez que a pessoa logar
             //será lembrada de que foi convidada a participar da divisão.
             //Esse lembrete sempre será exibido até que o usuário aceite ou recuse o convite.
+				}
 
-            return false;
+				return $retornoCadastro;
+		}
+		public static function FormataNomeProprio($nome, $encodado = true){
+			if($encodado){
+					$nome = utf8_decode($nome);
+			}
+			$saida = "";
+			$encoding = $encoding = 'UTF-8';
+			$nome = mb_convert_case($nome, MB_CASE_LOWER, $encoding); // Converter o nome todo para minúsculo
+			$nome = explode(" ", $nome); // Separa o nome por espaços
+			for ($i = 0; $i < count($nome); $i++) {
+
+					// Tratar cada palavra do nome
+					if ($nome[$i] == "de" or $nome[$i] == "da" or $nome[$i] == "e" or $nome[$i] == "dos" or $nome[$i] == "do") {
+							$saida .= $nome[$i] . ' '; // Se a palavra estiver dentro das complementares mostrar toda em minúsculo
+					} else {
+							$saida .= ucfirst($nome[$i]) . ' '; // Se for um nome, mostrar a primeira letra maiúscula
+					}
+			}
+			return trim($saida);
+		}
 
 
-        }
-    }
+		public static function DadosFuncionario($id, $efetivo = true)
+		{
+			$retorno = array(
+				"cargo"=>0,
+				"fechamento">0,
+				"abertura"=>"",
+				"status"=>"",
+				"nome"=>"",
+				"email"=>"",
+				"avatar"=>""
+			);
+
+			$sql = new MySql();
+
+			$dados = array();
+
+			if($efetivo)
+			{
+				$dados = $sql->select(
+					"select
+					ql.idcargo as cargo,
+					car.desnome as nome_cargo,
+					ql.nivel_fechamento_ticket as fechamento,
+					ifnull(GROUP_CONCAT(lt.iddivisao),'') as abertura,
+					case
+						when ql.ativo = 0 then 'Inativo'
+							when ql.afastado = 1 then 'Afastado'
+						else 'Ativo'
+					end as status,
+					concat(p.desnome, ' ', p.dessobrenome) as nome,
+					p.desemail as email,
+					ifnull(u.desfotoperfil, '') as avatar
+
+					from tb_quadro_funcionarios ql
+					left join tb_liberacao_ticket lt on lt.idquadro = ql.id_quadro_funcionario
+					left join tb_cargos car on car.idcargo = ql.idcargo
+					left join tb_usuarios u on u.idusuario = ql.idusuario
+					left join tb_pessoas p on p.idpessoa = u.idpessoa
+
+
+					where ql.id_quadro_funcionario = :USUARIO", array(
+						":USUARIO"=>$id
+					)
+				);
+			}
+			else
+			{
+				$dados = $sql->select("select
+				cc.idcargo as cargo,
+				c.desnome as nome_cargo,
+				cc.fechamento_tickets as fechamento,
+				cc.unidades_tickets as abertura,
+				'Ativo' as status,
+				concat(cc.desnome,' ',cc.dessobrenome) as nome,
+				cc.desemail as email,
+				ifnull(u.desfotoperfil,'') as avatar
+
+				from tb_convite_cadastro cc
+				left join tb_pessoas p on p.desemail = cc.desemail
+				left join tb_usuarios u on u.idpessoa = p.idpessoa
+				left join tb_cargos c on c.idcargo = cc.idcargo
+				where cc.idconvite = :CONVITE", array(
+					":CONVITE"=>$id
+				));
+			}
+
+			if(count($dados)>0){
+				$dado = $dados[0];
+
+					$retorno["cargo"] = $dado["cargo"];
+					$retorno["fechamento"] = $dado["fechamento"];
+					$retorno["abertura"] = $dado["abertura"];
+					$retorno["status"] = $dado["status"];
+					$retorno["nome"] = User::FormataNomeProprio($dado["nome"]);
+					$retorno["email"] = $dado["email"];
+					$retorno["avatar"] = $dado["avatar"];
+			}
+
+			return json_encode($retorno);
+		}
 
     public static function dadosConvite(int $idconvite){
         $dados = array();
@@ -1042,6 +1193,53 @@ class User extends Model
         return true;
 
     }
+
+		public static function ObtemUsuarioConvidado(int $idConvite){
+			$dadosRetorno = array(
+				"avatar"=>"",
+				"email"=>"",
+				"nome"=>"",
+				"sobrenome"=>"",
+				"cargo"=>"",
+				"status"=>"",
+				"idquadroFuncionarios"=>0,
+				"tipo"=>"convidado",
+			);
+
+			$sql = new MySql();
+
+			$results = $sql->select("select
+			ifnull(u.desfotoperfil,'') as avatar,
+			cc.desemail as email,
+			cc.desnome as nome,
+			cc.dessobrenome as sobrenome,
+			c.desnome as cargo,
+			'pendente' as status,
+			0 as idquadroFuncionarios,
+			'convidado' as tipo
+
+			from tb_convite_cadastro cc
+			left join tb_pessoas p on p.desemail = cc.desemail
+			left join tb_usuarios u on u.idpessoa = p.idpessoa
+			left join tb_cargos c on c.idcargo = cc.idcargo
+			where cc.idconvite = :CONVITE", array(
+				":CONVITE"=>$idConvite
+			));
+
+			if(count($results)>0){
+				$dados = $results[0];
+				$dadosRetorno["avatar"] = $dados["avatar"];
+				$dadosRetorno["email"] = $dados["email"];
+				$dadosRetorno["nome"] = $dados["nome"];
+				$dadosRetorno["sobrenome"] = $dados["sobrenome"];
+				$dadosRetorno["cargo"] = $dados["cargo"];
+				$dadosRetorno["status"] = $dados["status"];
+				$dadosRetorno["idquadroFuncionarios"] = $dados["idquadroFuncionarios"];
+				$dadosRetorno["tipo"] = $dados["tipo"];
+			}
+
+			return $dadosRetorno;
+		}
 
     public static function ConviteAceito(int $idConvite){
 

@@ -116,5 +116,84 @@ class Tickets extends Model
 
 	}
 
+	public static function RecuperaNotificacoes($usuario, $tipo, $nr){
+
+		$lida = 2;
+		if($nr){
+			$lida = 1;
+		}
+
+		$sql = new MySql();
+		$dados = $sql->select("select
+			n.idnotificacao,
+			n.tipo,
+			case
+				when n.tipo ='a' then 'fa-sign-in-alt'
+					when n.tipo ='c' then 'fa-users'
+					when n.tipo ='d' then 'fa-calendar-plus'
+					else 'fa-info'
+			end as icone,
+
+			n.titulo,
+			n.corpo_notificacao,
+			n.link_destino,
+			n.lida,
+			case
+				when TIMESTAMPDIFF(DAY, n.dtcriacao,current_timestamp()) / 365 between 1 and 2 then concat('mais de ', 1, ' ano')
+				when TIMESTAMPDIFF(DAY, n.dtcriacao,current_timestamp()) / 365 >= 2 then concat('mais de ', TIMESTAMPDIFF(YEAR ,n.dtcriacao, NOW()), ' anos')
+
+				when TIMESTAMPDIFF(DAY, n.dtcriacao,current_timestamp()) / 30 between 1 and 2 then concat('mais de ', 1, ' mês')
+				when TIMESTAMPDIFF(DAY, n.dtcriacao,current_timestamp()) / 30 > 1 then concat('mais de ', TIMESTAMPDIFF(MONTH ,n.dtcriacao, NOW()), ' meses')
+
+				when TIMESTAMPDIFF(DAY ,n.dtcriacao,current_timestamp()) between 1 and 2 then concat('mais de ', 1, ' dia')
+				when TIMESTAMPDIFF(DAY ,n.dtcriacao,current_timestamp()) > 1 then concat(TIMESTAMPDIFF(DAY ,n.dtcriacao, now()), ' dias')
+
+				when TIMESTAMPDIFF(HOUR ,n.dtcriacao,current_timestamp()) between 1 and 2 then concat(1, ' hora')
+				when TIMESTAMPDIFF(HOUR ,n.dtcriacao,current_timestamp()) > 1 then concat(TIMESTAMPDIFF(HOUR ,n.dtcriacao, now()), ' horas')
+
+				when TIMESTAMPDIFF(MINUTE ,n.dtcriacao,current_timestamp()) between 1 and 2 then concat(1, ' min')
+				when TIMESTAMPDIFF(MINUTE ,n.dtcriacao,current_timestamp()) > 1 then concat(TIMESTAMPDIFF(MINUTE ,n.dtcriacao,now()), ' mins')
+
+				ELSE 'segundos atrás'
+			end as tempo,
+			n.dtcriacao,
+
+			case
+				when n.tipo = 'a' or n.tipo = 'd' then ifnull(u.desfotoperfil, 'views/uploads/upics/noprofilepicP.jpg')
+					when n.tipo = 'c' then ifnull(d.desicone, 'views/uploads/upics/noempresapicP.jpg')
+					else 'src/imagens/ZwFIconex250.png'
+			end as pic,
+			case
+				when n.tipo = 'a' or n.tipo = 'd' then ifnull(p.desnome, '')
+					when n.tipo = 'c' then ifnull(d.desnome, '')
+					else 'Z-Ticket'
+			end as title_img,
+			case
+				when n.tipo = 'a' or n.tipo = 'd' then ifnull(u.desnomeurl, '')
+					when n.tipo = 'c' then ifnull(d.desnomeurl, '')
+					else '/'
+			end as link_ticket
+
+			from tb_notificacoes n
+			left join tb_usuarios u on u.idusuario = n.idusuario
+			left join tb_pessoas p on p.idpessoa = u.idpessoa
+			left join tb_divisao d on d.iddivisao = n.iddivisao
+
+			where n.usuario_dest = :USUARIO and n.tipo like :TIPO and n.lida < :LIDA
+
+			order by n.lida, n.dtcriacao desc;", array(
+				":USUARIO"=>$usuario,
+				":TIPO"=>"%".$tipo."%",
+				":LIDA"=>$lida
+		));
+
+		if(count($dados)>0){
+			return $dados;
+		}else{
+			return [];
+		}
+	}
+
+
 }
 ?>

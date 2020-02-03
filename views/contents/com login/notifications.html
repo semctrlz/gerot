@@ -1,0 +1,97 @@
+<!-- Content Wrapper. Contains page content -->
+<content >
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+
+    <div class="container-fluid">
+      <div class="row mb-2">
+
+        <div class="col-sm-6">
+          <h1>Notificações</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active"><a href="/">Home</a></li>
+						<li class="breadcrumb-item active">Notificações</li>
+          </ol>
+        </div>
+			</div>
+		</section>
+    <section class="content">
+		<div class="card"><!-- /.container-fluid -->
+			<div class="table-responsive">
+				<table class="table table-hoverd">
+					<thead>
+						<tr>
+							<th style="width: 1%">
+
+							</th>
+							<th style="width: 1%">
+
+							</th>
+							<th style="width: 20%">
+								Título
+							</th>
+							<th style="width: 50%">
+								Texto
+							</th>
+							<th style="width: 20%">
+
+							</th>
+							<th style="width: 1%">
+
+							</th>
+						</tr>
+				</thead>
+
+					<tbody>
+
+
+						{if="$quantNotifications != 0"}
+
+						{loop="$notificacoes"}
+
+						<tr>
+							<td>
+								<i class='fas {$value.icone} mr-2'>
+							</td>
+							<td class="user-image">
+								<a href="#">
+									<img
+										alt="Img"
+										class="table-avatar img-circle img-sm"
+
+										{if="$value.tipo == 'a' or $value.tipo == 'da'"}
+										src="\{function="obtemFotoPerfil($value.pic)"}"
+										{elseif="$value.tipo == 'c'"}
+										src="\{function="obtemFotoEmpresa($value.pic)"}"
+										{else}
+										src="\{$value.pic}"
+										{/if}
+										title="{function="FormataNomeProprio($value.title_img, false)"}"
+									>
+								</a>
+							</td>
+							<td class="mailbox-name"><a href="{$value.link_destino}"><strong>{$value.titulo}</strong></a></td>
+							<td class="mailbox-subject">{$value.corpo_notificacao}
+							</td>
+							<td class="mailbox-date">{$value.tempo}</td>
+							<td class="mailbox-attachment"></td>
+						</tr>
+
+						{/loop}
+
+						{/if}
+
+
+					</tbody>
+				</table>
+				<!-- /.table -->
+			</div>
+		</div>
+</section>
+</div>
+</content>
+<!-- /.content-wrapper -->
+

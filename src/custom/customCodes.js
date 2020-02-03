@@ -1,6 +1,98 @@
 
 //Página inicial para gerenciamento da rotina
 
+$(document).ready(function(){
+	// updating the view with notifications using ajax
+	function load_unseen_notification(view = '')
+	{
+		$.ajax({
+			url: '\\classhandler.php',
+			method: 'POST',
+			data: {
+					poperacao: "notificacoes"
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.status == "success"){
+
+					var dadosRet = JSON.parse(data.retorno);
+
+					var r_total_not = dadosRet['quantTotal'];
+
+					if(r_total_not > 0){
+						$('#notificacao').text(r_total_not);
+						var notific = 'Notificações';
+						if(r_total_not == 1){
+							notific = 'Notificação'
+						}
+
+						$('#pageNotification').text(r_total_not+" "+notific);
+
+						$('#notificationContents').text('');
+
+						var numero = 0;
+						var novo = "";
+
+
+						for (i = 0; i < dadosRet['dados'].length; i++) {
+
+							numero = dadosRet['dados'][i]['quant'];
+
+							if(dadosRet['dados'][i]['tipo'] == 'c'){
+								if(numero == 1){
+									novo = "novo convite";
+								}else{
+									novo = "novos convites";""
+								}
+								$("#notificationContents").append(`<a href='/notificacoes?t=c&nr=v' class='dropdown-item'><i class='fas fa-sign-in-alt mr-2'></i> ${dadosRet['dados'][i]['quant']} ${novo}<span class='float-right text-muted text-sm'>${dadosRet['dados'][i]['dif']}</span></a>`);
+							}else if(dadosRet['dados'][i]['tipo'] == 'a'){
+								if(numero == 1){
+									novo = "nova amizade";
+								}else{
+									novo = "novas amizades";""
+								}
+								$("#notificationContents").append(`<a href='/notificacoes?t=a&nr=v' class='dropdown-item'><i class='fas fa-users mr-2'></i> ${dadosRet['dados'][i]['quant']} ${novo}<span class='float-right text-muted text-sm'>${dadosRet['dados'][i]['dif']}</span></a>`);
+							}else if(dadosRet['dados'][i]['tipo'] == 'd'){
+								if(numero == 1){
+									novo = "nova demanda";
+								}else{
+									novo = "novas demandas";""
+								}
+								$("#notificationContents").append(`<a href='/notificacoes?t=d&nr=v' class='dropdown-item'><i class='fas fa-calendar-plus mr-2'></i> ${dadosRet['dados'][i]['quant']} ${novo}<span class='float-right text-muted text-sm'>${dadosRet['dados'][i]['dif']}</span></a>`);
+							}else if(dadosRet['dados'][i]['tipo'] == 's'){
+								if(numero == 1){
+									novo = "nova notificação";
+								}else{
+									novo = "novas notificações";""
+								}
+								$("#notificationContents").append(`<a href='/notificacoes?t=s&nr=v' class='dropdown-item'><i class='fas fa-info mr-2'></i> ${dadosRet['dados'][i]['quant']} ${novo}<span class='float-right text-muted text-sm'>${dadosRet['dados'][i]['dif']}</span></a>`);
+							}
+						}
+
+
+						// <a href="#" class="dropdown-item">
+            // <i class="fas fa-envelope mr-2"></i> 4 new messages
+            // <span class="float-right text-muted text-sm">3 mins</span>
+          	// </a>
+
+
+
+					}
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+
+		});
+
+		setTimeout(load_unseen_notification, 20000);
+	}
+
+	load_unseen_notification();
+});
+
+
 $(document).on('mouseenter', 'td.text-center', function () {
     $(this).find(":button").show();
     $(this).find(".badge").hide();
@@ -111,7 +203,7 @@ $("#perfilSalvar").click(function(e){
     //alert("Nome = "+nome+" Sobrenome = " + sobrenome + " Apelido = " + apelido + " Educação = "+educacao+ " Habilidade = " + habilidades + " Sobre = " + sobre + " idusuario = " +  idusuario + " Operacao = "+operacao);
 
     $.ajax({
-        url: 'classhandler.php',
+        url: '\\classhandler.php',
         method: 'POST',
         data: {
             pnome: nome,
@@ -175,8 +267,7 @@ function verificarApelido() {
                 input.addClass('is-invalid');
                 btSalvar.attr('disabled', 'true');
             }
-
-        }
+				}
     });
 }
 

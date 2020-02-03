@@ -48,7 +48,9 @@
 
   <link rel="stylesheet" href="\src/custom/customcss.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="\src/plugins/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="\src/plugins/fontawesome-free/css/all.min.css">
+	<!-- Sweet Alerts -->
+	<link rel="stylesheet" href="\src/plugins/sweetalert2/sweetalert2.min.css">
   <!-- Ionicons -->
 
   <!-- overlayScrollbars -->
@@ -159,25 +161,15 @@
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge" id="notificacao">{$notificacoes=""}</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header" id="pageNotification">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notficationContainer">
+          <span class="dropdown-item dropdown-header" id="pageNotification">0 Notificações</span>
+					<div class="dropdown-divider"></div>
+
+					<div id="notificationContents">
+
+					</div>
+					<div class="dropdown-divider"></div>
+					<a href="/notificacoes" class="dropdown-item dropdown-footer">Ver todas as notificações</a>
         </div>
       </li>
       <li class="nav-item dropdown user-menu">
