@@ -35,12 +35,11 @@ $app->get('/novo_ticket(/)', function(){
 	$dadosUsuario = User::retornaDadosDaSession();
 	$tickets = Tickets::GeraTickets($dadosUsuario['idusuario']);
 
-	$json = Tickets::GeraArvoreEmpresas($dadosUsuario['idusuario']);
-	echo($json);
-	exit;
+	$divisoes = Tickets::GeraArvoreEmpresas($dadosUsuario['idusuario']);
 
 	$dadosUsuario['tickets'] = $tickets;
-
+	$dadosUsuario['divisoes'] = $divisoes;
+	$dadosUsuario['SetoresDestino'] = Tickets::SetoresDestino($dadosUsuario['idusuario']);
 	User::verificaAcesso("criar_ticket", $dadosUsuario, "Criar ticket");
 	exit;
 });

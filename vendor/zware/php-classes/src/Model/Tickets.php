@@ -103,16 +103,44 @@ class Tickets extends Model
 
 	}
 
-	public static function GeraArvoreEmpresas(int $idusuario){
+	public static function GeraArvoreEmpresas($idusuario){
 		$sql = new MySql();
 
-		$retorno = $sql->select("call sp_arvore_empresa(:USUARIO)", array(
+		$retorno = $sql->select("select 0 as iddivisao, 'Selecione a unidade' as desnome
+
+		union all
+
+		(select  d.iddivisao, concat(e.desnome, ' - ', d.desnome) as desnome FROM dbflow.tb_liberacao_ticket lt
+				left join tb_quadro_funcionarios ql on ql.id_quadro_funcionario = lt.idquadro
+				left join tb_divisao d on d.iddivisao = lt.iddivisao
+						left join tb_empresa e on e.idempresa = d.idempresa
+				where d.ativo = 1 and ql.idusuario = :USUARIO
+						order by e.desnome asc, d.desnome)", array(
 			":USUARIO"=>$idusuario
 		));
 
-		$dados = array();
+		return $retorno;
+	}
 
+	public static function SetoresDestino($idusuario){
+		$sql = new MySql();
+		$dados = $sql->select("select e.idempresa, e.desnome nome_empresa, d.iddivisao, d.desnome as nome_divisao, s.idsetor, s.desnome as nome_setor from tb_setor s
+		left join tb_divisao d on s.iddivisao = d.iddivisao
+		left join tb_empresa e on e.idempresa = d.idempresa
 
+		where e.idempresa in (select distinct e.idempresa from tb_quadro_funcionarios ql
+		left join tb_divisao d on d.iddivisao = ql.iddivisao
+		left join tb_empresa e on e.idempresa = d.idempresa
+		where ql.idusuario = :USUARIO)
+
+		order by e.desnome, d.desnome, s.desnome", array(
+			":USUARIO"=>$idusuario
+		));
+		$retorno = [];
+		$retorno['quantidade'] = count($retorno);
+		$retorno['dados']= $dados;
+
+		return $retorno;
 
 	}
 
