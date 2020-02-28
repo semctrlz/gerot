@@ -1,10 +1,12 @@
+<link rel="stylesheet" href="\src/plugins/datepicker/bootstrap-datepicker.min.css">
+
 <div class="content-wrapper" style="min-height: 1200.88px;">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1>Advanced Form</h1>
+					<h1>Criar ticket</h1>
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -27,16 +29,19 @@
 				<!-- /.card-header -->
 				<div class="card-body">
 					<div class="row">
-						<div class="col-md-5">
+						<!-- /Unidade criação -->
+						<div class="col-md-4">
 							<div class="form-group">
-								<label>Sua Unidade</label>
+								<label for="unidade">Sua Unidade*</label>
 								<select
 									class="form-control select2 select2-hidden-accessible"
 									style="width: 100%;"
 									data-select2-id="1"
 									tabindex="-1"
 									aria-hidden="true"
-									id="CbEmpresa">
+									name="unidade"
+									id="unidade">
+									<option value="0">Selecione sua unidade</option>
 									{loop="$divisoes"}
 									<option value="{$value.iddivisao}">{$value.desnome}</option>
 									{/loop}
@@ -45,35 +50,44 @@
 							<!-- /.form-group -->
 						</div>
 
-						<div class="col-md-5">
+						<!-- /Unidade destino -->
+						<div class="col-md-4">
 							<div class="form-group">
-								<label>Unidade destino</label>
+								<label for="unidadedestino">Unidade de destino*</label>
 								<select
 								class="form-control select2 select2-hidden-accessible"
 								style="width: 100%;"
 								data-select2-id="1"
 								tabindex="-1"
 								aria-hidden="true"
-								id="CbDivisao">
-									<option>Selecione uma unidade</option>
-									<option>Alaska</option>
-									<option>California</option>
-									<option>Delaware</option>
-									<option>Tennessee</option>
-									<option>Texas</option>
-									<option>Washington</option>
+								name="unidadedestino"
+								id="unidadedestino">
+									<option value=0>Primeiro selecione sua unidade</option>
+								</select>
+							</div>
+							<!-- /.form-group -->
+						</div>
+
+						<!-- /Setor destino -->
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="setordestino">Setor de destino*</label>
+								<select
+								class="form-control select2 select2-hidden-accessible"
+								style="width: 100%;"
+								data-select2-id="1"
+								tabindex="-1"
+								aria-hidden="true"
+								name="setordestino"
+								id="setordestino">
+									<option value=0>Primeiro selecione a unidade de destino</option>
 								</select>
 							</div>
 							<!-- /.form-group -->
 						</div>
 
 						<!-- /.col -->
-						<div class="col-md-2">
-							<div class="form-group">
-								<label>&nbsp;</label>
-								<button class="btn btn-success btn-block ">OK</button>
-							</div>
-						</div>
+
 					</div>
 					<!-- /.card -->
 				</div>
@@ -93,75 +107,359 @@
 				<!-- /.card-header -->
 				<div class="card-body">
 					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label>Unidade</label>
-								<select class="form-control select2 select2-hidden-accessible"
-									style="width: 100%;"
-									data-select2-id="1"
-									tabindex="-1"
-									aria-hidden="true" disabled>
 
+						<!-- Categoria -->
+						<div class="col-md-5">
+							<div class="form-group">
+								<label for="categoria">Categoria*</label>
+								<select
+								class="form-control select2 select2-hidden-accessible"
+								style="width: 100%;"
+								data-select2-id="1"
+								tabindex="-1"
+								aria-hidden="true"
+								id="categoria">
+									<option value=0>Primeiro selecione sua unidade</option>
 								</select>
 							</div>
+							<!-- /.form-group -->
+						</div>
+						<!-- /Categoria -->
+
+						<!-- Assunto -->
+						<div class="col-md-5">
+							<div class="form-group">
+								<label for="assunto">Assunto</label>
+								<select
+								class="form-control select2 select2-hidden-accessible"
+								style="width: 100%;"
+								data-select2-id="1"
+								tabindex="-1"
+								aria-hidden="true"
+								id="assunto">
+									<option value=0>Primeiro selecione a categoria</option>
+								</select>
+							</div>
+							<!-- /.form-group -->
+						</div>
+						<!-- /Assunto -->
+
+						<!-- Prioridade -->
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="prioridade">Prioridade</label>
+								<select
+								class="form-control select2 select2-hidden-accessible"
+								style="width: 100%;"
+								data-select2-id="1"
+								tabindex="-1"
+								aria-hidden="true"
+								id="prioridade">
+									<option value=1>Normal</option>
+									<option value=2>Moderada</option>
+									<option value=3>Alta</option>
+									<option value=4>Urgente</option>
+								</select>
+							</div>
+						</div>
+						<!-- /Prioridade -->
+
+
+
+
+						<!-- Titulo -->
+						<div class="col-md-10">
+							<div class="form-group">
+								<label for="titulo">Título*</label>
+								<input
+									type="text"
+									class="form-control"
+									name="titulo"
+									id="titulo"
+									maxlength="64"
+									required>
+							</div>
+							<!-- /Unidade criação -->
+						</div>
+						<!-- /Titulo -->
+
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="prazo">Prazo</label>
+								<input type="text" class="form-control pull-right" id="prazo" name="prazo">
+							</div>
+						</div>
+
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="texto">Texto*</label>
+								<textarea
+									name="texto"
+									id="texto"
+									class="form-control"
+									cols="30"
+									rows="5"
+									maxlength="5000"
+									required></textarea>
+							</div>
+						</div>
 							<!-- /.form-group -->
 						</div>
 
-						<div class="col-md-4">
-							<div class="form-group">
-								<label>Unidade</label>
-								<select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
-									<option>Alaska</option>
-									<option>California</option>
-									<option>Delaware</option>
-									<option>Tennessee</option>
-									<option>Texas</option>
-									<option>Washington</option>
-								</select>
-							</div>
-							<!-- /.form-group -->
-						</div>
-						<!-- /.col -->
-						<div class="col-md-4">
-							<div class="form-group">
-								<label>Setor</label>
-								<select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
-									<option>Alaska</option>
-									<option>California</option>
-									<option>Delaware</option>
-									<option>Tennessee</option>
-									<option>Texas</option>
-									<option>Washington</option>
-								</select>
-							</div>
-							<!-- /.form-group -->
-						</div>
-						<!-- /.col -->
-					</div>
-					<button class="btn btn-success float-sm-right">OK</button>
+					<button class="col-md-2 btn btn-success float-sm-right" id="btnCadastro">Enviar</button>
+
+
 					<!-- /.card -->
 				</div>
 				<!-- /.col (right) -->
 			</div>
 			<!-- /.row -->
 		</div><!-- /.container-fluid -->
+
 	</section>
 	<!-- /.content -->
+
 </div>
 
+
 <script src="\src/plugins/jquery/jquery.min.js"></script>
+<script src="\src/plugins/datepicker/bootstrap-datepicker.min.js"></script>
+
+
 <script type="text/javascript">
-$(document).ready(function(){
-	alert("Pronto, senhor!");
+$('#prazo').datepicker({
+	autoclose: true,
+	format: "dd/mm/yyyy",
 });
 
-$("#CbEmpresa").change(function(){
-
-	alert("{$desnome}");
-	$("#CbDivisao").val("Selecione uma unidade");
-	$("#CbSetor").val("Selecione um setor");
 
 
+$("#unidade").change(function(e){
+	var idUnidade = $(this).val();
+	//alert(idUnidade);
+	//Limpa todos os filhos da categoria
+	$("#categoria").children().remove().end()
+	$("#unidadedestino").children().remove().end()
+
+	//Carrega Categorias cadastradas para a empresa
+	$.ajax({
+		url: '\\classhandler.php',
+			method: 'POST',
+			data: {
+					punidade: idUnidade,
+					poperacao: "consultaCategorias"
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.status == "success"){
+					var categorias = (data.categorias);
+
+					$("#categoria").append("<option selected value='0''>Selecione uma categoria</option>");
+
+					$.each(categorias, function( index, value ) {
+						var idCat = value['idcategoria'];
+						var nomeCat = value['desnome'];
+
+						$("#categoria").append("<option selected value='"+idCat+"''>"+nomeCat+"</option>");
+					});
+
+					$("#categoria").val($("#categoria option:first").val());
+
+					var unidades = (data.unidades);
+
+					$("#unidadedestino").append("<option selected value='0''>Selecione uma unidade de destino</option>");
+
+					$.each(unidades, function( index, value ) {
+						var idDiv = value['iddivisao'];
+						var nomeDiv = value['desapelido'];
+
+						$("#unidadedestino").append("<option selected value='"+idDiv+"''>"+nomeDiv+"</option>");
+					});
+
+					$("#unidadedestino").val($("#unidadedestino option:first").val());
+					AltaracaoUnidadeDestino();
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+	});
 
 });
+
+$("#unidadedestino").change(function(e){
+	var idUnidade = $(this).val();
+	//Limpa todos os filhos da categoria
+	$("#setordestino").children().remove().end()
+
+	//Carrega Categorias cadastradas para a empresa
+	$.ajax({
+		url: '\\classhandler.php',
+			method: 'POST',
+			data: {
+					punidade: idUnidade,
+					poperacao: "listaSetores"
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.status == "success"){
+					var setores = (data.setores);
+
+					$("#setordestino").append("<option selected value='0''>Selecione um setor de destino</option>");
+
+					$.each(setores, function( index, value ) {
+						var idSetor = value['idsetor'];
+						var nomeSet = value['desnome'];
+
+						$("#setordestino").append("<option selected value='"+idSetor+"''>"+nomeSet+"</option>");
+					});
+
+					$("#setordestino").val($("#setordestino option:first").val());
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+	});
+
+});
+
+$("#categoria").change(function(e){
+	var idcategoria = $(this).val();
+	//Limpa todos os filhos da categoria
+	$("#assunto").children().remove().end()
+
+	//Carrega Categorias cadastradas para a empresa
+	$.ajax({
+		url: '\\classhandler.php',
+			method: 'POST',
+			data: {
+					pcategoria: idcategoria,
+					poperacao: "listaAssuntos"
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.status == "success"){
+					var assuntos = (data.assuntos);
+
+					$("#assunto").append("<option selected value='0''>Selecione um assunto</option>");
+
+					$.each(assuntos, function( index, value ) {
+						var idAssunto = value['id'];
+						var nomeAssunto = value['desnome'];
+
+						$("#assunto").append("<option selected value='"+idAssunto+"''>"+nomeAssunto+"</option>");
+					});
+
+					$("#assunto").val($("#assunto option:first").val());
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+	});
+
+});
+
+
+
+
+$("#btnCadastro").click(function(e){
+	e.preventDefault();
+
+	var titulo = $("#titulo").val().trim();
+	var corpo = $("#texto").val().trim();
+	var prioridade = $("#prioridade").val();
+	var unidadeSolicitacao = $("#unidade").val();
+	var unidadeDestino = $("#unidadedestino").val();
+	var setorDestino = $("#setordestino").val();
+	var idCategoria = $("#categoria").val();
+	var idSubCategoria = $("#assunto").val();
+	var idUsuarioCriacao = "{$idusuario}";
+
+	var prazo = null;
+	if($("#prazo").val().trim().length > 0)
+	{
+		if(!DataValida($("#prazo").val(), true) && $("#prazo").val().trim().length > 0)
+		{
+			alert("Prazo inválido. Verifique se preencheu uma data válida e maior que hoje");
+			$("#prazo").focus();
+			return;
+		}
+		prazo = $("#prazo").val();
+	}
+
+	//validação dos campos
+
+	if(unidadeSolicitacao == 0){
+		alert("A sua unidade deve ser preenchida");
+		$("#unidade").focus();
+		return;
+	}
+
+	if(unidadeDestino == 0){
+		alert("A unidade de destino deve ser preenchida");
+		$("#unidadedestino").focus();
+		return;
+	}
+
+	if(setorDestino == 0){
+		alert("O setor destino do chamado deve ser preenchido");
+		$("#setordestino").focus();
+		return;
+	}
+
+	if(idCategoria == 0){
+		alert("A categoria do chamado deve ser preenchido");
+		$("#categoria").focus();
+		return;
+	}
+
+	if(titulo.length == 0){
+		alert("O título do ticket deve ser preenchido");
+		$("#titulo").focus();
+		return;
+	}
+
+	if(corpo.length == 0){
+		alert("O texto do ticket deve ser preenchido");
+		$("#texto").focus();
+		return;
+	}
+
+	$.ajax({
+		url: '\\classhandler.php',
+			method: 'POST',
+			data: {
+				ptitulo: titulo,
+				pcorpo: corpo,
+				pprazo: prazo,
+				pprioridade: prioridade,
+				punidadeSolicitacao: unidadeSolicitacao,
+				punidadeDestino:unidadeDestino,
+				psetorDestino: setorDestino,
+				pcategoria: idCategoria,
+				pidSubcategoria: idSubCategoria,
+				pidusuarioCriacao: idUsuarioCriacao,
+				poperacao: "cadastraTicket"
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.status == "success"){
+
+					alert(data.retorno);
+
+
+				}else{
+					alert(data.retorno);
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+	});
+
+});
+
 </script>

@@ -33,6 +33,27 @@ class Files extends Model{
     //Quantidade máxima de imagens por pasta
     const QUANT_FILES_PER_PASTA = 1000;
 
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function __construct(){
         //cria as pastas se não existirem
 
@@ -289,3 +310,5 @@ class Files extends Model{
       }
 
 }
+
+

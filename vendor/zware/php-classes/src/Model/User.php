@@ -418,10 +418,11 @@ class User extends Model
 			$totalNot = 0;
 
 			if(count($dados)>0)
-
-			for($i = 0; $i<count($dados); $i++)
 			{
-				$totalNot += $dados[$i]['quant'];
+				for($i = 0; $i<count($dados); $i++)
+				{
+					$totalNot += $dados[$i]['quant'];
+				}
 			}
 
 			$retorno['dados'] = $dados;
@@ -875,12 +876,11 @@ class User extends Model
 
     public static function convidarUsuarioDivisao($email, $nome, $sobrenome, $cargo, $divisao, $unidades, $fechamento, $usuarioCriacao)
     {
-
 			$email_tratado = strtolower(Funcoes::prepararParaBanco($email, true));
 			$nome_tratado = Funcoes::prepararParaBanco($nome, true, true);
 			$sobrenome_tratado = Funcoes::prepararParaBanco($sobrenome, true, true);
 
-			$retornoCadastro = 0;
+			$retornoCadastro = [];
 
         //Verificar se o usuário já se encontra na divisão
         $sql = new MySql();
@@ -916,7 +916,7 @@ class User extends Model
 
             $user = new User();
             $user->setData($dados[0]);
-            $dadosEmail = $user->getData();
+						$dadosEmail = $user->getData();
 
             //Retornar dado da divisão/empresa
             $dados = $sql->select("select
@@ -958,20 +958,28 @@ class User extends Model
 						$dataRecovery = $retorno[0];
 						$retornoCadastro = $dataRecovery["ideconvite"];
 
+						User::CriaNotificacaoCadastro($retornoCadastro);
+
             $code = User::encodeBase64($dataRecovery["ideconvite"]);
 
-            $link = $link = Chaves::SITEROOT . "invitation?code=$code";
+            $link = Chaves::SITEROOT . "invitation?code=$code";
 
-            $mailer = new Mailer($dadosEmail["desemail"], "Convite para fazer parte de $nomeDivisao da empresa $nomeEmpresa", "conviteIntegrar", array(
-                "name" =>  $dadosEmail["desnome"],
-                "divisao" => $dadosEmail["empresa"]["apelido_divisao"],
-                "descricaoDivisao"=>$dadosEmail["empresa"]["texto_divisao"],
-                "fotoDivisao"=>Chaves::SITEROOT . $dadosEmail["empresa"]["icone_divisao"],
-                "empresa"=>$dadosEmail["empresa"]["apelido_empresa"],
-                "link" => $link
-            ));
+						$retnome = Funcoes::FormataNomeProprio($dadosEmail["desnome"], false);
+						$retTextDiv = $dadosEmail["empresa"]["texto_divisao"];
+						$retFotoDivisao = Chaves::SITEROOT . $dadosEmail["empresa"]["icone_divisao"];
+
+						$mailer = new Mailer($email_tratado, "Convite para fazer parte de $nomeDivisao da empresa $nomeEmpresa", "conviteIntegrar", array(
+								"name" =>  $retnome,
+								"divisao" => $nomeDivisao,
+								"descricaoDivisao"=>$retTextDiv,
+								"fotoDivisao"=>$retFotoDivisao,
+								"empresa"=>$nomeEmpresa,
+								"link" => $link
+						));
 
 						$mailer->send();
+
+						return $retornoCadastro;
 
         } else {
 
@@ -1085,11 +1093,7 @@ class User extends Model
 					car.desnome as nome_cargo,
 					ql.nivel_fechamento_ticket as fechamento,
 					ifnull(GROUP_CONCAT(lt.iddivisao),'') as abertura,
-					case
-						when ql.ativo = 0 then 'Inativo'
-							when ql.afastado = 1 then 'Afastado'
-						else 'Ativo'
-					end as status,
+					ql.ativo as status,
 					concat(p.desnome, ' ', p.dessobrenome) as nome,
 					p.desemail as email,
 					ifnull(u.desfotoperfil, '') as avatar
@@ -1113,7 +1117,7 @@ class User extends Model
 				c.desnome as nome_cargo,
 				cc.fechamento_tickets as fechamento,
 				cc.unidades_tickets as abertura,
-				'Ativo' as status,
+				1 as status,
 				concat(cc.desnome,' ',cc.dessobrenome) as nome,
 				cc.desemail as email,
 				ifnull(u.desfotoperfil,'') as avatar
@@ -1134,9 +1138,13 @@ class User extends Model
 					$retorno["fechamento"] = $dado["fechamento"];
 					$retorno["abertura"] = $dado["abertura"];
 					$retorno["status"] = $dado["status"];
-					$retorno["nome"] = User::FormataNomeProprio($dado["nome"]);
+					$retorno["nome"] = User::FormataNomeProprio($dado["nome"], false);
 					$retorno["email"] = $dado["email"];
-					$retorno["avatar"] = $dado["avatar"];
+					if($dado["avatar"] != ""){
+						$retorno["avatar"] = $dado["avatar"];
+					}else{
+						$retorno["avatar"] = Chaves::SEMFOTOPERFIL;
+					}
 			}
 
 			return json_encode($retorno);
@@ -1153,7 +1161,8 @@ class User extends Model
         d.desicone as icone_divisao,
         c.desnome as cargo,
         cc.usuariocriacao,
-        u.idusuario,
+				u.idusuario,
+				cc.unidades_tickets,
         ifnull(cc.idcargo, 0) as cargo
         from tb_convite_cadastro cc
 
@@ -1244,24 +1253,49 @@ class User extends Model
     public static function ConviteAceito(int $idConvite){
 
         $dados = User::dadosConvite($idConvite);
-        $sql = new MySql();
+				$sql = new MySql();
 
+				//Separa as unidades em uma array (pelo marcador ',')
+				$unidades_tickets = explode(',',$dados['unidades_tickets']);
+
+				//VErifica se o usuário já está na divisão
         $retorno = $sql->select("select * from tb_quadro_funcionarios where idusuario = :USUARIO and iddivisao = :DIVISAO", array(
             ":USUARIO"=>$dados["idusuario"],
             ":DIVISAO"=>$dados["iddivisao"]
         ));
 
+				$cargo = $dados["cargo"] ?? 0;
 
+				// Caso não esteja na divisão, cadastra
         if(count($retorno)==0)
         {
-            $sql->query("CALL sp_aceita_convite(:EMAIL, :DIVISAO, :USUARIO, :CONVIDADOR, :CARGO);",array(
-                ":EMAIL"=>$dados["desemail"],
-                ":DIVISAO"=>$dados["iddivisao"],
-                ":USUARIO"=>$dados["idusuario"],
-                ":CONVIDADOR"=>$dados["usuariocriacao"],
-                ":CARGO"=>$dados["cargo"]
-            ));
-        }
+					$retornoInsercao = $sql->select("CALL sp_aceita_convite(:EMAIL, :DIVISAO, :USUARIO, :CONVIDADOR, :CARGO);",array(
+							":EMAIL"=>$dados["desemail"],
+							":DIVISAO"=>$dados["iddivisao"],
+							":USUARIO"=>$dados["idusuario"],
+							":CONVIDADOR"=>$dados["usuariocriacao"],
+							":CARGO"=>$dados["cargo"]
+					));
+
+
+					$idQl = $retornoInsercao[0]['vidQuadro'];
+
+					//Insere a liberação dos tickets
+					if(count($unidades_tickets) >0)
+					{
+						for ($i = 0; $i < count($unidades_tickets); $i++)
+						{
+							$sql->query("
+								insert into tb_liberacao_ticket (idquadro, iddivisao)
+								values
+								(:QUADRO, :DIVISAO)
+								", array(
+									":QUADRO"=>$idQl,
+									":DIVISAO"=>$unidades_tickets[$i]
+								));
+						}
+					}
+				}
         $retorno = $sql->select("select * from tb_quadro_funcionarios where idusuario = :USUARIO and iddivisao = :DIVISAO", array(
             ":USUARIO"=>$dados["idusuario"],
             ":DIVISAO"=>$dados["iddivisao"]
@@ -1304,5 +1338,95 @@ class User extends Model
                 ":DIVISAO"=>$divisao
             ));
         }
-    }
+		}
+
+		public static function CriaNotificacaoCadastro($idconvite){
+			$sql = new MySql();
+			$dadosC = $sql->select(
+				"select
+				cc.idconvite,
+				cc.iddivisao,
+				d.desnome as nome_divisao,
+				e.idempresa,
+				e.desnome as nome_empresa,
+				cc.idcargo,
+				ifnull(c.desnome,'') as nome_cargo,
+				cc.usuariocriacao ,
+				p.desnome,
+				p.dessobrenome,
+				u.idusuario
+
+				from tb_convite_cadastro cc
+				left join tb_divisao d on d.iddivisao = cc.iddivisao
+				left join tb_empresa e on e.idempresa = d.idempresa
+				left join tb_cargos c on c.idcargo = cc.idcargo
+				left join tb_pessoas p on p.desemail = cc.desemail
+				left join tb_usuarios u on u.idpessoa = p.idpessoa
+
+				where cc.idconvite = :ID", array(
+					":ID"=> $idconvite
+				)
+			);
+
+			if(count($dadosC) > 0){
+				$dadosConvite = $dadosC[0];
+			}
+
+			$idDivisao = $dadosConvite['iddivisao'];
+			$nomeDivisao = $dadosConvite['nome_divisao'];
+			$nomeEmpresa = $dadosConvite['nome_empresa'];
+			$nomeCargo = $dadosConvite['nome_cargo'];
+			$nomePessoa = Funcoes::FormataNomeProprio($dadosConvite['desnome'], false);
+			$sobrenomePessoa = Funcoes::FormataNomeProprio($dadosConvite['dessobrenome']);
+			$idusuario = $dadosConvite['idusuario'];
+
+			//Validação do titulo
+			$QuantCaractTitulo = 65;
+			$titulo = "Convite para fazer parte do time de $nomeDivisao.";
+
+			if(strlen($titulo) > $QuantCaractTitulo){
+				$titulo = "Convite para fazer parte de um novo time.";
+			}
+
+			$QuantCaractTexto = 140;
+
+			$texto = "Olá, $nomePessoa, você recebeu um convite para fazer parte de $nomeDivisao da empresa $nomeEmpresa";
+
+			if(strlen($texto)> $QuantCaractTexto){
+				$texto = "Olá, $nomePessoa, você recebeu um convite para fazer parte de $nomeDivisao.";
+				if(strlen($texto)> $QuantCaractTexto){
+					$texto = "Olá, $nomePessoa, você recebeu um convite para fazer parte de uma empresa.";
+					if(strlen($texto)> $QuantCaractTexto){
+						$texto = "Olá, Você recebeu um convite para fazer parte de uma empresa.";
+					}
+				}
+			}
+
+			$sql->query(
+				"insert into tb_notificacoes
+				(
+					tipo,
+					usuario_dest,
+					titulo,
+					corpo_notificacao,
+					link_destino,
+					iddivisao
+				)
+				values
+				(
+					'c',
+					:IDUSUARIO,
+					:TITULO,
+					:TEXTO,
+					:LINK,
+					:IDDIVISAO
+				)", array(
+					":IDUSUARIO"=>$idusuario,
+					":TITULO"=>$titulo,
+					":TEXTO"=>$texto,
+					":LINK"=>"/convite/$idconvite",
+					":IDDIVISAO"=>$idDivisao
+				)
+			);
+		}
 }

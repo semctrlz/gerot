@@ -706,7 +706,9 @@ class Empresas extends Model{
     public static function retornaCargos(int $empresa){
 
         $sql = new MySql();
-        $retorno = $sql->select("select * from tb_cargos where idempresa = :EMPRESA;", array(
+        $retorno = $sql->select("select 0 as idcargo, 'Selecione um cargo' as desnome
+				union all
+				select idcargo, desnome from tb_cargos  where idempresa = :EMPRESA;", array(
             ":EMPRESA"=>$empresa
         ));
 
@@ -902,5 +904,45 @@ class Empresas extends Model{
             ":DESCRICAO"=>$descricao,
             ":ATIVO"=>$valorAtivo
         ));
-    }
+		}
+
+		public static function ListaUnidades($id){
+			$sql = new MySql();
+			$retorno = [];
+
+			$dados = $sql->select("
+			select d.iddivisao, d.desnome, d.desapelido from tb_divisao d
+			left join tb_divisao d2 on d2.idempresa = d.idempresa
+			where d2.iddivisao = :ID", array(
+				":ID"=>$id
+			));
+
+			if(count($dados)>0){
+				$retorno = $dados;
+			}
+
+			return $retorno;
+
+		}
+
+		public static function ListaSetores($id){
+			$sql = new MySql();
+			$retorno = [];
+
+			//Lista de setores que tenham um responsável
+
+			$dados = $sql->select("
+			select s.idsetor, s.desnome, s.desdescricao from tb_setor s
+			left join tb_supervisor sup on sup.idsetor = s.idsetor
+			where sup.idsupervisor is not null and s.iddivisao = :ID", array(
+				":ID"=>$id
+			));
+
+			if(count($dados)>0){
+				$retorno = $dados;
+			}
+
+			return $retorno;
+
+		}
 }

@@ -30,7 +30,7 @@ class Tickets extends Model
 		ifnull(dest.desnomeurl,'null') as url_dest
 
 		,case
-			when prioridade = 1 then 'Baixa'
+			when prioridade = 1 then 'Normal'
 				when prioridade = 2 then 'Moderada'
 				when prioridade = 3 then 'Alta'
 			when prioridade = 4 then 'Urgente'
@@ -106,16 +106,13 @@ class Tickets extends Model
 	public static function GeraArvoreEmpresas($idusuario){
 		$sql = new MySql();
 
-		$retorno = $sql->select("select 0 as iddivisao, 'Selecione a unidade' as desnome
-
-		union all
-
-		(select  d.iddivisao, concat(e.desnome, ' - ', d.desnome) as desnome FROM dbflow.tb_liberacao_ticket lt
-				left join tb_quadro_funcionarios ql on ql.id_quadro_funcionario = lt.idquadro
-				left join tb_divisao d on d.iddivisao = lt.iddivisao
-						left join tb_empresa e on e.idempresa = d.idempresa
-				where d.ativo = 1 and ql.idusuario = :USUARIO
-						order by e.desnome asc, d.desnome)", array(
+		$retorno = $sql->select("
+			select distinct d.iddivisao, concat(e.desnome, ' - ', d.desapelido) as desnome FROM dbflow.tb_liberacao_ticket lt
+			left join tb_quadro_funcionarios ql on ql.id_quadro_funcionario = lt.idquadro
+			left join tb_divisao d on d.iddivisao = lt.iddivisao
+			left join tb_empresa e on e.idempresa = d.idempresa
+			where d.ativo = 1 and ql.idusuario = :USUARIO
+			ORDER BY e.desnome, d.desapelido", array(
 			":USUARIO"=>$idusuario
 		));
 
@@ -156,8 +153,8 @@ class Tickets extends Model
 			n.idnotificacao,
 			n.tipo,
 			case
-				when n.tipo ='a' then 'fa-sign-in-alt'
-					when n.tipo ='c' then 'fa-users'
+				when n.tipo ='a' then 'fa-users'
+					when n.tipo ='c' then 'fa-sign-in-alt'
 					when n.tipo ='d' then 'fa-calendar-plus'
 					else 'fa-info'
 			end as icone,
@@ -222,6 +219,80 @@ class Tickets extends Model
 		}
 	}
 
+	public static function DefineComoLida($id){
+		$sql = new MySql();
 
+		$sql->query("update tb_notificacoes SET lida = 1 WHERE idnotificacao = :ID;",
+		array(":ID"=>$id));
+
+		return "OK";
+
+	}
+
+	public static function ConsultaCategoria($idDivisao)
+	{
+		$sql = new MySql();
+		$retorno = [];
+
+		$dados = $sql->select('
+		select c.* from tb_categorias c
+		left join tb_divisao d on d.idempresa = c.idempresa
+		where d.iddivisao = :ID', array(
+			":ID"=>$idDivisao
+		));
+
+		if(count($dados)>0){
+			$retorno = $dados;
+		}
+
+		return $retorno;
+
+	}
+
+	public static function ListaAssuntos($idCategoria)
+	{
+		$sql = new MySql();
+		$retorno = [];
+
+		$dados = $sql->select('
+		select idsubcategoria as id, desnome from tb_subcategorias where idcategoria = :ID', array(
+			":ID"=>$idCategoria
+		));
+
+		if(count($dados)>0){
+			$retorno = $dados;
+		}
+
+		return $retorno;
+
+	}
+
+	public static function CadastraTicket($dados)
+	{
+		//Recuperar os campos
+		$titulo = $dados['ptitulo'];
+		$texto = $dados['pcorpo'];
+		$prazo = $dados['pprazo'];
+		$unidade_solicitacao = $dados['punidadeSolicitacao'];
+		$unidade_destino = $dados['punidadeDestino'];
+		$setor_destino = $dados['psetorDestino'];
+		$prioridade = $dados['pprioridade'];
+		$categoria = $dados['pcategoria'];
+		$subcategoria = $dados['pidSubcategoria'];
+		$usuario_criacao = $dados['pidusuarioCriacao'];
+
+		$sql = new MySql();
+
+
+
+
+
+
+
+
+
+
+		return false;
+	}
 }
 ?>

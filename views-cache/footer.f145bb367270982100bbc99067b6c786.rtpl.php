@@ -14,7 +14,7 @@
 </div>
 <!-- ./wrapper -->
 <!-- jQuery -->
-<script src="\src/plugins/jquery/jquery.min.js"></script>
+
 <!-- Bootstrap 4 -->
 <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="\src/plugins/mask/jquery.inputmask.bundle.js"></script>
@@ -24,12 +24,6 @@
 <!-- AdminLTE App -->
 <script src="\src/dist/js/adminlte.min.js"></script>
 <script src="\src/custom/customCodes.js"></script>
-
-
-<script type="text/javascript">
-
-</script>
-
 
 </body>
 </html>

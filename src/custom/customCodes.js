@@ -19,6 +19,8 @@ $(document).ready(function(){
 
 					var r_total_not = dadosRet['quantTotal'];
 
+
+
 					if(r_total_not > 0){
 						$('#notificacao').text(r_total_not);
 						var notific = 'Notificações';
@@ -28,7 +30,7 @@ $(document).ready(function(){
 
 						$('#pageNotification').text(r_total_not+" "+notific);
 
-						$('#notificationContents').text('');
+						$('#notificationContents').text("");
 
 						var numero = 0;
 						var novo = "";
@@ -77,6 +79,10 @@ $(document).ready(function(){
 
 
 
+					}else{
+						$('#notificacao').text("");
+						$('#notificationContents').text("");
+						$('#pageNotification').text("0 Notificações")
 					}
 				}
 			},
@@ -86,7 +92,7 @@ $(document).ready(function(){
 
 		});
 
-		setTimeout(load_unseen_notification, 20000);
+		setTimeout(load_unseen_notification, 10000);
 	}
 
 	load_unseen_notification();
@@ -284,6 +290,7 @@ function MenuTicket(objeto){
 			}
 	}
 
+
 	// var tabela = objeto.closest('.ticket').next("#cartaoTicket");
 
 	// var menu =  ticket.closest('.cartao-ticket-menu');
@@ -393,3 +400,59 @@ function PinTicket(id, ativa){
 		//remove de fixo
 	}
 }
+
+function DataValida(data, igualOuPosteriorAHoje = false)
+	{
+		var dataDigitada = data.trim();
+
+		//a data deve ter pelo menos 8 caracteres (no caso de dd/mm/aa) e
+		//no máximo 10 caracteres (no caso de dd/mm/aaaa)
+		if(dataDigitada.length < 6 || dataDigitada.length >10){
+			return false;
+		}
+
+		var partes = dataDigitada.split('/',3);
+
+		if(partes.length != 3){
+			return false;
+		}
+
+		if(isNaN(parseInt(partes[0]))|| isNaN(parseInt(partes[1] - 1)) || isNaN(parseInt(partes[2]))){
+			return false;
+		}
+
+		//separo em partes
+		var dia = parseInt(partes[0]);
+		var mes = parseInt(partes[1] - 1);
+		var ano = parseInt(partes[2]);
+
+		if(ano <= 50){
+			ano+=2000;
+		}else if (ano<=99){
+			ano+=1900;
+		}
+
+		// Verifica o range de ano
+		if(ano < 1000 || ano > 3000){
+			return false;
+		}
+
+		// Converte para milissegundos
+    mSeconds = (new Date(ano, mes, dia)).getTime();
+    // Inicializa o objeto data com os milissegundos calculados
+    objDate = new Date();
+    objDate.setTime(mSeconds);
+    // Compara a data inserida e as partes do objeto data()
+		// se houver alguma diferença retorna data invalida
+		if (objDate.getFullYear() !== ano ||
+        objDate.getMonth() !== mes ||
+        objDate.getDate() !== dia) {
+        return false;
+		}
+
+		if(igualOuPosteriorAHoje && objDate < new Date()){
+			return false;
+		}
+
+		return true;
+	}

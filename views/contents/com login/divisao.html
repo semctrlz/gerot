@@ -185,7 +185,7 @@
                                                             Nome
                                                         </th>
                                                         <th style="width: 25%">
-                                                            Supervis&atilde;o
+                                                            Responsável
                                                         </th>
                                                         <th>
                                                             Q.L.
@@ -217,19 +217,19 @@
                                                                     <div id="fotoPerfil">
                                                                         <button class="btn btn-danger btn-xs" style="display: none; width: 20px;position: absolute; margin-left: 30px;" title="Excluir supervisor" data-toggle='modal' data-target='#modalDeleteSupervisor' data-nome="{function="FormataNomeProprio($value.nome, false)"}" data-id ="{$value.idsupervisor}"><i class="fas fa-trash-alt"></i></button>
                                                                         <a href="/perfil/{$value.desnomeurl}" class="" id="" title="{function="FormataNomeProprio($value.nome, false)"}">
-                                                                            <img alt="Avatar" class="table-avatar img-bordered-sm" src="\{function="obtemFotoPerfil($value.desfoto)"}">                                                                            
+                                                                            <img alt="Avatar" class="table-avatar img-bordered-sm" src="\{function="obtemFotoPerfil($value.desfoto)"}">
                                                                         </a>
                                                                     </div>
-                                                                    
+
                                                                 </li>
                                                                 {/loop} {/if}
 
-                                                                <li class="list-inline-item">                                                                    
+                                                                <li class="list-inline-item">
                                                                     <button class="btn btn-default mt-1 mb-1" id="addsupervisor" data-toggle='modal' data-target='#modalAddSupervisor' data-id="{$value.idsetor}" data-nome="{$value.desnome}" style="border-radius: 50%; border: 1x solid grey;">
                                                                         <span class="fa fa-plus text-muted">
                                                                         </span>
                                                                     </button>
-                                                                </li>             
+                                                                </li>
                                                             </ul>
                                                         </td>
                                                         <td>
@@ -240,31 +240,31 @@
                                                             <span class="badge float-left badge-success">Ativo</span>
                                                             {else}
                                                             <span class="badge float-left badge-danger">Inativo</span>
-                                                            {/if}  
-                                                                                            
+                                                            {/if}
+
                                                         </td>
                                                         <td class="project-actions text-right">
-                                                            
+
                                                             <button class="btn btn-default btn-sm" data-toggle='modal' data-target='#modalAddColaborador' data-id="{$value.idsetor}" data-nome="{$value.desnome}">
                                                                 <i class="fas fa-users"></i>
                                                                 Colaboradores
                                                             </button>
-                                                            
+
                                                         </td>
-                                                    </tr> 
+                                                    </tr>
 
                                             {/loop}
                                         {/if}
-                                                          
+
                         </tbody>
                                             </table>
                                         </div>
                                         <!-- /.card-body -->
                                     </div>
                                     <!-- /.card -->
-                                
+
                                 </section>
-                                                    
+
                             </div>
 
                         </div>
@@ -398,7 +398,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <p>Você está prestes a remover o cargo de supervisor de <span id="spamNomeSupervisor"></span>. Esta ação não tem como desfazer.</p>
+                        <p>Você está prestes a remover de <span id="spamNomeSupervisor"></span> a responsabilidade. Esta ação não tem como desfazer.</p>
 
                         <p>Deseja realmente excluir?</p>
 
@@ -409,7 +409,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" id="modalExcluiSupervisorSubmit" data-dismiss="modal" class="btn btn-danger">Excluir supervisor</button>
+                        <button type="submit" id="modalExcluiSupervisorSubmit" data-dismiss="modal" class="btn btn-danger">Excluir responsável</button>
                     </div>
                 </div>
             </div>
@@ -487,14 +487,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Adicionar supervisor</h5>
+                        <h5 class="modal-title">Adicionar responsável</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
 
-                        <p>Digite o e-mail do funcionário que você deseja tornar supervisor de <spam id="spamNomeSetor"></spam>.</p>
+                        <p>Digite o e-mail do funcionário que você deseja tornar responsável pelo setor <spam id="spamNomeSetor"></spam>.</p>
 
                         <div class="form-group">
                             <input type="search" id="buscaSup" onkeyup="filtraFuncionariosSup()" onchange="filtraFuncionariosSup()" oninput="filtraFuncionariosSup()" onclick="filtraFuncionariosSup()" onabort="filtraFuncionariosSup()" class="form-control" placeholder="Busca...">
@@ -531,10 +531,10 @@
                             </tbody>
                         </table>
                         <hr>
-                        
+
                             <div class="form-group" id="emailsAConsiderarSup">
                             </div>
-                        
+
 
                     </div>
                     <div class="modal-footer">
@@ -601,10 +601,10 @@
                             </tbody>
                         </table>
                         <hr>
-                        
+
                             <div class="form-group" id="emailsAConsiderarFunc">
                             </div>
-                        
+
 
                     </div>
                     <div class="modal-footer">
@@ -629,7 +629,7 @@
                 var nome = button.data('nome') // Extract info from data-* attributes
                 var id = button.data('id') // Extract info from data-* attributes
                     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.                          
+                    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
                 $("#modalformExcluir").find("#modal_hidden_nomeDivisao").val(nome);
                 $("#modalformExcluir").find("#modal_hidden_idDivisao").val(id);
@@ -659,14 +659,14 @@
 
                 $("#spamNomeGerente").text(nome);
                 $("#modalIdGerente").val(id);
-                
-                
+
+
 
             });
 
             $('#modalIncluir').click(function() {
                 $('#modalformAddGerente').submit();
-            });            
+            });
 
             function LimpaModalGerente() {
                 $("#modalAlterarEmail").attr('style', 'display: none;');
@@ -737,13 +737,13 @@
                     alert("Adicione ao menos um funcionário para adicionar como gerente.");
                 }
             });
-        
+
             //Executa quando abrir o modal de adicionar gerente
-            $('#modalAddGerente ').on('show.bs.modal', function(event) {                
-               
+            $('#modalAddGerente ').on('show.bs.modal', function(event) {
+
                 LimpaEmails();
                 document.getElementById("busca").value = '';
-                myFunction();                
+                myFunction();
 
             });
 
@@ -760,9 +760,9 @@
 
                 emails = emails.slice(0, -1);
                 var idSetor = $("#idSetormodal").val();
-                var usuario = $("#idusUarioModalSup").val();       
+                var usuario = $("#idusUarioModalSup").val();
                 var divisao = $("#idDivisaoSup").val();
-                
+
                 if (emails.length > 1) {
                     $.ajax({
                         url: '\\classhandler.php',
@@ -783,20 +783,20 @@
                             }
                         },
                         error: function(data) {
-                            alert("Erro ao inserir supervisor(es).");
+                            alert("Erro ao inserir responsável(is).");
                         }
                     });
                 } else {
-                    alert("Adicione ao menos um funcionário para adicionar como supervisor.");
+                    alert("Adicione ao menos um funcionário para adicionar como responsável.");
                 }
             });
-        
+
             //Executa quando o modal de adição de supervisor é aberto
-            $('#modalAddSupervisor ').on('show.bs.modal', function(event) {                
+            $('#modalAddSupervisor ').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal
                 var nome = button.data('nome') // Extract info from data-* attributes
-                var id = button.data('id') // Extract info from data-* attributes                
-                
+                var id = button.data('id') // Extract info from data-* attributes
+
                 LimpaEmailsSup();
                 document.getElementById("buscaSup").value = '';
                 filtraFuncionariosSup();
@@ -805,24 +805,24 @@
 
             });
 
-            $('#modalDeleteSupervisor ').on('show.bs.modal', function(event) {                
-               
+            $('#modalDeleteSupervisor ').on('show.bs.modal', function(event) {
+
 
                 var button = $(event.relatedTarget) // Button that triggered the modal
                 var nome = button.data('nome') // Extract info from data-* attributes
-                var id = button.data('id') // Extract info from data-* attributes                
+                var id = button.data('id') // Extract info from data-* attributes
 
                 $("#spamNomeSupervisor").text(nome);
-                $("#modalSupervisor").val(id);          
+                $("#modalSupervisor").val(id);
 
            });
 
            //Executa quando o modal de adição de supervisor é aberto
-            $('#modalAddColaborador ').on('show.bs.modal', function(event) {                
+            $('#modalAddColaborador ').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal
                 var nome = button.data('nome') // Extract info from data-* attributes
-                var id = button.data('id') // Extract info from data-* attributes                
-                
+                var id = button.data('id') // Extract info from data-* attributes
+
                 LimpaEmailsSup();
                 document.getElementById("buscaSup").value = '';
                 filtraFuncionariosSup();
@@ -844,9 +844,9 @@
 
                 emails = emails.slice(0, -1);
                 var idSetor = $("#idSetormodalFunc").val();
-                var usuario = $("#idusUarioModalFunc").val();       
+                var usuario = $("#idusUarioModalFunc").val();
                 var divisao = $("#idDivisaoFunc").val();
-                
+
 
                 if (emails.length > 1) {
                     $.ajax({
@@ -875,7 +875,7 @@
                     alert("Adicione ao menos um funcionário para adicionar como colaborador.");
                 }
             });
-        
+
 
 
         </script>
@@ -960,7 +960,7 @@
                     emailsSelecionados[i].parentElement.removeChild(emailsSelecionados[i]);
                 }
             }
-        
+
             //Função Add supervisor
             function addSupervisor(email){
                 var emails = $("#modalEmail");
@@ -985,7 +985,7 @@
                     alert("O E-mail " + email + " já está na lista para adicionar como gerente.");
                 }
             }
-        
+
             function ExcluiEmail(e) {
 
                 var emailsSelecionados = $("#emailsAConsiderarSup .badge");
@@ -1065,7 +1065,7 @@
                     alert("O E-mail " + email + " já está na lista para adicionar como gerente.");
                 }
             }
-        
+
             function ExcluiEmailFunc(e) {
 
                 var emailsSelecionados = $("#emailsAConsiderarFunc .badge");
@@ -1081,7 +1081,7 @@
                     }
                 }
             }
-            
+
             function filtraFuncionariosFunc() {
                 // Declare variables
                 var input, filter, table, tr, email, nome, cargo, nome_value, descricao_value, i, txtValue;

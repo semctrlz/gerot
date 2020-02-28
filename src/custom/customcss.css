@@ -10,10 +10,26 @@ content.ticketSystem .cartao-ticket{
 	box-shadow: 0 2px 4px rgba(0,0,0,.2),0 2px 4px rgba(0,0,0,.23)!important;
 }
 
+
 content.ticketSystem .ticket-card-body{
 	display: inline-block;
 
 	flex:1;
+}
+
+ul.anexos{
+	padding-left: 0;
+}
+ul.anexos .red{
+	color: #d63031!important;
+}
+
+
+
+ul.anexos li{
+	list-style: none;
+	text-decoration: none;
+
 }
 
 content.ticketSystem .cartao-ticket .center{
@@ -367,6 +383,15 @@ content.ticketSystem .cartao-ticket-menu a.ticket-menu span{
 	margin-right: 10px;
 }
 
+.notificacaoNaoLida{
+	background-color: #eafdff!important;
+}
+
+.notificacaoNaoLida .notificacaoTitulo{
+	font-weight: bold;
+}
+
+
 @media all and (min-width: 601px) and (max-width: 767px) {
 	.hide_mobile{
 			display:none;
@@ -385,3 +410,4 @@ content.ticketSystem .cartao-ticket-menu a.ticket-menu span{
 			visibility: collapse;
 	}
 }
+

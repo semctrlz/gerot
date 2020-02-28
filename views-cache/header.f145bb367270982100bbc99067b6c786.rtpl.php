@@ -55,9 +55,13 @@
 
   <!-- overlayScrollbars -->
 
-  <link rel="stylesheet" href="\src/dist/css/adminlte.min.css">
+	<link rel="stylesheet" href="\src/dist/css/adminlte.min.css">
+
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+
+
 
 </head>
 <?php if( $sidebar != 'none' ){ ?>
@@ -823,3 +827,5 @@
   <!-- /.sidebar -->
 </aside>
 <?php } ?>
+
+<script src="\src/plugins/jquery/jquery.min.js"></script>

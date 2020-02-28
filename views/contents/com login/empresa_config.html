@@ -19,7 +19,7 @@
             </div>
         </div>
         <!-- /.container-fluid -->
-    </section>    
+    </section>
 
     <!-- Main content -->
     <section class="content">
@@ -29,14 +29,14 @@
                     <!-- Profile Image -->
                     <div class="card card-primary card-outline">
                         <div class="card-body box-profile">
-                            
-                            <div class="text-center">                               
-                                
-                                <div class="img-wrapper" id="fotoPerfil">                                    
+
+                            <div class="text-center">
+
+                                <div class="img-wrapper" id="fotoPerfil">
                                     <img class="profile-user-img img-fluid img-circle" src="{function="obtemFotoEmpresa($empresa.desicone)"}" alt="&Iacute;cone da empresa" />
-                                    
+
                                     <button class="btn btn-default btn-xs" style="display:none; width: 30px;position: absolute;" title="Alterar foto da divisão" data-toggle='modal' data-target='#modalEditaFoto'><i class="fas fa-pencil-alt"></i></button>
-                                                                    
+
                                 </div>
                             </div>
 
@@ -112,7 +112,7 @@
                                     <tr data-name="{$value.desnome}" data-descricao="{$value.obs}" data-idempresa="{$empresa.idempresa}" data-idusuario="{$idusuario}">
                                         <td>{$value.desnome}</td>
                                         <td>{$value.obs}</td>
-                                        <td class="btn-group btn-group-sm float-right">     
+                                        <td class="btn-group btn-group-sm float-right">
                                             <button class="btn btn-info btn-xs btn-edit" title="Editar cargo" data-toggle='modal' data-target='#modalEditCargo' data-nome='{$value.desnome}' data-descricao="{$value.obs}"><i class="fas fa-pencil-alt"></i></button>
                                             <button class="btn btn-danger btn-xs btn-delete" title="Excluir cargo"><i class="fas fa-trash-alt"></i></button>
                                         </td>
@@ -164,10 +164,10 @@
                                         </div>
                                         <div class="modal-body">
                                             <form method="post" id="modalformFoto" enctype="multipart/form-data" action="/{$empresa.desnomeurl}?config=true&alteraIcone=true">
-                                                                                                    
+
                                                     <input type="file" id="modal_foto" name="foto">
                                                     <input type="hidden" class="form-control" id="modal_hidden_id_empresa" name="idempresa" value="{$empresa.idempresa}">
-                                                
+
                                             </form>
                                         </div>
                                         <div class="modal-footer">
@@ -179,7 +179,7 @@
                             </div>
 
                         </div>
-                        
+
                         <script src="\src/plugins/jquery/jquery.min.js"></script>
                         <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -194,7 +194,7 @@
 
                                 $.ajax({
                                     url: '\\salvar_cargos.php',
-                                    
+
                                     method: 'POST',
                                     data: {
                                         idempresa: idempresa,
@@ -208,7 +208,7 @@
 
                                         if (data.status == 'success') {
 
-                                            $(".data-table tbody").append("<tr data-name='" + name + "' data-descricao='" + descricao + "' data-idempresa='" + idempresa + "' data-idusuario='" + idusuario + "'><td>" + name + "</td><td>" + descricao + "</td><td class='btn-group btn-group-sm float-right'><button class='btn btn-info btn-xs btn-edit' title='Editar cargo' data-nome='" + name + "' data-descricao='" + descricao + "' data-toggle='modal' data-target='#modalEditCargo'><i class='fas fa-pencil-alt'></i></button><button class='btn btn-danger btn-xs btn-delete' title='Excluir cargo'><i class='fas fa-trash-alt'></i></button></td></tr>");                                                                            
+                                            $(".data-table tbody").append("<tr data-name='" + name + "' data-descricao='" + descricao + "' data-idempresa='" + idempresa + "' data-idusuario='" + idusuario + "'><td>" + name + "</td><td>" + descricao + "</td><td class='btn-group btn-group-sm float-right'><button class='btn btn-info btn-xs btn-edit' title='Editar cargo' data-nome='" + name + "' data-descricao='" + descricao + "' data-toggle='modal' data-target='#modalEditCargo'><i class='fas fa-pencil-alt'></i></button><button class='btn btn-danger btn-xs btn-delete' title='Excluir cargo'><i class='fas fa-trash-alt'></i></button></td></tr>");
                                             $("input[name='desnomecargo']").val('');
                                             $("input[name='desdescricaocargo']").val('');
 
@@ -251,7 +251,7 @@
                                 }
 
                             });
-                                                                            
+
                         </script>
 
                         <script>
@@ -266,7 +266,7 @@
 
                                 var idempresa = $("input[name='idempresa']").val();
                                 var idusuario = $("input[name='idusuario']").val();
-                                
+
                                 $("#modalEditCargo").find("#modal_cargo_nome").val(nome);
                                 $("#modalEditCargo").find("#modal_hidden_cargo_nome").val(nome);
                                 $("#modalEditCargo").find("#modal_cargo_obs").val(descricao);
@@ -292,7 +292,11 @@
 
                                 $(document).ready(function (){
                                     $('.dropdown-toggle').dropdown();
-                                    $('#userlogin').dropdown('toggle');
+																		$('#userlogin').dropdown('toggle');
+
+
+
+
                                 });
                         </script>
 

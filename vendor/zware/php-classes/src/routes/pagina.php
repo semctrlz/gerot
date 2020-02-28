@@ -12,6 +12,8 @@ use \Zware\Model\Files;
 use \Zware\Model\Funcoes;
 use \Zware\DB\MySql;
 use \Zware\Model\ConfigHandler;
+use \Zware\Mailer;
+
 
 
 $app->get('/', function () {
@@ -412,7 +414,6 @@ $app->get('/notificacoes(/)', function(){
 		$lida = true;
 	}
 
-
 	$dadosUsuario['notificacoes'] = Tickets::RecuperaNotificacoes($dadosUsuario['idusuario'],$tipo, $lida);
 
 	$dadosUsuario['quantNotifications'] = count($dadosUsuario['notificacoes']);
@@ -420,5 +421,7 @@ $app->get('/notificacoes(/)', function(){
 	User::verificaAcesso("notifications", $dadosUsuario, "Notificacoes");
 	exit;
 });
+
+
 
 ?>

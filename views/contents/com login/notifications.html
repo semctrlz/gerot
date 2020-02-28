@@ -21,25 +21,29 @@
     <section class="content">
 		<div class="card"><!-- /.container-fluid -->
 			<div class="table-responsive">
-				<table class="table table-hoverd">
+				<table class="table table-hoverd" id="notificacoesTable">
 					<thead>
 						<tr>
-							<th style="width: 1%">
+							<th style="width: 30px">
 
 							</th>
-							<th style="width: 1%">
+							<th style="width: 30px">
 
 							</th>
-							<th style="width: 20%">
+							<th style="width: 300px">
 								Título
 							</th>
-							<th style="width: 50%">
+							<th style="width: fit-content">
 								Texto
 							</th>
-							<th style="width: 20%">
 
-							</th>
-							<th style="width: 1%">
+							<th style="width: 150px">
+								&nbsp;
+							</th >
+							<th class="mouseover" style="width: 50px;">
+								<a href="#" class="notificacoes" style="display: none;">
+									<i class="fa fa-eye olho"></i>
+								</a>
 
 							</th>
 						</tr>
@@ -52,7 +56,10 @@
 
 						{loop="$notificacoes"}
 
-						<tr>
+						<tr
+							class="linhaNot {if="$value.lida != 1"}notificacaoNaoLida{/if}"
+							data-idNot="{$value.idnotificacao}"
+						>
 							<td>
 								<i class='fas {$value.icone} mr-2'>
 							</td>
@@ -73,11 +80,18 @@
 									>
 								</a>
 							</td>
-							<td class="mailbox-name"><a href="{$value.link_destino}"><strong>{$value.titulo}</strong></a></td>
-							<td class="mailbox-subject">{$value.corpo_notificacao}
+							<td class="mailbox-name notificacaoTitulo" ><a href="{$value.link_destino}">
+								<small>{$value.titulo}</a></td>
+							<td class="mailbox-subject notificacaoTitulo"><small>{$value.corpo_notificacao}</small>
 							</td>
-							<td class="mailbox-date">{$value.tempo}</td>
-							<td class="mailbox-attachment"></td>
+							<td class="mailbox-date text-muted notificacaoTitulo"><small>{$value.tempo}</small></td>
+							<td class="mailbox-attachment mouseover">
+
+								<a href="" data-idNot="{$value.idnotificacao}" style="display: none;" class="notificacaoIndividual">
+									<i class="fa fa-eye olho"></i>
+								</a>
+
+							</td>
 						</tr>
 
 						{/loop}
@@ -93,5 +107,70 @@
 </section>
 </div>
 </content>
+<script src="\src/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).on('mouseenter', '.mouseover', function () {
+		$(this).find("a").show();
+
+}).on('mouseleave', '.mouseover', function () {
+		$(this).find("a").hide();
+
+});
+
+$('.notificacaoIndividual').click(function(o){
+	o.preventDefault();
+	var not = $(this) // Button that triggered the modal
+	var id = $(this).data('idnot') // Extract info from data-* attributes
+	var linha = $(this).closest('tr');
+
+	//Encontrar o tr pai
+
+	//Criar a função que marca como lido a notificação com o id definido acima
+
+	$.ajax({
+			url: '\\classhandler.php',
+			method: 'POST',
+			data: {
+					poperacao: "marcaNotificacaocomoLida",
+					pid: id,
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.status == "success")
+				{
+					linha.removeClass('notificacaoNaoLida');
+				}
+			}
+		});
+
+});
+
+$('.notificacoes').click(function(o){
+	o.preventDefault();
+	$("#notificacoesTable tr.linhaNot").each(function( i ) {
+		var linha = $(this);
+		var id = $(this).data('idnot');
+
+			$.ajax({
+				url: '\\classhandler.php',
+				method: 'POST',
+				data: {
+						poperacao: "marcaNotificacaocomoLida",
+						pid: id,
+				},
+				dataType: "json",
+				success: function(data) {
+					if(data.status == "success")
+					{
+						linha.removeClass('notificacaoNaoLida');
+					}
+				}
+			});
+    });
+});
+
+
+</script>
 <!-- /.content-wrapper -->
+
 

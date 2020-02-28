@@ -75,7 +75,6 @@
                       <div class="form-group col-3">
                           <label for="cargo">Cargo</label>
                           <select class="form-control" id="cargo" name="cargo">
-                              <option value="0"></option>
                               {loop="$cargos"}
                               <option value="{$value.idcargo}">{$value.desnome}</option>
                               {/loop}
@@ -170,7 +169,7 @@
                 <td>
                   <div class="btn-group btn-group-xs float-sm-right">
                   {if="$value.status != 'Ativo'"}
-                  <button class="btn btn-default btn-sm" title="Reenviar convite"><i class="fas fa-paper-plane"></i></button>
+                    <button class="btn btn-default btn-sm" title="Reenviar convite"><i class="fas fa-paper-plane"></i></button>
 									{/if}
 									{if="$value.tipo == 'convidado'"}
 										<button class="btn btn-info btn-sm" title="Editar colaborador" data-toggle="modal" data-target="#modalEditaColaborador" data-usuario="{$value.id_convite}" data-tipo="{$value.tipo}"><i class="fas fa-pencil-alt"></i></button>
@@ -234,11 +233,11 @@
                     <div class="modal-body row">
 											<div class="col-12 mb-3">
 												<div class="user-block">
-													<img class="img-circle img-bordered-sm" src="\views/uploads/upics/noprofilepicP.jpg" alt="user image">
+													<img class="img-circle img-bordered-sm" id="avatarModal" src="\views/uploads/upics/noprofilepicP.jpg" alt="user image">
 													<span class="username">
-														<a>Vágner Lenon Lima da Silva</a>
+														<a></a>
 													</span>
-													<span class="description">vagner.lenon@gmail.com</span>
+													<span class="description" id="modalEmail"></span>
 												</div>
 											</div>
 											<div class="col-12">
@@ -247,8 +246,7 @@
 
 											<div class="col-6">
 												<label for="cargo">Cargo</label>
-												<select class="form-control" id="cargo" name="cargo">
-													<option value="0"></option>
+												<select class="form-control" id="modalCargo" name="cargo">
 													{loop="$cargos"}
 														<option value="{$value.idcargo}">{$value.desnome}</option>
 													{/loop}
@@ -256,8 +254,8 @@
 											</div>
 											<br>
 											<div class="col-6">
-											<label for="perfil_fechamento">Fechamento de Tickets</label>
-											<select class="form-control" id="perfil_fechamento" name="perfil_fechamento">
+											<label for="modalPerfilFechamento">Fechamento de Tickets</label>
+											<select class="form-control" id="modalPerfilFechamento" name="modalPerfilFechamento">
 													<option value="0">Não pode fechar tickets</option>
 													<option value="1">Fecha somente os tickets que criou</option>
 													<option value="2">Fecha os que criou e os que é responsável</option>
@@ -268,24 +266,24 @@
 											</div>
 											<br>
 											<div class="col-12 row mt-3">
-											<label for="perfil_fechamento" class="col-12">Gestão dos tickets</label>
-											<div class="form-group row ml-2">
+											<label class="col-12">Gestão dos tickets</label>
+											<div class="form-group row ml-2" id="modalChecks">
 												{if="$divisoes.quant > 0"}
 													{loop="$divisoes.dados"}
 														<div class="form-check col-6">
-															<input class="form-check-input" type="checkbox" id="cb2_{$value.desapelido}">
-															<label class="form-check-label mr-2" for="cb_{$value.desapelido}">{$value.desapelido}</label>
+															<input class="form-check-input" type="checkbox" id="cb2_{$value.iddivisao}">
+															<label class="form-check-label mr-2" for="cb2_{$value.iddivisao}">{$value.desapelido}</label>
 														</div>
 															{/loop}
 													{/if}
 													</div>
 											</div>
 											<div class="col-12 mt-3">
-											<label for="perfil_fechamento">Status colaborador</label>
-											<select class="form-control" id="perfil_fechamento" name="perfil_fechamento">
-												<option value="0">Ativo</option>
-												<option value="1">Afastado</option>
-												<option value="2">Inatvo</option>
+											<label for="modalStatusColaborador">Status colaborador</label>
+											<select class="form-control" id="modalStatusColaborador" name="modalStatusColaborador">
+												<option value=1>Ativo</option>
+												<option value=2>Afastado</option>
+												<option value=0>Inatvo</option>
 											</select>
 											</div>
                     </form>
@@ -293,14 +291,15 @@
                     </div>
                     <div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-											<button type="submit" id="modalExclui" data-dismiss="modal" class="btn btn-success">Salvar</button>
+											<button type="submit" id="modalSalvarAlteracoes" data-dismiss="modal" class="btn btn-success">Salvar</button>
                     </div>
                 </div>
             </div>
 					</div>
 
           <script src="\src/plugins/jquery/jquery.min.js"></script>
-          <script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+					<script src="\src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+					<script src="\src/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
           <script>
             document.getElementById("busca").addEventListener("search", function(event) {
@@ -342,12 +341,13 @@
             }
           </script>
 
-					<script src="\src/plugins/sweetalert2/sweetalert2.all.min.js"></script>
-					<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-
-
 
 					<script type="text/javascript">
+
+						$(document).ready(function(){
+							$("#cargo").val($("#cargo option:first").val());
+						});
+
 
             $('#modalConfirmDelete').on('show.bs.modal', function(event) {
               var button = $(event.relatedTarget) // Button that triggered the modal
@@ -412,12 +412,18 @@
 							var fechamento = $("#perfil_fechamento").val();
 							var checks = $("#checkBoxes :checked");
 							var ids = Array(checks.length);
+
+							if(cargo == ""){
+								cargo = 0;
+							}
+
 							for (var i = 0; i < checks.length; i++)
 							{
 								ids[i] = checks[i].id.replace('cb_','');
 							}
 
-              var unidadesChamados = ids.join();
+							var unidadesChamados = ids.join();
+
 							var liberado = true;
 
 							$.ajax({
@@ -435,6 +441,7 @@
 										poperacao: "AddColaborador"
 								},
 								dataType: "json",
+
 								success: function(data) {
 									if(data.status == "success"){
 
@@ -449,11 +456,15 @@
 										var r_quadro = dadosRet['idquadroFuncionarios'];
 										var r_tipo = dadosRet['tipo'];
 
+										if(r_cargo == null){
+											r_cargo = '';
+										}
+
 										if(r_avatar == ""){
 											r_avatar = "views/uploads/upics/noprofilepicP.jpg";
 										}
 
-										$("#colaboradores").append("<tr><td><div class='user-block'><img class='img-circle height:20 img-bordered-sm' src='\\"+r_avatar+"' alt=''></div></td><td>"+r_email+"</td><td>"+r_nome+"</td><td>"+r_cargo+"</td><td><span class='badge bg-warning'>Pendente</span></td><td><div class='btn-group btn-group-xs float-sm-right'><button class='btn btn-default btn-sm' title='Reenviar convite'><i class='fas fa-paper-plane'></i></button><button class='btn btn-info btn-sm' title='Editar colaborador' aria-disabled='true' disabled=''><i class='fas fa-pencil-alt'></i></button><button class='btn btn-danger btn-sm' title='Excluir colaborador' data-toggle='modal' data-target='#modalConfirmDelete' data-email='"+r_email+"' data-tipo='"+r_tipo+"'><i class='fas fa-trash-alt'></i></button></div></td></tr>");
+										$("#colaboradores").append("<tr><td><div class='user-block'><img class='img-circle height:20 img-bordered-sm' src='\\"+r_avatar+"' alt=''></div></td><td>"+r_email+"</td><td>"+r_nome+" " +r_sobrenome+"</td><td>"+r_cargo+"</td><td><span class='badge bg-warning'>Pendente</span></td><td><div class='btn-group btn-group-xs float-sm-right'><button class='btn btn-default btn-sm' title='Reenviar convite'><i class='fas fa-paper-plane'></i></button><button class='btn btn-info btn-sm' title='Editar colaborador' aria-disabled='true' disabled=''><i class='fas fa-pencil-alt'></i></button><button class='btn btn-danger btn-sm' title='Excluir colaborador' data-toggle='modal' data-target='#modalConfirmDelete' data-email='"+r_email+"' data-tipo='"+r_tipo+"'><i class='fas fa-trash-alt'></i></button></div></td></tr>");
 
 										$("input[name='desnome']").val('');
 										$("input[name='dessobrenome']").val('');
@@ -481,41 +492,104 @@
 
 						});
 
-						// $('#modalEditaColaborador').on('show.bs.modal', function(event) {
-						// 	var button = $(event.relatedTarget);
-						// 	var tipo = button.data('tipo');
-						// 	var idUsuario = button.data('usuario');
-						// 	return;
-						// 	$.ajax({
-						// 		url: '\\classhandler.php',
-						// 		method: 'POST',
-						// 		data: {
-						// 				pusuario: idUsuario,
-						// 				ptipo: tipo,
-						// 				poperacao: "consultaColaborador"
-						// 		},
-						// 		dataType: "json",
-						// 		success: function(data) {
-						// 			if(data.status == "success"){
-						// 				var dadosRet = JSON.parse(data.retorno);
+						//TODO Implementar a edição do colaborador
 
-						// 				// var r_cargo = dadosRet['cargo'];
-						// 				// var r_fechamentos_tickets = dadosRet['fechamento'];
-						// 				// var r_status_colaborador = dadosRet['status'];
-						// 				// var r_abertura = dadosRet['abertura'];
-						// 				// var r_nome = dadosRet['nome'];
-						// 				// var r_email = dadosRet['email'];
-						// 				// alert(r_nome);
-						// 				// $("#modalEditaColaborador span.username a").text(r_nome);
+            $('#modalEditaColaborador').on('show.bs.modal', function(event) {
 
-						// 			}
-						// 		},
-						// 		error: function(data) {
-						// 			console.log(data);
-						// 		}
+            	var button = $(event.relatedTarget);
+            	var tipo = button.data('tipo');
+            	var idUsuario = button.data('usuario');
+            	$.ajax({
+            		url: '\\classhandler.php',
+            		method: 'POST',
+            		data: {
+            				pusuario: idUsuario,
+            				ptipo: tipo,
+            				poperacao: "consultaColaborador"
+            		},
+            		dataType: "json",
+            		success: function(data) {
+            			if(data.status == "success"){
+            				var dadosRet = JSON.parse(data.retorno);
+                    var r_cargo = dadosRet['cargo'];
+                    var r_fechamentos_tickets = dadosRet['fechamento'];
+                    var r_status_colaborador = dadosRet['status'];
+                    var r_abertura = dadosRet['abertura'];
+                    var r_nome = dadosRet['nome'];
+                    var r_email = dadosRet['email'];
+                    var r_avatar = dadosRet['avatar'];
 
-						// });
-            // });
+										//Insere foto do perfil
+										var avatarModal = document.getElementById("avatarModal");
+										avatarModal.src = "\\"+r_avatar;
+
+										//Insere nome
+                    $("#modalEditaColaborador span.username a").text(r_nome);
+										$("#modalEmail").text(r_email);
+
+										//Insere o cargo
+										document.getElementById("modalCargo").value = r_cargo;
+										document.getElementById("modalPerfilFechamento").value = r_fechamentos_tickets;
+										document.getElementById("modalStatusColaborador").value = r_status_colaborador;
+
+										var unidadesTickets = r_abertura.split(',');
+
+										var ch = $("#modalEditaColaborador :checkbox");
+
+										for(var i = 0; i < ch.length; i++){
+											ch[i].checked = false;
+											ch[i].removeAttribute("checked");
+										}
+
+										for (i = 0; i < unidadesTickets.length; i++) {
+											var classe = "cb2_"+unidadesTickets[i];
+											document.getElementById(classe).checked = true;
+											console.log($(classe));
+										}
+            			}
+            		},
+
+            		error: function(data) {
+            			console.log(data);
+            		}
+
+            });
+            });
+
+						$('#modalSalvarAlteracoes').click(function(e){
+							e.preventDefault();
+
+							//Coleta os dados
+							//Obtem os dados relativos ao funcionário
+							var idUsuarioCriacao = "{$idusuario}";
+							var cargo = $("#modalCargo").val();
+							var fechamento = $("#modalPerfilFechamento").val();
+							var checks = $("#modalChecks :checked");
+							var status = $("#modalStatusColaborador").val();
+
+							var ids = Array(checks.length);
+
+							if(cargo == "" || cargo == null){
+								cargo = 0;
+							}
+
+							for (var i = 0; i < checks.length; i++)
+							{
+								ids[i] = checks[i].id.replace('cb2_','');
+							}
+
+							var unidadesChamados = ids.join();
+
+							//Salva no banco
+
+
+							//Atualiza a pagina
+
+
+
+						});
+
+
 
 					</script>
 
