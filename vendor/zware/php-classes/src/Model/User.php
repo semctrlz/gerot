@@ -25,8 +25,6 @@ class User extends Model
     {
 				$sql = new MySql();
 
-
-
         $results = $sql->select("select p.desemail, u.idusuario, u.dessenha from tb_usuarios u
         left join tb_pessoas p on p.idpessoa = u.idpessoa
         where boolcadastroativo = true and p.desemail = :EMAIL", array(":EMAIL" => $email));
@@ -146,7 +144,10 @@ class User extends Model
         left join tb_pessoas p on p.idpessoa = u.idpessoa
         where u.idusuario = :ID", array(":ID" => $id));
 
-        $user = new User();
+
+				$user = new User();
+
+
 
         if (count($results) === 0) {
             return $user;

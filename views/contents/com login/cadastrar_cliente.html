@@ -1,0 +1,1036 @@
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Cadastrar cliente</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Cadastrar cliente</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+	</section>
+
+
+
+	<script type="text/javascript">
+
+
+
+		function buscaCep(valor) {
+			var cep = valor.replace(/\D/g, '');
+			if(cep.trim() != "")
+			{
+				var validacep = /^[0-9]{8}$/;
+				if(validacep.test(cep))
+				{
+					//Preenche os campos com "..." enquanto consulta webservice.
+					document.getElementById('logradouro').value="...";
+					document.getElementById('bairro').value="...";
+					document.getElementById('municipio').value="...";
+					document.getElementById('estado').value="...";
+					document.getElementById('pais').value="...";
+
+					//Cria um elemento javascript.
+					var script = document.createElement('script');
+
+					//Sincroniza com o callback.
+					script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+
+					//Insere script no documento e carrega o conteúdo.
+					document.body.appendChild(script);
+
+
+				}else{
+					alert("CEP Inválido")
+					limpa_formulário_cep();
+				}
+			}
+		}
+
+		function limpa_formulário_cep(){
+			document.getElementById('logradouro').value="";
+			document.getElementById('bairro').value="";
+			document.getElementById('municipio').value="";
+			document.getElementById('estado').value="";
+			document.getElementById('pais').value="";
+		}
+
+		function meu_callback(conteudo) {
+			if (!("erro" in conteudo)) {
+				//Atualiza os campos com os valores.
+				document.getElementById('logradouro').value=(conteudo.logradouro);
+				document.getElementById('bairro').value=(conteudo.bairro);
+				document.getElementById('municipio').value=(conteudo.localidade);
+				document.getElementById('estado').value=(conteudo.uf);
+				document.getElementById('pais').value="Brasil";
+			} //end if.
+			else {
+					//CEP não Encontrado.
+					limpa_formulário_cep();
+					alert("CEP não encontrado.");
+			}
+	}
+
+
+		</script>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <div class="card card-secondary">
+            <div class="card-body">
+							<form action="/adicionar_empresa" method="post" autocomplete="off">
+								<div class="row">
+
+									<div class="col-md-12">
+										<div class="card card-tool">
+											<div class="card-header">
+												<h3 class="card-title">Dados gerais da empresa</h3>
+											</div>
+											<div class="card-body row">
+
+												<!-- CNPJ -->
+												<div class="form-group col-md-2">
+													<label for="cnpj">CNPJ/CPF*</label>
+													<input
+														type="text"
+														class="form-control"
+														id="cnpj"
+														placeholder="CNPJ/CPF (só números)",
+														name="cnpj",
+														maxlength="18"
+														onkeypress='mascaraMutuario(this,cpfCnpj)'
+														required
+													/>
+												</div>
+
+												<!-- Nome Fantasia -->
+												<div class="form-group col-md-4">
+													<label for="fantasia">Nome Fantasia / Apelido*</label>
+													<input
+														type="text"
+														class="form-control"
+														id="fantasia"
+														placeholder="Nome Fantasia / apelido"
+														name="fantasia"
+														maxlength="20"
+														autocomplete="off"
+														required
+													/>
+												</div>
+
+												<div class="form-group col-md-4">
+													<label for="razao">Razão Social / Nome completo*</label>
+													<input
+														type="text"
+														class="form-control"
+														id="razao"
+														placeholder="Razão Social / Nome completo",
+														name="razao",
+														maxlength="60"
+														required
+													/>
+												</div>
+
+												<div class="form-group col-md-2">
+													<label for="nascimento">Nascimento <small>(No caso de Pessoa Física)</small></label>
+													<input
+														type="text"
+														class="form-control"
+														id="nascimento"
+														placeholder="dd/mm/aaaa",
+														name="nascimento",
+														maxlength="60"
+														required
+													/>
+												</div>
+
+												<!-- Endereço -->
+												<!-- Cep -->
+												<div class="form-group col-md-2">
+													<label for="cep">CEP*</label>
+													<input
+														type="text"
+														class="form-control"
+														id="cep"
+														placeholder="CEP",
+														name="cep",
+														maxlength="15",
+														onblur="buscaCep(this.value)"
+													/>
+													</div>
+
+												<!-- Logradouro -->
+												<div class="form-group col-md-5">
+													<label for="logradouro">Logradouro</label>
+													<input
+														type="text"
+														class="form-control"
+														id="logradouro"
+														placeholder="Logradouro",
+														name="logradouro",
+														maxlength="40"
+
+													/>
+												</div>
+
+												<!-- Número -->
+												<div class="form-group col-md-2">
+													<label for="numero">Número*</label>
+													<input
+														type="text"
+														class="form-control"
+														id="numero"
+														placeholder="Número",
+														name="numero",
+														maxlength="10"
+														required
+													/>
+												</div>
+												<!-- Complemento -->
+												<div class="form-group col-md-3">
+													<label for="complemento">Complemento</label>
+													<input
+														type="text"
+														class="form-control"
+														id="complemento"
+														placeholder="Complemento",
+														name="complemento",
+														maxlength="15"
+													/>
+												</div>
+												<!-- Bairro -->
+												<div class="form-group col-md-4">
+													<label for="bairro">Bairrro</label>
+													<input
+														type="text"
+														class="form-control"
+														id="bairro"
+														placeholder="Bairro",
+														name="bairro",
+														maxlength="20"
+													/>
+												</div>
+												<!-- Cidade -->
+												<div class="form-group col-md-4">
+													<label for="municipio">Município</label>
+													<input
+														type="text"
+														class="form-control"
+														id="municipio"
+														placeholder="Município",
+														name="municipio",
+														maxlength="30"
+													/>
+												</div>
+												<!-- Estado -->
+												<div class="form-group col-md-1">
+													<label for="estado">Estado</label>
+													<input
+														type="text"
+														class="form-control"
+														id="estado"
+														placeholder="Sigla",
+														name="estado",
+														maxlength="2"
+													/>
+												</div>
+												<!-- País  -->
+												<div class="form-group col-md-3">
+													<label for="pais">País</label>
+													<input
+														type="text"
+														class="form-control"
+														id="pais"
+														placeholder="País (Caso fora do Brasil)",
+														name="pais",
+														maxlength="10"
+													/>
+												</div>
+
+
+												<div class="form-group col-md-3">
+													<label for="fonePrincipal">Telefone*</label>
+
+													<input
+														type="text"
+														class="form-control"
+														id="fonePrincipal"
+														placeholder="Telefone principal",
+														name="fonePrincipal",
+														maxlength="20"
+														required
+													/>
+
+												</div>
+
+												<div class="form-group col-md-9">
+													<label for="emailPrincipal">Email para envio de XML*</label>
+													<input
+														type="email"
+														class="form-control"
+														id="emailPrincipal"
+														placeholder="E-mail principal",
+														name="emailPrincipal",
+														maxlength="65"
+														required
+													/>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="card card-tool">
+											<div class="card-header">
+												<h3 class="card-title">Informações comerciais</h3>
+											</div>
+											<div class="card-body row">
+
+												<!-- Principal -->
+												<div class="form-group col-md-3">
+													<label for="foneComprador">Telefone comprador</label>
+
+													<input
+														type="text"
+														class="form-control"
+														id="foneComprador"
+														placeholder="Telefone do comprador",
+														name="foneComprador",
+														maxlength="15"
+													/>
+
+												</div>
+												<div class="form-group col-md-5">
+													<label for="emailComprador">Email comprador</label>
+													<input
+														type="email"
+														class="form-control"
+														id="emailComprador"
+														placeholder="E-mail do comprador",
+														name="emailComprador",
+														maxlength="65"
+													/>
+												</div>
+												<div class="form-group col-md-4">
+													<label for="nomeComprador">Nome Comprador</label>
+													<input
+														type="text"
+														class="form-control"
+														id="nomeComprador"
+														placeholder="Nome comprador",
+														name="nomeComprador",
+														maxlength="65"
+													/>
+												</div>
+
+												<!-- Financeiro -->
+												<div class="form-group col-md-2">
+													<label for="foneFinanceiro">Telefone Financeiro</label>
+													<input
+														type="text"
+														class="form-control"
+														id="foneFinanceiro"
+														placeholder="Telefone financeiro",
+														name="foneFinanceiro",
+														maxlength="15"
+													/>
+
+												</div>
+												<div class="form-group col-md-4">
+													<label for="emailFinanceiro">Email Financeiro</label>
+													<input
+														type="email"
+														class="form-control"
+														id="emailFinanceiro"
+														placeholder="E-mail Financeiro",
+														name="emailFinanceiro",
+														maxlength="65"
+													/>
+												</div>
+
+
+												<!-- Fiscal -->
+												<div class="form-group col-md-2">
+													<label for="foneFiscal">Telefone Fiscal</label>
+
+													<input
+														type="text"
+														class="form-control"
+														id="foneFiscal"
+														placeholder="Telefone Fiscal",
+														name="foneFiscal",
+														maxlength="15"
+													/>
+
+												</div>
+												<div class="form-group col-md-4">
+													<label for="emailFiscal">Email Fiscal</label>
+													<input
+														type="email"
+														class="form-control"
+														id="emailFiscal"
+														placeholder="E-mail Fiscal",
+														name="emailFiscal",
+														maxlength="65"
+													/>
+												</div>
+
+												<hr style="width: 100%; color: black; height: 1px;"/>
+
+												<!-- Outras informações -->
+												<div class="form-group col-md-6">
+													<label for="rota">Rota*</label>
+													<select
+													class="form-control"
+													style="width: 100%;"
+													data-select2-id="1"
+													tabindex="-1"
+													aria-hidden="true"
+													id="rota">
+														{if="$rotas.quantRotas > 0"}
+														{loop="$rotas.lista"}
+															<option value={$value.cd_rota}>{$value.nome_rota}</option>
+														{/loop}
+														{/if}
+													</select>
+												</div>
+
+												<div class="form-group col-md-6">
+													<label for="segmento">Segmento*</label>
+													<select
+													class="form-control"
+													style="width: 100%;"
+													data-select2-id="1"
+													tabindex="-1"
+													aria-hidden="true"
+													id="segmento">
+													{if="$segmentos.quant > 0"}
+														{loop="$segmentos.segmentos"}
+															<option value={$value.cod}>{$value.descricao}</option>
+														{/loop}
+													{/if}
+													</select>
+												</div>
+												<hr style="width: 100%; color: black; height: 1px;"/>
+												<div class="form-group col-md-4">
+													<label for="formaPagamento">Forma de pagamento*</label>
+													<select
+													class="form-control"
+													style="width: 100%;"
+													data-select2-id="1"
+													tabindex="-1"
+													aria-hidden="true"
+													id="formaPagamento">
+													{if="$formasPagto.quant > 0"}
+														{loop="$formasPagto.formas"}
+															<option value={$value.cd_forma_pagto}>{$value.descricao}</option>
+														{/loop}
+													{/if}
+													</select>
+												</div>
+
+												<div class="form-group col-md-4">
+													<label for="condPagto">Condição de pagamento sugerida*</label>
+													<select
+													class="form-control"
+													style="width: 100%;"
+													data-select2-id="1"
+													tabindex="-1"
+													aria-hidden="true"
+													id="condPagto">
+													{if="$condPagto.quant > 0"}
+														{loop="$condPagto.condicao"}
+															<option value={$value.cd_cond_pagto}>{$value.descricao}</option>
+														{/loop}
+													{/if}
+													<option value="00">Outro - informar nas observações</option>
+													</select>
+												</div>
+
+												<div class="form-group col-md-4">
+													<label for="valorPrimeiraCompra">Valor estimado de primeira compra</label>
+													<input
+														type="text"
+														class="form-control"
+														id="valorPrimeiraCompra"
+														placeholder="0,00",
+														name="valorPrimeiraCompra",
+														maxlength="18"
+
+													/>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group col-12">
+										<label for="obs">Observações / Restrições de entrega</label>
+										<textarea class="form-control" rows="3" name="obs" id="obs" placeholder="Digite ..."></textarea>
+									</div>
+
+								<div class="col-12">
+
+								<button type="submit" class="btn btn-success float-sm-right" id="botaoCadastro">Cadastrar</button>
+
+							</div>
+							</form>
+
+							<div class="modal fade" id="modal-danger" style="display: none;" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content bg-danger">
+										<div class="modal-header">
+											<h4 class="modal-title" id="tituloModal">Danger Modal</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">×</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p id="textoModal"></p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-outline-light float-right" data-dismiss="modal">Ok</button>
+
+										</div>
+									</div>
+									<!-- /.modal-content -->
+								</div>
+								<!-- /.modal-dialog -->
+							</div>
+
+							<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
+
+							<script type="text/javascript">
+
+								$('#valorPrimeiraCompra').mask('#.##0,00', {reverse: true});
+
+
+								$("#botaoCadastro").click(function(e){
+									e.preventDefault();
+
+									var cnpj_val = $("#cnpj").val().trim().replace(/[^\d]+/g,'');
+									var nomeFantasia = $("#fantasia").val().trim();
+									var razaoSocial = $("#razao").val().trim();
+									var cep = $("#cep").val().trim().replace(/[^\d]+/g,'');
+									var logradouro = $("#logradouro").val().trim();
+									var numero = $("#numero").val().trim();
+									var complemento = $("#complemento").val().trim();
+									var bairro = $("#bairro").val().trim();
+									var municipio = $("#municipio").val().trim();
+									var estado = $("#estado").val().trim();
+									var pais = $("#pais").val().trim();
+									var fonePrincipal = $("#fonePrincipal").val().trim();
+									var emailPrincipal = $("#emailPrincipal").val().trim();
+									var foneComprador = $("#foneComprador").val().trim();
+									var emailComprador = $("#emailComprador").val().trim();
+									var nomeComprador = $("#nomeComprador").val().trim();
+									var foneFinanceiro = $("#foneFinanceiro").val().trim();
+									var emailFinanceiro = $("#emailFinanceiro").val().trim();
+									var foneFiscal = $("#foneFiscal").val().trim();
+									var emailFiscal = $("#emailFiscal").val().trim();
+									var rota = $("#rota").val().trim();
+									var segmento = $("#segmento").val().trim();
+									var formaPagamento = $("#formaPagamento").val().trim();
+									var condPagto = $("#condPagto").val().trim();
+									var valorPrimeiraCompra = $("#valorPrimeiraCompra").val().trim();
+									var obs = $("#obs").val().trim();
+									var nascimento = $("#nascimento").val().trim();
+
+									//Validar CNPJ/CPF
+									if(cnpj_val == "")
+									{
+										InvalidaObjeto("cnpj");
+										lancaModal("CNPJ/CPF inválido","O campo \"CNPJ/CPF\" deve ser preenchido.")
+										return;
+									}
+									else if(cnpj_val.length >12)
+									{
+										//Quando digitar mais que 12 caracteres testar por CNPJ
+										if(!isCNPJ(cnpj_val)){
+											InvalidaObjeto("cnpj");
+											lancaModal("CNPJ inválido","Por favor, verifique o CNPJ digitado e tente novamente.")
+											return;
+										}
+									}
+									else
+									{
+										//Quando colocar menos de 13 caracteres testar por CPF
+										if(!isCPF(cnpj_val)){
+											InvalidaObjeto("cnpj");
+											lancaModal("CPF inválido","Por favor, verifique o CPF digitado e tente novamente.")
+											return;
+										}else{
+											if(nascimento == "" || !DataValida(nascimento)){
+												lancaModal("Data de nascimento inválida!","Caso esteja cadastrando um CPF, a data de nascimento é obrigatória.")
+												return;
+											}
+										}
+									}
+
+									//Valida nome fantasia
+									if(nomeFantasia == "")
+									{
+										InvalidaObjeto("fantasia");
+										lancaModal("Nome fantasia / apelido inválido","O campo \"Nome Fantasia / Apelido\" deve ser preenchido.")
+										return;
+									}
+
+									//Razão Social
+									if(razaoSocial == "")
+									{
+										InvalidaObjeto("razao");
+										lancaModal("Razão social / nome completo inválido","O campo \"Razão Social / Nome completo\" deve ser preenchido.")
+										return;
+									}
+
+									//CEP
+									if(cep == "")
+									{
+										InvalidaObjeto("cep");
+										lancaModal("NCEP inválido","O campo \"CEP\" no endereço deve ser preenchido.")
+										return;
+									}
+
+									//NUMERO
+									if(numero == "")
+									{
+										InvalidaObjeto("numero");
+										lancaModal("Número inválido","O campo \"Número\" no endereço deve ser preenchido.")
+										return;
+									}
+
+									//TELEFONE
+									if(fonePrincipal == "")
+									{
+										InvalidaObjeto("fonePrincipal");
+										lancaModal("Telefone principal inválido","O campo \"Telefone\" deve ser preenchido.")
+										return;
+									}
+
+									//Email XML
+									if(emailPrincipal == "")
+									{
+										InvalidaObjeto("emailPrincipal");
+										lancaModal("E-mail para envio de XML inválido","O campo \"Email para envio de XML\" deve ser preenchido.")
+										return;
+									}
+									else if(!validacaoEmail(emailPrincipal))
+									{
+										InvalidaObjeto("emailPrincipal");
+										lancaModal("E-mail para envio de XML inválido","O campo \"Email para envio de XML\" deve ser preenchido com um e-mail válido.")
+										return;
+									}
+
+									//Rota
+									if(rota == "")
+									{
+										InvalidaObjeto("rota");
+										lancaModal("Rota inválida","deve ser selecionada uma Rota. Caso não tenha nenhuma opção de rota para selecionar, entre em contato com o setor comercial.")
+										return;
+									}
+
+									//Segmento
+									if(segmento == "")
+									{
+										InvalidaObjeto("segmento");
+										lancaModal("Segmento inválido","O campo \"Segmento\" deve ser selecionado. Caso não haja nehuma opção para selecionar entre com contato com o setor comercial.")
+										return;
+									}
+
+									//Forma de pagamento
+									if(formaPagamento == "")
+									{
+										InvalidaObjeto("formaPagamento");
+										lancaModal("Forma de pagamento inválida","O campo \"Forma de pagamento\" deve ser selecionado. Caso não haja nehuma opção para selecionar entre com contato com o setor comercial.")
+										return;
+									}
+
+									//Condições de pagamento
+									if(condPagto == "")
+									{
+										InvalidaObjeto("condPagto");
+										lancaModal("Condição de pagamento inválida","O campo \"Condição de pagamento sugerida\" deve ser selecionado. Caso não haja nehuma opção para selecionar entre com contato com o setor comercial.")
+										return;
+									}
+
+
+									//Condições outras e sem observações
+									if(condPagto == "00" && obs == "")
+									{
+										InvalidaObjeto("condPagto");
+										InvalidaObjeto("obs");
+										lancaModal("Condição de pagamento não informada","Quando o campo \"Condição de pagamento sugerida\" estiver com seleção \"Outro\" deve ser descrito nas observações.")
+										return;
+									}
+
+									//VErificar se os e-mails preenchidos são válidos (caso não sejam obrigatórios e estiverem vazios pode continuar)
+
+									//Email comprador
+									if(!validacaoEmail(emailComprador)){
+										InvalidaObjeto("emailComprador");
+										lancaModal("E-mail do comprador inválido","O campo \"E-mail comprador\" não é pbrigatório mas no caso de preenchimento deve conter um e-mail válido.")
+										return;
+									}
+
+									//Email fiscal
+									if(!validacaoEmail(emailFinanceiro)){
+										InvalidaObjeto("emailFinanceiro");
+										lancaModal("E-mail financeiro inválido","O campo \"E-mail Financeiro\" não é pbrigatório mas no caso de preenchimento deve conter um e-mail válido.")
+										return;
+									}
+									//Email Financeiro
+									if(!validacaoEmail(emailFiscal)){
+										InvalidaObjeto("emailFiscal");
+										lancaModal("E-mail fiscal inválido","O campo \"E-mail Fiscal\" não é pbrigatório mas no caso de preenchimento deve conter um e-mail válido.")
+										return;
+									}
+
+									//Passadas as validações partiu salvar no banco de dados
+									$.ajax({
+										url: '\\classhandler.php',
+										method: 'POST',
+										data: {
+											pcnpjCpf: cnpj_val,
+											pfantasia: nomeFantasia,
+											prazaoSocial: razaoSocial,
+											pcep:cep,
+											plogradouro: logradouro,
+											pnumero:numero,
+											pcomplemento:complemento,
+											pnairro: bairro,
+											pmunicipio: municipio,
+											pestado: estado,
+											ppais: pais,
+											pfonePrincipal: fonePrincipal,
+											pemailXML: emailPrincipal,
+											pfoneComprador: foneComprador,
+											pemailComprador: emailComprador,
+											pnomeComprador: nomeComprador,
+											pfoneFinanceiro: foneFinanceiro,
+											pemailFinanceiro: emailFinanceiro,
+											pfoneFiscal: foneFiscal,
+											pemailFiscal: emailFiscal,
+											prota: rota,
+											psegmento: segmento,
+											pformaPagamento: formaPagamento,
+											pcondPagamento: condPagto,
+											pvalorPrimeiraCompra: valorPrimeiraCompra,
+											pobs: obs,
+											pnascimento: nascimento,
+											poperacao: "cadastroCliente"
+										},
+										dataType: "json",
+										success: function(data) {
+											console.log(data);
+												if (data.status != 'success')
+												{
+														alert("ERRO: "+data.retorno);
+												}
+												else
+												{
+														document.getElementById('cnpj').focus();
+														LimparCamposCadastro();
+														alert(data.retorno);
+												}
+										}
+
+								});
+
+							});
+
+								function LimparCamposCadastro(){
+								document.getElementById('cnpj').value="";
+								document.getElementById('fantasia').value="";
+								document.getElementById('razao').value="";
+								document.getElementById('cep').value="";
+								document.getElementById('logradouro').value="";
+								document.getElementById('numero').value="";
+								document.getElementById('complemento').value="";
+								document.getElementById('bairro').value="";
+								document.getElementById('municipio').value="";
+								document.getElementById('estado').value="";
+								document.getElementById('pais').value="";
+								document.getElementById('nascimento').value="";
+
+								document.getElementById('fonePrincipal').value="";
+								document.getElementById('emailPrincipal').value="";
+								document.getElementById('foneComprador').value="";
+								document.getElementById('emailComprador').value="";
+								document.getElementById('nomeComprador').value="";
+								document.getElementById('foneFinanceiro').value="";
+								document.getElementById('emailFinanceiro').value="";
+								document.getElementById('foneFiscal').value="";
+								document.getElementById('emailFiscal').value="";
+
+
+								document.getElementById('valorPrimeiraCompra').value="";
+								document.getElementById('obs').value="";
+
+							}
+
+								$(":input").change(function(e){
+									var objeto = e.target;
+									if(objeto.classList.contains('is-invalid'))
+									{
+										objeto.classList.remove('is-invalid');
+									}
+								});
+
+								function InvalidaObjeto(id){
+									var objeto = document.getElementById(id);
+									if(!objeto.classList.contains('is-invalid'))
+									{
+										objeto.classList.add('is-invalid');
+									}
+								}
+
+								$(function () {
+									//Datemask dd/mm/yyyy
+									//$('#cnpj').inputmask('##.###.###/####-##', { 'placeholder': '00.000.000/0000-00' })
+									$('#foneComprador').inputmask('(##) ####-#####', { 'placeholder': '(__) ____-____ ' })
+									$('#fonePrincipal').inputmask('(##) ####-#####', { 'placeholder': '(__) ____-____ ' })
+									$('#foneFinanceiro').inputmask('(##) ####-#####', { 'placeholder': '(__) ____-____ ' })
+									$('#foneFiscal').inputmask('(##) ####-#####', { 'placeholder': '(__) ____-____ ' })
+									$('#cep').inputmask('#####-###', { 'placeholder': '_____-___ ' })
+									$('#nascimento').inputmask('##/##/####', { 'placeholder': '__/__/____ ' })
+
+								});
+
+								function lancaModal(titulo, texto){
+									$("#tituloModal").text(titulo);
+									$("#textoModal").text(texto);
+									$("#modal-danger").modal();
+								}
+
+								function mascaraMutuario(o,f){
+									v_obj=o
+									v_fun=f
+									setTimeout('execmascara()',1)
+								}
+
+								function execmascara(){
+									v_obj.value=v_fun(v_obj.value)
+								}
+
+								function DataValida(data, igualOuPosteriorAHoje = false)
+									{
+										var dataDigitada = data.trim();
+
+										//a data deve ter pelo menos 8 caracteres (no caso de dd/mm/aa) e
+										//no máximo 10 caracteres (no caso de dd/mm/aaaa)
+										if(dataDigitada.length < 6 || dataDigitada.length >10){
+											return false;
+										}
+
+										var partes = dataDigitada.split('/',3);
+
+										if(partes.length != 3){
+											return false;
+										}
+
+										if(isNaN(parseInt(partes[0]))|| isNaN(parseInt(partes[1] - 1)) || isNaN(parseInt(partes[2]))){
+											return false;
+										}
+
+										//separo em partes
+										var dia = parseInt(partes[0]);
+										var mes = parseInt(partes[1] - 1);
+										var ano = parseInt(partes[2]);
+
+										if(ano <= 50){
+											ano+=2000;
+										}else if (ano<=99){
+											ano+=1900;
+										}
+
+										// Verifica o range de ano
+										if(ano < 1000 || ano > 3000){
+											return false;
+										}
+
+										// Converte para milissegundos
+										mSeconds = (new Date(ano, mes, dia)).getTime();
+										// Inicializa o objeto data com os milissegundos calculados
+										objDate = new Date();
+										objDate.setTime(mSeconds);
+										// Compara a data inserida e as partes do objeto data()
+										// se houver alguma diferença retorna data invalida
+										if (objDate.getFullYear() !== ano ||
+												objDate.getMonth() !== mes ||
+												objDate.getDate() !== dia) {
+												return false;
+										}
+
+										if(igualOuPosteriorAHoje && objDate < new Date()){
+											return false;
+										}
+
+										return true;
+								}
+
+								function cpfCnpj(v){
+
+									//Remove tudo o que não é dígito
+									v=v.replace(/\D/g,"")
+
+									if (v.length < 14) { //CPF
+
+										//Coloca um ponto entre o terceiro e o quarto dígitos
+										v=v.replace(/(\d{3})(\d)/,"$1.$2")
+
+										//Coloca um ponto entre o terceiro e o quarto dígitos
+										//de novo (para o segundo bloco de números)
+										v=v.replace(/(\d{3})(\d)/,"$1.$2")
+
+										//Coloca um hífen entre o terceiro e o quarto dígitos
+										v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
+
+									} else { //CNPJ
+
+										//Coloca ponto entre o segundo e o terceiro dígitos
+										v=v.replace(/^(\d{2})(\d)/,"$1.$2")
+
+										//Coloca ponto entre o quinto e o sexto dígitos
+										v=v.replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3")
+
+										//Coloca uma barra entre o oitavo e o nono dígitos
+										v=v.replace(/\.(\d{3})(\d)/,".$1/$2")
+
+										//Coloca um hífen depois do bloco de quatro dígitos
+										v=v.replace(/(\d{4})(\d)/,"$1-$2")
+
+									}
+
+									return v
+
+								}
+
+								function isCNPJ(cnpj) {
+
+									cnpj = cnpj.replace(/[^\d]+/g,'');
+
+									if(cnpj == '') return false;
+
+									if (cnpj.length != 14)
+											return false;
+
+									// Elimina CNPJs invalidos conhecidos
+									if (cnpj == "00000000000000" ||
+											cnpj == "11111111111111" ||
+											cnpj == "22222222222222" ||
+											cnpj == "33333333333333" ||
+											cnpj == "44444444444444" ||
+											cnpj == "55555555555555" ||
+											cnpj == "66666666666666" ||
+											cnpj == "77777777777777" ||
+											cnpj == "88888888888888" ||
+											cnpj == "99999999999999")
+											return false;
+
+									// Valida DVs
+									tamanho = cnpj.length - 2
+									numeros = cnpj.substring(0,tamanho);
+									digitos = cnpj.substring(tamanho);
+									soma = 0;
+									pos = tamanho - 7;
+									for (i = tamanho; i >= 1; i--) {
+										soma += numeros.charAt(tamanho - i) * pos--;
+										if (pos < 2)
+													pos = 9;
+									}
+									resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+									if (resultado != digitos.charAt(0))
+											return false;
+
+									tamanho = tamanho + 1;
+									numeros = cnpj.substring(0,tamanho);
+									soma = 0;
+									pos = tamanho - 7;
+									for (i = tamanho; i >= 1; i--) {
+										soma += numeros.charAt(tamanho - i) * pos--;
+										if (pos < 2)
+													pos = 9;
+									}
+									resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+									if (resultado != digitos.charAt(1))
+												return false;
+
+									return true;
+
+									};
+
+								function isCPF(strCPF){
+									var Soma;
+									var Resto;
+									Soma = 0;
+								if (strCPF == "00000000000") return false;
+
+								for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+								Resto = (Soma * 10) % 11;
+
+									if ((Resto == 10) || (Resto == 11))  Resto = 0;
+									if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+
+								Soma = 0;
+									for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+									Resto = (Soma * 10) % 11;
+
+									if ((Resto == 10) || (Resto == 11))  Resto = 0;
+									if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+									return true;
+								}
+
+								function validacaoEmail(email, podevazio = true) {
+
+									if(email.length == 0 && podevazio)
+									{
+										return true;
+									}
+
+									usuario = email.substring(0, email.indexOf("@"));
+									dominio = email.substring(email.indexOf("@")+ 1, email.length);
+
+									if ((usuario.length >=1) &&
+											(dominio.length >=3) &&
+											(usuario.search("@")==-1) &&
+											(dominio.search("@")==-1) &&
+											(usuario.search(" ")==-1) &&
+											(dominio.search(" ")==-1) &&
+											(dominio.search(".")!=-1) &&
+											(dominio.indexOf(".") >=1)&&
+											(dominio.lastIndexOf(".") < dominio.length - 1)) {
+
+										return true;
+									}
+									else{
+										return false;
+									}
+								}
+
+							</script>
+
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+      <!-- /.row -->
+    </div>
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

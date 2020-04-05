@@ -10,7 +10,9 @@ content.ticketSystem .cartao-ticket{
 	box-shadow: 0 2px 4px rgba(0,0,0,.2),0 2px 4px rgba(0,0,0,.23)!important;
 }
 
-
+hr {
+	border-color: #D2D6DE;
+}
 content.ticketSystem .ticket-card-body{
 	display: inline-block;
 

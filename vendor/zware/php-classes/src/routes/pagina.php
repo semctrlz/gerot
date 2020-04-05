@@ -6,6 +6,7 @@ use \Zware\Model\Empresas;
 use \Zware\Pagina;
 use \Zware\PaginaInicial;
 use \Zware\Model\User;
+use \Zware\Model\Clientes;
 use \Zware\Model\Tickets;
 use \Zware\Model\Rotinas;
 use \Zware\Model\Files;
@@ -17,7 +18,6 @@ use \Zware\Mailer;
 
 
 $app->get('/', function () {
-
 	$user = new User();
 	$user->loadCookie();
 	$dadosUsuario = User::retornaDadosDaSession();

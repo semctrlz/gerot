@@ -222,8 +222,6 @@
 
 </div>
 
-
-<script src="\src/plugins/jquery/jquery.min.js"></script>
 <script src="\src/plugins/datepicker/bootstrap-datepicker.min.js"></script>
 
 
@@ -232,8 +230,6 @@ $('#prazo').datepicker({
 	autoclose: true,
 	format: "dd/mm/yyyy",
 });
-
-
 
 $("#unidade").change(function(e){
 	var idUnidade = $(this).val();
@@ -278,7 +274,7 @@ $("#unidade").change(function(e){
 					});
 
 					$("#unidadedestino").val($("#unidadedestino option:first").val());
-					AltaracaoUnidadeDestino();
+					//AltaracaoUnidadeDestino();
 				}
 			},
 			error: function(data) {
@@ -378,7 +374,7 @@ $("#btnCadastro").click(function(e){
 	var idSubCategoria = $("#assunto").val();
 	var idUsuarioCriacao = "{$idusuario}";
 
-	var prazo = null;
+	var prazo = "";
 	if($("#prazo").val().trim().length > 0)
 	{
 		if(!DataValida($("#prazo").val(), true) && $("#prazo").val().trim().length > 0)
@@ -387,10 +383,8 @@ $("#btnCadastro").click(function(e){
 			$("#prazo").focus();
 			return;
 		}
-		prazo = $("#prazo").val();
+		prazo = ConverteDataParaAmericano($("#prazo").val());
 	}
-
-	//validação dos campos
 
 	if(unidadeSolicitacao == 0){
 		alert("A sua unidade deve ser preenchida");
@@ -427,6 +421,8 @@ $("#btnCadastro").click(function(e){
 		$("#texto").focus();
 		return;
 	}
+
+	alert(prazo);
 
 	$.ajax({
 		url: '\\classhandler.php',

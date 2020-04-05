@@ -23,6 +23,7 @@ $app->config('debug', true);
 require_once("functions.php");
 require_once("vendor/zware/php-classes/src/routes/pagina.php");
 require_once("vendor/zware/php-classes/src/routes/tickets.php");
+require_once("vendor/zware/php-classes/src/routes/clientes.php");
 require_once("vendor/zware/php-classes/src/routes/empresas.php");
 
 

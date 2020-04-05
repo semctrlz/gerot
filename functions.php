@@ -2,6 +2,7 @@
 
 use Zware\Model\Chaves;
 
+
 function FormataNomeProprio($nome, $encodado = true)
 {
     if($encodado){
@@ -107,6 +108,8 @@ function obtemFotoEmpresa($imagem){
 function imagem($imagem){
     return $imagem?$imagem:"https://www.zware.com.br/views/uploads/upics/base.jpg";
 }
+
+
 
 
 

@@ -48,7 +48,6 @@ class Tickets extends Model
 				when tipo_ticket = 2 then 'Relatório'
 				end as tipo
 		,t.dtprazo
-		,s.desnome as nome_setor
 		,cat.desnome as categoria
 		,sc.desnome as subcategoria
 		,case
@@ -76,13 +75,11 @@ class Tickets extends Model
 		left join tb_usuarios dest on dest.idusuario = t.usuario_designado
 		left join tb_pessoas destp on destp.idpessoa = dest.idpessoa
 
-		left join tb_setor s on s.idsetor = t.idsetor_solicitacao
-
 		left join tb_categorias cat on cat.idcategoria = t.idcategoria
 		left join tb_subcategorias sc on sc.idsubcategoria = t.idsubcategoria
 
 
-        left join tb_divisao divi on divi.iddivisao = s.iddivisao
+        left join tb_divisao divi on divi.iddivisao = t.idunidade_sol
         left join tb_quadro_funcionarios ql on ql.iddivisao = divi.iddivisao and ql.idusuario = rem.idusuario
         left join tb_cargos car on car.idcargo = ql.idcargo
 
@@ -269,10 +266,17 @@ class Tickets extends Model
 
 	public static function CadastraTicket($dados)
 	{
+		$prazo = $dados['pprazo'];
+		$data_prazo = null;
+		if(strlen($prazo)>0)
+		{
+			$data_prazo = $prazo;
+		}
+
 		//Recuperar os campos
 		$titulo = $dados['ptitulo'];
 		$texto = $dados['pcorpo'];
-		$prazo = $dados['pprazo'];
+
 		$unidade_solicitacao = $dados['punidadeSolicitacao'];
 		$unidade_destino = $dados['punidadeDestino'];
 		$setor_destino = $dados['psetorDestino'];
@@ -283,16 +287,40 @@ class Tickets extends Model
 
 		$sql = new MySql();
 
+		//Inserir o Ticket no banco de dados e retorna seu número
+		$dados = $sql->select("call sp_criaTicket(
+		:TITULO, :CORPO, :PRIORIDADE, :PRAZO, :DIVISAO_ORIGEM, :SETOR_D, :CAT,
+		:SUBCAT, :STATUS, :TIPO, :USUARIO_CRIACAO)", array(
+			":TITULO"=>$titulo,
+			":CORPO"=>$texto,
+			":PRIORIDADE"=>$prioridade,
+			":PRAZO"=>$data_prazo,
+			":DIVISAO_ORIGEM"=>$unidade_solicitacao,
+			":SETOR_D"=>$setor_destino,
+			":CAT"=>$categoria,
+			":SUBCAT"=>$subcategoria,
+			":STATUS"=>1,
+			":TIPO"=>'d',
+			":USUARIO_CRIACAO"=>$usuario_criacao,
+		));
+
+
+		if(count($dados) > 0)
+		{
+			$idTicket = $dados[0]['id'];
 
 
 
 
+			return true;
+		}else{
+			return false;
+		}
 
-
-
-
-
-		return false;
 	}
+
+
+
+
 }
 ?>

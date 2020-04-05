@@ -10,6 +10,8 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<script src="\src/plugins/jquery/jquery.min.js"></script>
+
 <style>
 #myInput {
   background-image: url('/css/searchicon.png'); /* Add a search icon to input */
@@ -343,7 +345,39 @@
               Arquivo
             </p>
           </a>
-        </li>
+				</li>
+
+				<li class="nav-header">CADASTROS</li>                        <!-- T&Iacute;TULO-->
+
+				<li class="nav-item">
+          <?php if( $local != 'cadastro_cliente' ){ ?>
+					<a href="\cadastro_cliente" class="nav-link">
+					<?php }else{ ?>
+					<a href="\cadastro_cliente" class="nav-link active">
+					<?php } ?>
+            <i class="nav-icon fas fa-plus"></i>
+            <p>
+              Cadastrar cliente
+            </p>
+          </a>
+				</li>
+
+				<li class="nav-item">
+          <?php if( $local != 'cadastros_realizados' ){ ?>
+					<a href="\cadastros" class="nav-link">
+					<?php }else{ ?>
+					<a href="\cadastros" class="nav-link active">
+					<?php } ?>
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+              Cadastros
+            </p>
+          </a>
+				</li>
+
+
+				<li class="nav-header">REMOVER DAQUI PARA BAIXO</li>                        <!-- T&Iacute;TULO-->
+
 
 
         <li class="nav-item has-treeview">

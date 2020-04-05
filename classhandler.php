@@ -4,9 +4,10 @@ require_once('vendor/autoload.php');
 use \Zware\Model\User;
 use \Zware\Model\Empresas;
 use \Zware\Model\Tickets;
-
+use \Zware\Model\Clientes;
 use \Zware\Model\Files;
 use \Zware\Model\Funcoes;
+
 
 
 $resposta = array();
@@ -354,7 +355,7 @@ if(isset($_POST))
 			if($_POST['poperacao'] == 'cadastraTicket')
 			{
 				$resposta = array(
-					"status"=>"",
+					"status"=>"success",
 					"retorno"=>""
 				);
 
@@ -370,6 +371,17 @@ if(isset($_POST))
 
 
 			}
+			if($_POST['poperacao'] == 'cadastroCliente')
+			{
+				$resposta = array(
+					"status"=>"success",
+					"retorno"=>"aaa"
+				);
+
+				$resposta = Clientes::CadastraCliente($_POST);
+
+			}
+
 
 
 
